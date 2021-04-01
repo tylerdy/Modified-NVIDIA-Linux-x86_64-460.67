@@ -1,0 +1,6 @@
+Package history for NVIDIA-Linux-x86_64-460.67-internal:
+
+NVIDIA-Linux-x86_64-460.67-internal: Initial package
+
+NVIDIA-Linux-x86_64-460.67: Added 32 bit compatibility libraries
+
