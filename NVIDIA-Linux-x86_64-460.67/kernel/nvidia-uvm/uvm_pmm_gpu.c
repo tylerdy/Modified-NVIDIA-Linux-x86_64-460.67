@@ -3192,6 +3192,489 @@ NvU32 uvm_pmm_gpu_phys_to_virt(uvm_pmm_gpu_t *pmm, NvU64 phys_addr, NvU64 region
     return num_mappings;
 }
 
+static size_t max_reserve_color_memory_size(uvm_gpu_t *gpu)
+{
+    size_t s = ((UVM_MAX_COLOR_MEM_RESV_PERCENTAGE) * 
+        gpu->mem_info.max_allocatable_address) / 100;
+    /* Round down according to the chunk size */
+    s &= ~(gpu->colored_allocation_chunk_size - 1);
+    return s;
+}
+
+// static NV_STATUS reserve_color_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
+// {
+//     int i;
+//     uvm_gpu_color_range_t *range;
+//     uvm_gpu_chunk_t *chunk;
+//     NvU64 last_address = -1;
+//     NvU64 allocated;
+//     size_t chunk_size = gpu->colored_allocation_chunk_size;
+//     size_t color;
+//     size_t resv_mem;
+//     NV_STATUS status = NV_OK;
+   
+//     for (i = 0; i < gpu->num_allocation_mem_colors; i++) {
+
+//         INIT_LIST_HEAD(&pmm->color_ranges_list[i]);
+
+//         range = uvm_kvmalloc(sizeof(uvm_gpu_color_range_t));
+//         if (!range) {
+//             status = NV_ERR_NO_MEMORY;
+//             goto done;
+//         }
+
+//         INIT_LIST_HEAD(&range->free_chunks);
+//         range->start_phys_addr = range->end_phys_addr = 0;
+//         range->total_num_chunks = 0;
+//         range->left_num_chunks = 0;
+//         range->allocation_color = i;
+//         range->parent = NULL;
+//         list_add_tail(&range->list, &pmm->color_ranges_list[i]);
+//     }
+
+//     resv_mem = max_reserve_color_memory_size(gpu);
+    
+//     // Reserve chunks from the GPU
+//     for (allocated = 0; allocated < resv_mem;
+//             allocated += chunk_size) {
+
+//         status = alloc_chunk(pmm, UVM_PMM_GPU_MEMORY_TYPE_USER,
+//                 chunk_size, UVM_PMM_ALLOC_FLAGS_NONE, UVM_PMM_INVALID_TGID,
+//                 &chunk);
+//         if (status != NV_OK)
+//             goto done;
+
+//         // All chunks should be sequential
+//         UVM_ASSERT(last_address == -1 ||
+//                 chunk->address == last_address + chunk_size);
+
+//         color = gpu->arch_hal->phys_addr_to_allocation_color(gpu, chunk->address);
+
+//         range = list_first_entry(&pmm->color_ranges_list[color],
+//                     uvm_gpu_color_range_t, list);
+
+//         list_add_tail(&chunk->list, &range->free_chunks);
+
+//         if (range->start_phys_addr == 0)
+//             range->start_phys_addr = chunk->address;
+        
+//         if (range->end_phys_addr < chunk->address)
+//             range->end_phys_addr = chunk->address;
+
+//         range->total_num_chunks++;
+//         range->left_num_chunks++;
+//         last_address = chunk->address;
+//     }
+
+// done:
+//     if (status != NV_OK)
+//         free_reserved_color_memory(pmm);
+
+//     return status;
+// }
+
+// static void free_reserved_color_memory(uvm_pmm_gpu_t *pmm)
+// {
+//     int i;
+//     uvm_gpu_color_range_t *range;
+//     uvm_gpu_chunk_t *chunk;
+//     struct list_head *nr, *tr;
+//     struct list_head *nc, *tc;
+
+//     // Release all chunks
+//     for (i = 0; i < pmm->gpu->num_allocation_mem_colors; i++) {
+
+//         list_for_each_safe(nr, tr, &pmm->color_ranges_list[i]) {
+        
+//             range = list_entry(nr, uvm_gpu_color_range_t, list);
+
+//             list_for_each_safe(nc, tc, &range->free_chunks) {
+//                 chunk = list_entry(nc, uvm_gpu_chunk_t, list);
+//                 list_del_init(&chunk->list);
+//                 range->left_num_chunks--;
+// //                pr_info("Freeing Chunk:0x%llx, Size:0x%x, Left:0x%llx, Total:0x%llx, Range:%p, ColorRange:%p\n", chunk->address,
+// //                        uvm_gpu_chunk_get_size(chunk), range->total_num_chunks,
+// //                        range->left_num_chunks, range, chunk->color_range);
+//                 chunk->color_range = NULL;
+//                 free_chunk(pmm, chunk);
+// 	        }
+
+//             UVM_ASSERT(range->left_num_chunks == 0);
+//             list_del(&range->list);
+//             uvm_kvfree(range);
+//         }
+//     }
+// }
+
+// Allocates reserved colored memory for a process
+static NV_STATUS allocate_process_color_memory_locked(uvm_pmm_gpu_t *pmm, 
+        uvm_gpu_color_range_t *range, NvU32 color, NvU64 memSize, NvU64 *start_phys_addr)
+{
+    uvm_gpu_t *gpu = pmm->gpu;
+    struct list_head *nr, *tr;
+    struct list_head *nc, *tc;
+    uvm_gpu_color_range_t *nrange;
+    uvm_gpu_chunk_t *chunk;
+    NvU64 chunk_size = gpu->colored_allocation_chunk_size;
+    NvU64 num_chunks = memSize / chunk_size;
+    NvU64 num_chunks_allocated = 0;
+    NvU64 start_addr = 0;
+
+    // Incase of userspace coloring, we might not need to color during allocation,
+    // only during transfer
+    if (gpu->num_allocation_mem_colors == 1)
+        color = 0;
+
+    range->start_phys_addr = range->end_phys_addr = 0;
+    range->total_num_chunks = range->left_num_chunks = 0;
+    range->allocation_color = color;
+    INIT_LIST_HEAD(&range->free_chunks);
+    
+    list_for_each_safe(nr, tr, &pmm->color_ranges_list[color]) {
+
+        nrange = list_entry(nr, uvm_gpu_color_range_t, list);
+       
+        // TODO: Can be optimized
+        if (nrange->left_num_chunks >= num_chunks) {
+
+            list_for_each_safe(nc, tc, &nrange->free_chunks) {
+
+                chunk = list_entry(nc, uvm_gpu_chunk_t, list);
+                list_move_tail(&chunk->list, &range->free_chunks);
+                
+                if (range->start_phys_addr == 0) {
+                    start_addr = range->start_phys_addr = chunk->address;
+                }
+
+                if (range->end_phys_addr == 0)
+                    range->end_phys_addr = chunk->address;
+
+                num_chunks_allocated++;
+                if (num_chunks_allocated == num_chunks)
+                    break;
+            }
+
+            range->total_num_chunks = range->left_num_chunks = num_chunks;
+            
+            if (nrange->left_num_chunks == num_chunks) {
+                list_del(&nrange->list);
+                uvm_kvfree(nrange);
+            } else {
+                // TODO: Update start and end phys addr
+                nrange->left_num_chunks -= num_chunks;
+            }
+
+            break;
+        }
+    }
+
+    if (num_chunks != num_chunks_allocated)
+        return NV_ERR_NO_MEMORY;
+
+    if (start_phys_addr)
+        *start_phys_addr = start_addr;
+
+    return NV_OK;
+}
+
+static void remove_process_color_range_locked(uvm_pmm_gpu_t *pmm, uvm_gpu_color_range_t *range)
+{
+    NvU32 color = range->allocation_color;
+    struct list_head *pmm_range;
+    uvm_gpu_process_color_info_t *parent = range->parent;
+
+    UVM_ASSERT(range->total_num_chunks == range->left_num_chunks);
+
+    pmm_range = &pmm->color_ranges_list[color];
+
+    // TODO: Consolidate entries
+    //nrange = list_last_entry(pmm_range, uvm_gpu_bank_range_t, list);
+    list_add_tail(&range->list, pmm_range);
+
+    range->parent = NULL;
+
+    // Remove the process from colored process list
+    hash_del(&parent->link);
+
+    uvm_kvfree(parent);
+}
+
+
+static NV_STATUS get_device_color_info(uvm_pmm_gpu_t *pmm, 
+        NvU32 *num_allocation_colors, NvU32 *num_transfer_colors, 
+        NvU64 *maxLength)
+{
+    // if (!uvm_gpu_supports_coloring(pmm->gpu))
+    //     return NV_ERR_NOT_SUPPORTED;
+
+    if (num_allocation_colors)
+        *num_allocation_colors = pmm->gpu->num_allocation_mem_colors;
+    
+    if (num_transfer_colors)
+        *num_transfer_colors = pmm->gpu->num_transfer_mem_colors;
+
+    if (maxLength)
+        *maxLength = max_reserve_color_memory_size(pmm->gpu);
+
+    return NV_OK;
+}
+
+NV_STATUS uvm_api_get_device_color_info(UVM_GET_DEVICE_COLOR_INFO_PARAMS *params, struct file *filp)
+{
+    NV_STATUS status = NV_OK;
+    uvm_va_space_t *va_space = uvm_va_space_get(filp);
+    uvm_gpu_t *gpu = NULL;
+
+    uvm_va_space_down_read(va_space);
+
+    // Bank coloring only supported on gpus
+    if (uvm_uuid_is_cpu(&params->destinationUuid)) {
+        status = NV_ERR_INVALID_DEVICE;
+        goto done;
+    }
+    else {
+        gpu = uvm_va_space_get_gpu_by_uuid_with_gpu_va_space(va_space, &params->destinationUuid);
+        if (!gpu) {
+            status = NV_ERR_INVALID_DEVICE;
+            goto done;
+        }
+
+        // if (!uvm_gpu_supports_coloring(gpu)) {
+        //     status = NV_ERR_NOT_SUPPORTED;
+        //     goto done;
+        // }
+
+        status = get_device_color_info(&gpu->pmm, NULL, &params->numColors,
+                &params->maxLength);
+    }
+
+done:
+    uvm_va_space_up_read(va_space);
+    return status;
+}
+
+static uvm_gpu_process_color_info_t *get_process_color_info_locked(uvm_pmm_gpu_t *pmm, NvU32 master_pid)
+{
+    uvm_gpu_process_color_info_t *node = NULL;
+    uintptr_t key;
+
+    if (master_pid == UVM_PMM_INVALID_TGID)
+        return NULL;
+
+    key = master_pid;
+
+    hash_for_each_possible(pmm->color_map, node, link, key) {
+        if (node->master_pid == master_pid) {
+            return node;
+        }
+    }
+
+    return NULL;
+}
+
+static NV_STATUS get_current_process_color_info(uvm_pmm_gpu_t *pmm, NvU32 *color,
+                                NvU64 *address, NvU64 *length)
+{
+    NV_STATUS status = NV_OK;
+    uvm_gpu_process_color_info_t *node = NULL;
+    pid_t current_pid = task_tgid_nr(current);
+
+    // if (!uvm_gpu_supports_coloring(pmm->gpu))
+    //     return NV_ERR_NOT_SUPPORTED;
+
+    uvm_spin_lock(&pmm->list_lock);
+
+    node = get_process_color_info_locked(pmm, current_pid);
+    if (!node) {
+        status = NV_ERR_INVALID_ARGUMENT;
+        goto done;
+    }
+
+    if (color)
+        *color = node->color;
+
+    if (address)
+        *address = node->color_range->start_phys_addr;
+    
+    if (length)
+        *length = node->color_range->total_num_chunks *
+            pmm->gpu->colored_allocation_chunk_size;
+
+done:
+    uvm_spin_unlock(&pmm->list_lock);
+    return status;
+}
+
+NV_STATUS uvm_pmm_get_current_process_color(uvm_pmm_gpu_t *pmm, NvU32 *color)
+{
+     return get_current_process_color_info(pmm, color, NULL, NULL);
+}
+
+NV_STATUS uvm_api_get_process_color_info(UVM_GET_PROCESS_COLOR_INFO_PARAMS *params, struct file *filp)
+{
+    NV_STATUS status = NV_OK;
+    uvm_va_space_t *va_space = uvm_va_space_get(filp);
+    uvm_gpu_t *gpu = NULL;
+
+    uvm_va_space_down_read(va_space);
+
+    // Bank coloring only supported on gpus
+    if (uvm_uuid_is_cpu(&params->destinationUuid)) {
+        status = NV_ERR_INVALID_DEVICE;
+        goto done;
+    }
+    else {
+        gpu = uvm_va_space_get_gpu_by_uuid_with_gpu_va_space(va_space, &params->destinationUuid);
+        if (!gpu) {
+            status = NV_ERR_INVALID_DEVICE;
+            goto done;
+        }
+
+        // if (!uvm_gpu_supports_coloring(gpu)) {
+        //     status = NV_ERR_NOT_SUPPORTED;
+        //     goto done;
+        // }
+
+        status = get_current_process_color_info(&gpu->pmm, &params->color,
+                                        &params->length, &params->address);
+        if (status != NV_OK)
+            goto done;
+    }
+
+done:
+    uvm_va_space_up_read(va_space);
+    return status;
+}
+
+
+NV_STATUS set_current_process_color_info(uvm_pmm_gpu_t *pmm, NvU32 color, NvU64 memSize,
+        NvU64 *start_phys_addr)
+{
+    NV_STATUS status = NV_OK;
+    pid_t current_pid = task_tgid_nr(current);
+    NvBool insert_node = NV_FALSE;
+    struct hlist_node *tmp;
+    uintptr_t key = (uintptr_t)current_pid;
+    uvm_gpu_process_color_info_t *node = NULL;
+    uvm_gpu_process_color_info_t *new_node = NULL;
+
+    new_node = uvm_kvmalloc(sizeof(uvm_gpu_process_color_info_t));
+    if (!new_node) {
+        status = NV_ERR_NO_MEMORY;
+        goto done;
+    }
+
+    new_node->master_pid = current_pid;
+    new_node->color = color;
+
+    new_node->color_range = uvm_kvmalloc(sizeof(uvm_gpu_color_range_t));
+    if (!new_node->color_range) {
+        status = NV_ERR_NO_MEMORY;
+        goto done;
+    }
+
+    uvm_spin_lock(&pmm->list_lock);
+ 
+    // Check if pid already exists in the hash map?
+    hash_for_each_possible_safe(pmm->color_map, node, tmp, link, key) {
+        if (node->master_pid == current_pid) {
+            break;
+        } 
+    }
+
+    // Insert if node not found
+    if (!node || node->master_pid != current_pid) {
+        
+        insert_node = NV_TRUE;
+
+        status = allocate_process_color_memory_locked(pmm, new_node->color_range,
+                color, memSize, start_phys_addr);
+        if (status != NV_OK) {
+            uvm_spin_unlock(&pmm->list_lock);
+            goto done;
+        }
+
+        new_node->color_range->parent = new_node;
+
+        hash_add(pmm->color_map, &new_node->link, key);
+    
+    } else {
+        status = NV_ERR_INVALID_REQUEST;
+        uvm_spin_unlock(&pmm->list_lock);
+        goto done;
+    }
+    
+    uvm_spin_unlock(&pmm->list_lock);
+
+done:
+    // Free unused
+    if (new_node && !insert_node) {
+        if (new_node->color_range)
+            uvm_kvfree(new_node->color_range);
+        uvm_kvfree(new_node);
+    }
+
+    return status;
+}
+
+NV_STATUS uvm_api_set_process_color_info(UVM_SET_PROCESS_COLOR_INFO_PARAMS *params, struct file *filp)
+{
+    NV_STATUS status = NV_OK;
+    uvm_va_space_t *va_space = uvm_va_space_get(filp);
+    NvU32 num_colors;
+    uvm_gpu_t *gpu = NULL;
+    NvU64 maxLength;
+
+    uvm_va_space_down_read(va_space);
+
+    // Bank coloring only supported on gpus
+    if (uvm_uuid_is_cpu(&params->destinationUuid)) {
+        status = NV_ERR_INVALID_DEVICE;
+        goto done;
+    }
+    else {
+        gpu = uvm_va_space_get_gpu_by_uuid_with_gpu_va_space(va_space, &params->destinationUuid);
+        if (!gpu) {
+            status = NV_ERR_INVALID_DEVICE;
+            goto done;
+        }
+
+        // if (!uvm_gpu_supports_coloring(gpu)) {
+        //     status = NV_ERR_NOT_SUPPORTED;
+        //     goto done;
+        // }
+
+        status = get_device_color_info(&gpu->pmm, NULL, &num_colors, &maxLength);
+        if (status != NV_OK)
+            goto done;
+
+        UVM_ASSERT(num_colors <= UVM_MAX_MEM_COLORS);
+
+        // Roundup
+        params->length = (params->length + gpu->colored_allocation_chunk_size - 1) & 
+            (~(gpu->colored_allocation_chunk_size  - 1));
+
+        if (params->length > maxLength || params->length == 0) {
+            status = NV_ERR_INVALID_ARGUMENT;
+            goto done;
+        }
+
+        if (params->color < 0 || params->color >= num_colors) {
+            status = NV_ERR_INVALID_ARGUMENT;
+            goto done;
+        }
+
+        status = set_current_process_color_info(&gpu->pmm, params->color,
+                params->length, &params->address);
+        if (status != NV_OK)
+            goto done;
+    }
+
+done:
+    uvm_va_space_up_read(va_space);
+    return status;
+}
+
 NV_STATUS uvm_pmm_gpu_init(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
 {
     const uvm_chunk_sizes_mask_t chunk_size_init[][UVM_PMM_GPU_MEMORY_TYPE_COUNT] =

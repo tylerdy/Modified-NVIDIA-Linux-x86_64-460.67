@@ -544,6 +544,24 @@ bool __uvm_locking_initialized(void);
 #define uvm_assert_mmap_lock_locked_write(mm) \
         uvm_assert_mmap_lock_locked_mode((mm), UVM_LOCK_FLAGS_MODE_EXCLUSIVE)
 
+#define uvm_down_read_mmap_sem(mmap_sem) ({             \
+        typeof(mmap_sem) _sem = (mmap_sem);             \
+        uvm_record_lock_mmap_sem_read(_sem);            \
+        down_read(_sem);                                \
+    })
+
+#define uvm_up_read_mmap_sem(mmap_sem) ({               \
+        typeof(mmap_sem) _sem = (mmap_sem);             \
+        up_read(_sem);                                  \
+        uvm_record_unlock_mmap_sem_read(_sem);          \
+    })
+
+#define uvm_up_read_mmap_sem_out_of_order(mmap_sem) ({      \
+        typeof(mmap_sem) _sem = (mmap_sem);                 \
+        up_read(_sem);                                      \
+        uvm_record_unlock_mmap_sem_read_out_of_order(_sem); \
+    })
+    
 #define uvm_down_read_mmap_lock(mm) ({                  \
         typeof(mm) _mm = (mm);                          \
         uvm_record_lock_mmap_lock_read(_mm);            \

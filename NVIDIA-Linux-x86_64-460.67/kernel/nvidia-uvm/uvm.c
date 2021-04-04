@@ -937,6 +937,11 @@ static long uvm_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
         UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_CLEAN_UP_ZOMBIE_RESOURCES,      uvm_api_clean_up_zombie_resources);
         UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_POPULATE_PAGEABLE,              uvm_api_populate_pageable);
         UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_VALIDATE_VA_RANGE,              uvm_api_validate_va_range);
+        UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_GET_DEVICE_COLOR_INFO,          uvm_api_get_device_color_info);
+        UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_GET_PROCESS_COLOR_INFO,         uvm_api_get_process_color_info);
+        UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_SET_PROCESS_COLOR_INFO,         uvm_api_set_process_color_info);
+        UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_MEMCPY_COLORED,                 uvm_api_memcpy_colored);
+        UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_MEMSET_COLORED,                 uvm_api_memset_colored);
     }
 
     // Try the test ioctls if none of the above matched

@@ -237,6 +237,10 @@ void uvm_hal_ampere_arch_init_properties(uvm_parent_gpu_t *parent_gpu);
 typedef uvm_mmu_mode_hal_t *(*uvm_hal_lookup_mode_hal_t)(NvU32 big_page_size);
 typedef void (*uvm_hal_mmu_enable_prefetch_faults_t)(uvm_parent_gpu_t *parent_gpu);
 typedef void (*uvm_hal_mmu_disable_prefetch_faults_t)(uvm_parent_gpu_t *parent_gpu);
+typedef NvU32 (*uvm_hal_mmu_phys_addr_to_allocation_color)(uvm_gpu_t *gpu, NvU64 phys_addr);
+typedef NvU32 (*uvm_hal_mmu_phys_addr_to_transfer_color)(uvm_gpu_t *gpu, NvU64 phys_addr);
+typedef NvU64 (*uvm_hal_mmu_phys_addr_to_base_transfer_color_addr)(uvm_gpu_t *gpu, NvU64 phys_addr);
+typedef NvU64 (*uvm_hal_mmu_phys_addr_to_transfer_color_idx)(uvm_gpu_t *gpu, NvU64 phys_addr);
 uvm_mmu_mode_hal_t *uvm_hal_mmu_mode_kepler(NvU32 big_page_size);
 uvm_mmu_mode_hal_t *uvm_hal_mmu_mode_pascal(NvU32 big_page_size);
 uvm_mmu_mode_hal_t *uvm_hal_mmu_mode_volta(NvU32 big_page_size);
@@ -463,6 +467,10 @@ struct uvm_arch_hal_struct
     uvm_hal_mmu_disable_prefetch_faults_t disable_prefetch_faults;
     uvm_hal_mmu_engine_id_to_type_t mmu_engine_id_to_type;
     uvm_hal_mmu_client_id_to_utlb_id_t mmu_client_id_to_utlb_id;
+    uvm_hal_mmu_phys_addr_to_allocation_color phys_addr_to_allocation_color;
+    uvm_hal_mmu_phys_addr_to_transfer_color phys_addr_to_transfer_color;
+    uvm_hal_mmu_phys_addr_to_base_transfer_color_addr phys_addr_to_base_transfer_color_addr;
+    uvm_hal_mmu_phys_addr_to_transfer_color_idx phys_addr_to_transfer_color_idx;
 };
 
 struct uvm_fault_buffer_hal_struct

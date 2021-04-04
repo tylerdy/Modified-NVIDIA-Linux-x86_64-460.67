@@ -1,0 +1,1 @@
+#define NV_VMALLOC_HAS_PGPROT_T_ARG

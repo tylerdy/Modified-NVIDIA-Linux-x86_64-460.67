@@ -29,6 +29,9 @@
 
 #define UVM_MAX_UNIQUE_GPU_PAIRS SUM_FROM_0_TO_N(UVM_MAX_GPUS - 1)
 
+// Static processor id for the CPU
+#define UVM_CPU_ID (0)
+
 // Processor identifiers
 // =====================
 //

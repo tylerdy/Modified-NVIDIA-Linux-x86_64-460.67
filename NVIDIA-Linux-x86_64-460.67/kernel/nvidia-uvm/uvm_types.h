@@ -58,6 +58,11 @@ typedef unsigned long long UvmStream;
 #define UVM_MAX_GPUS         NV_MAX_DEVICES
 #define UVM_MAX_PROCESSORS   (UVM_MAX_GPUS + 1)
 
+#define UVM_MAX_MEM_COLORS      1
+
+// Max memory reserved upfront per gpu for coloring in percentage
+#define UVM_MAX_COLOR_MEM_RESV_PERCENTAGE  (80)
+
 #define UVM_INIT_FLAGS_DISABLE_HMM                       ((NvU64)0x1)
 #define UVM_INIT_FLAGS_MULTI_PROCESS_SHARING_MODE        ((NvU64)0x2)
 #define UVM_INIT_FLAGS_MASK                              ((NvU64)0x3)

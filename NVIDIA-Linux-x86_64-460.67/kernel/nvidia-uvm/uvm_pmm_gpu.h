@@ -60,6 +60,12 @@
 #include "uvm_types.h"
 #include "nv_uvm_types.h"
 
+// '0' Pid is used by init process only
+#define UVM_PMM_INVALID_TGID    0
+
+// Number of buckets in hashtable (in log) (pid->colors)
+#define UVM_PMM_COLOR_HASHTABLE_LOG_SIZE  5
+
 typedef enum
 {
     UVM_CHUNK_SIZE_1       =           1ULL,
@@ -186,6 +192,49 @@ typedef uvm_chunk_size_t uvm_chunk_sizes_mask_t;
 typedef struct uvm_pmm_gpu_chunk_suballoc_struct uvm_pmm_gpu_chunk_suballoc_t;
 
 typedef struct uvm_gpu_chunk_struct uvm_gpu_chunk_t;
+
+typedef struct uvm_gpu_process_color_info_struct uvm_gpu_process_color_info_t;
+
+// Maintains continous range of blocks per color
+typedef struct uvm_gpu_color_range_struct {
+
+    struct list_head list;
+    
+    // Start and end addr of chunks
+    NvU64 start_phys_addr;
+    NvU64 end_phys_addr;
+
+    // Number of chunks left
+    NvU64 left_num_chunks;
+
+    // Total chunks originally
+    NvU64 total_num_chunks;
+
+    // Color of allocation
+    NvU32 allocation_color;
+
+    // List of free chunks
+    struct list_head free_chunks;
+
+    uvm_gpu_process_color_info_t *parent;
+
+} uvm_gpu_color_range_t;
+
+// Per PID color information
+struct uvm_gpu_process_color_info_struct {
+    
+    // Link to use for hashtable
+    struct hlist_node link;
+
+    // By which pid is this bank information sets (This is the tgid)
+    NvU32 master_pid;
+
+    uvm_gpu_color_range_t *color_range;
+
+    // User specified color
+    NvU32 color;
+};
+
 struct uvm_gpu_chunk_struct
 {
     // Physical address of GPU chunk. This may be removed to save memory
@@ -364,6 +413,12 @@ typedef struct
     DECLARE_BITMAP(chunk_split_cache_initialized, UVM_PMM_CHUNK_SPLIT_CACHE_SIZES);
 
     bool pma_address_cache_initialized;
+
+    // Hastable for pid -> color information
+    DECLARE_HASHTABLE(color_map, UVM_PMM_COLOR_HASHTABLE_LOG_SIZE);
+
+    // List of ranges per color
+    struct list_head color_ranges_list[UVM_MAX_MEM_COLORS];
 } uvm_pmm_gpu_t;
 
 // Initialize PMM on GPU
@@ -619,6 +674,8 @@ static uvm_chunk_size_t uvm_chunk_find_prev_size(uvm_chunk_sizes_mask_t chunk_si
 // checking that the chunks are still there. Also, the VA block(s) are
 // retained, and it's up to the caller to release them.
 NvU32 uvm_pmm_gpu_phys_to_virt(uvm_pmm_gpu_t *pmm, NvU64 phys_addr, NvU64 region_size, uvm_reverse_map_t *out_mappings);
+
+NV_STATUS uvm_pmm_get_current_process_color(uvm_pmm_gpu_t *pmm, NvU32 *color);
 
 // Iterates over every size in the input mask from smallest to largest
 #define for_each_chunk_size(__size, __chunk_sizes)                                  \

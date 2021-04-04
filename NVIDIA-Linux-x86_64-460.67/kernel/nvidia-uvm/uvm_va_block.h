@@ -280,6 +280,9 @@ struct uvm_va_block_struct
     // is held in write mode.
     uvm_va_range_t *va_range;
 
+    // Is block is not supported by uvm pages but by linux pages?
+    NvBool is_linux_backed;
+
     // Virtual address [start, end] covered by this block. These fields can be
     // read while holding either the block lock or just the VA space lock in
     // read mode, since they can only change when the VA space lock is held in
@@ -512,6 +515,27 @@ typedef struct
 // Module load/exit
 NV_STATUS uvm_va_block_init(void);
 void uvm_va_block_exit(void);
+
+// Check if a single physical chunk covers the whole block
+bool is_block_phys_contig(uvm_va_block_t *block, uvm_processor_id_t id);
+
+// Copies colored data between two blocks based on masked region provided
+NV_STATUS block_copy_colored_pages_between(uvm_va_block_t *src_block,
+                                            uvm_va_block_t *dest_block,
+                                            uvm_processor_id_t src_id,
+                                            uvm_processor_id_t dest_id,
+                                            uvm_va_block_colored_region_t *src_region,
+                                            uvm_va_block_colored_region_t *dest_region,
+                                            NvU64 *copied,
+                                            uvm_tracker_t *copy_tracker);
+
+// Memsets colored data in a block based on masked region provided
+NV_STATUS block_memset_colored_pages(uvm_va_block_t *block,
+                                        uvm_processor_id_t id,
+                                        uvm_va_block_colored_region_t *region,
+                                        NvU8 value,
+                                        NvU64 *covered,
+                                        uvm_tracker_t *out_tracker);
 
 // Allocates and initializes the block. The block's ref count is initialized to
 // 1. The caller is responsible for inserting the block into its parent
@@ -1328,6 +1352,13 @@ static void uvm_page_mask_clear(uvm_page_mask_t *mask, uvm_page_index_t page_ind
     __clear_bit(page_index, mask->bitmap);
 }
 
+static void uvm_page_mask_fill(uvm_page_mask_t *mask, uvm_page_index_t start_page_index,
+        uvm_page_index_t end_page_index)
+{
+    bitmap_set(mask->bitmap, start_page_index, end_page_index - start_page_index);
+}
+
+
 static bool uvm_page_mask_region_test(const uvm_page_mask_t *mask,
                                       uvm_va_block_region_t region,
                                       uvm_page_index_t page_index)
@@ -1866,6 +1897,86 @@ uvm_prot_t uvm_va_block_page_compute_highest_permission(uvm_va_block_t *va_block
     uvm_va_block_retry_deinit(__retry, __block);                    \
                                                                     \
     status;                                                         \
+})
+
+// A helper macro for handling allocation-retry
+//
+// The macro takes two VA block, two uvm_va_block_retry_t struct and a function call
+// to retry as long as it returns NV_ERR_MORE_PROCESSING_REQUIRED.
+//
+// block_retry can be NULL if it's not necessary for the function call,
+// otherwise it will be initialized and deinitialized by the macro.
+//
+// The macro also locks and unlocks the two block's lock internally as it's expected
+// that each block's lock has been unlocked and relocked whenever the function call
+// returns NV_ERR_MORE_PROCESSING_REQUIRED and this makes it clear that the
+// each block's state is not locked across these calls.
+#define UVM_VA_MULTI_BLOCK_LOCK_RETRY(va_block1, va_block2, block_retry1, block_retry2, call) ({     \
+    NV_STATUS status;                                               \
+    uvm_va_block_t *__block1 = (va_block1);                         \
+    uvm_va_block_t *__block2 = (va_block2);                         \
+    uvm_va_block_retry_t *__retry1 = (block_retry1);                \
+    uvm_va_block_retry_t *__retry2 = (block_retry2);                \
+                                                                    \
+    uvm_va_block_retry_init(__retry1);                              \
+    uvm_va_block_retry_init(__retry2);                              \
+                                                                    \
+    if (__block1->start == __block2->start) {                       \
+        uvm_mutex_lock(&__block1->lock);                            \
+    } else if (__block1->start < __block2->start) {                 \
+        uvm_mutex_lock(&__block1->lock);                            \
+        uvm_mutex_lock(&__block2->lock);                            \
+    } else {                                                        \
+        uvm_mutex_lock(&__block2->lock);                            \
+        uvm_mutex_lock(&__block1->lock);                            \
+    }                                                               \
+                                                                    \
+    do {                                                            \
+        status = (call);                                            \
+    } while (status == NV_ERR_MORE_PROCESSING_REQUIRED);            \
+                                                                    \
+    uvm_mutex_unlock(&__block1->lock);                              \
+    if (__block1->start != __block2->start)                         \
+        uvm_mutex_unlock(&__block2->lock);                          \
+                                                                    \
+    uvm_va_block_retry_deinit(__retry1, __block1);                  \
+    uvm_va_block_retry_deinit(__retry2, __block2);                  \
+                                                                    \
+    status;                                                         \
+})
+
+
+// A helper macro for handling allocation-retry
+//
+// The macro takes two VA block, two uvm_va_block_retry_t struct and a function call
+// to retry as long as it returns NV_ERR_MORE_PROCESSING_REQUIRED. The blocks
+// can be linux pages backed blocks in which case mutex locking is not required
+//
+// block_retry can be NULL if it's not necessary for the function call,
+// otherwise it will be initialized and deinitialized by the macro.
+//
+// The macro also locks and unlocks the two block's lock internally as it's expected
+// that each block's lock has been unlocked and relocked whenever the function call
+// returns NV_ERR_MORE_PROCESSING_REQUIRED and this makes it clear that the
+// each block's state is not locked across these calls.
+#define UVM_VA_GENERIC_MULTI_BLOCK_LOCK_RETRY(va_block1, va_block2, block_retry1, block_retry2, call) ({     \
+                                                                        \
+    NV_STATUS status;                                                   \
+    uvm_va_block_t *___block1 = (va_block1);                            \
+    uvm_va_block_t *___block2 = (va_block2);                            \
+    uvm_va_block_retry_t *___retry1 = (block_retry1);                   \
+    uvm_va_block_retry_t *___retry2 = (block_retry2);                   \
+                                                                        \
+    if (___block1->is_linux_backed && ___block2->is_linux_backed) {     \
+        status = (call);                                                \
+    } else if (___block1->is_linux_backed) {                            \
+        status = UVM_VA_BLOCK_LOCK_RETRY(___block2, ___retry2, (call)); \
+    } else if (___block2->is_linux_backed) {                            \
+        status = UVM_VA_BLOCK_LOCK_RETRY(___block1, ___retry1, (call)); \
+    } else {                                                            \
+        status = UVM_VA_MULTI_BLOCK_LOCK_RETRY(___block1, ___block2, ___retry1, ___retry2, (call));     \
+    }                                                                   \
+    status;                                                             \
 })
 
 #endif // __UVM_VA_BLOCK_H__

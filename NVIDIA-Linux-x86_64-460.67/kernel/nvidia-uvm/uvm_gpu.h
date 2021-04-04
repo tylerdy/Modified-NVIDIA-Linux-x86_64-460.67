@@ -683,6 +683,21 @@ struct uvm_gpu_struct
 
     // Placeholder for per-GPU performance heuristics information
     uvm_perf_module_data_desc_t perf_modules_data[UVM_PERF_MODULE_TYPE_COUNT];
+
+    // This is the number of colors provided during allocation.
+    // For userspace coloring, this would be equal to 1 since all coloring
+    // happens in userspace
+    // This is set to 0 to indicate GPU doesn't support coloring yet.
+    NvU32 num_allocation_mem_colors;
+
+    // This is the number of colors provided for transfer of memory.
+    // For userspace coloring, this can be greater than 1 since memory transfer
+    // between devices needs to be color aware in a similar manner to userspace
+    NvU32 num_transfer_mem_colors;
+
+    // Only valid if num_mem_colors != 0
+    NvU64 colored_allocation_chunk_size;
+    NvU64 colored_transfer_chunk_size;
 };
 
 struct uvm_parent_gpu_struct
