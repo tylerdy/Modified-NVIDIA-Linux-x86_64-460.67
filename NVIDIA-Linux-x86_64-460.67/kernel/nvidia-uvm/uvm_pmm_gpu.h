@@ -151,6 +151,24 @@ typedef enum
     UVM_PMM_ALLOC_FLAGS_MASK = (1 << 2) - 1
 } uvm_pmm_alloc_flags_t;
 
+// Maintains continous range of blocks
+typedef struct uvm_gpu_contig_range_struct {
+    
+    // Start and end addr of chunks
+    NvU64 start_phys_addr;
+    NvU64 end_phys_addr;
+
+    // Number of chunks left
+    NvU64 left_num_chunks;
+
+    // Total chunks originally
+    NvU64 total_num_chunks;
+
+    // List of free chunks
+    struct list_head free_chunks;
+
+} uvm_gpu_contig_range_t;
+
 
 typedef enum
 {
@@ -364,6 +382,8 @@ typedef struct
     DECLARE_BITMAP(chunk_split_cache_initialized, UVM_PMM_CHUNK_SPLIT_CACHE_SIZES);
 
     bool pma_address_cache_initialized;
+
+    uvm_gpu_contig_range_t contig_range;
 } uvm_pmm_gpu_t;
 
 // Initialize PMM on GPU

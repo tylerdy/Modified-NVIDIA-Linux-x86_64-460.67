@@ -3192,6 +3192,93 @@ NvU32 uvm_pmm_gpu_phys_to_virt(uvm_pmm_gpu_t *pmm, NvU64 phys_addr, NvU64 region
     return num_mappings;
 }
 
+static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
+{
+    int i;
+    uvm_gpu_contig_range_t *range;
+    uvm_gpu_chunk_t *chunk;
+    NvU64 last_address = -1;
+    NvU64 allocated;
+    size_t chunk_size = gpu->colored_allocation_chunk_size; // change to page size 2MB i think
+    size_t color;
+    size_t resv_mem;
+    NV_STATUS status = NV_OK;
+   
+    range = uvm_kvmalloc(sizeof(uvm_gpu_contig_range_t));
+    if (!range) {
+        status = NV_ERR_NO_MEMORY;
+        goto done;
+    }
+
+    INIT_LIST_HEAD(&range->free_chunks);
+    range->start_phys_addr = range->end_phys_addr = 0;
+    range->total_num_chunks = 0;
+    range->left_num_chunks = 0;
+
+    resv_mem = TBD_AMOUNT;
+    
+    // Reserve chunks from the GPU
+    for (allocated = 0; allocated < resv_mem;
+            allocated += chunk_size) {
+
+        status = alloc_chunk(pmm, UVM_PMM_GPU_MEMORY_TYPE_USER,
+                chunk_size, UVM_PMM_ALLOC_FLAGS_NONE, UVM_PMM_INVALID_TGID,
+                &chunk);
+        if (status != NV_OK)
+            goto done;
+
+        // All chunks should be sequential
+        UVM_ASSERT(last_address == -1 ||
+                chunk->address == last_address + chunk_size);
+
+        list_add_tail(&chunk->list, &range->free_chunks);
+
+        if (range->start_phys_addr == 0)
+            range->start_phys_addr = chunk->address;
+        
+        if (range->end_phys_addr < chunk->address)
+            range->end_phys_addr = chunk->address;
+
+        range->total_num_chunks++;
+        range->left_num_chunks++;
+        last_address = chunk->address;
+    }
+
+done:
+    if (status != NV_OK)
+        free_reserved_contig_memory(pmm);
+
+    return status;
+}
+
+static void free_reserved_contig_memory(uvm_pmm_gpu_t *pmm)
+{
+    int i;
+    uvm_gpu_contig_range_t *range;
+    uvm_gpu_chunk_t *chunk;
+    struct list_head *nr, *tr;
+    struct list_head *nc, *tc;
+
+    // Release all chunks
+        
+    range = pmm->contig_range;
+
+    list_for_each_safe(nc, tc, &range->free_chunks) {
+        chunk = list_entry(nc, uvm_gpu_chunk_t, list);
+        list_del_init(&chunk->list);
+        range->left_num_chunks--;
+//                pr_info("Freeing Chunk:0x%llx, Size:0x%x, Left:0x%llx, Total:0x%llx, Range:%p, ColorRange:%p\n", chunk->address,
+//                        uvm_gpu_chunk_get_size(chunk), range->total_num_chunks,
+//                        range->left_num_chunks, range, chunk->color_range);
+        free_chunk(pmm, chunk);
+    }
+
+    UVM_ASSERT(range->left_num_chunks == 0);
+    list_del(&range->list);
+    uvm_kvfree(range);
+
+}
+
 NV_STATUS uvm_pmm_gpu_init(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
 {
     const uvm_chunk_sizes_mask_t chunk_size_init[][UVM_PMM_GPU_MEMORY_TYPE_COUNT] =
@@ -3292,6 +3379,10 @@ NV_STATUS uvm_pmm_gpu_init(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
                 goto cleanup;
         }
     }
+
+    status = reserve_contig_memory(gpu, pmm);
+     if (status != NV_OK)
+            goto cleanup;
 
     return NV_OK;
 cleanup:
