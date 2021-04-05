@@ -60,6 +60,9 @@
 #include "uvm_types.h"
 #include "nv_uvm_types.h"
 
+// '0' Pid is used by init process only
+#define UVM_PMM_INVALID_TGID    0
+
 typedef enum
 {
     UVM_CHUNK_SIZE_1       =           1ULL,
@@ -168,7 +171,6 @@ typedef struct uvm_gpu_contig_range_struct {
     struct list_head free_chunks;
 
 } uvm_gpu_contig_range_t;
-
 
 typedef enum
 {
@@ -384,6 +386,8 @@ typedef struct
     bool pma_address_cache_initialized;
 
     uvm_gpu_contig_range_t contig_range;
+
+    NvU32 assigned_range_tgid;
 } uvm_pmm_gpu_t;
 
 // Initialize PMM on GPU
@@ -456,10 +460,11 @@ static NV_STATUS uvm_pmm_gpu_alloc_user(uvm_pmm_gpu_t *pmm,
                                         size_t num_chunks,
                                         uvm_chunk_size_t chunk_size,
                                         uvm_pmm_alloc_flags_t flags,
+                                        NvU32 tgid,
                                         uvm_gpu_chunk_t **chunks,
                                         uvm_tracker_t *out_tracker)
 {
-    return uvm_pmm_gpu_alloc(pmm, num_chunks, chunk_size, UVM_PMM_GPU_MEMORY_TYPE_USER, flags, chunks, out_tracker);
+    return uvm_pmm_gpu_alloc(pmm, num_chunks, chunk_size, UVM_PMM_GPU_MEMORY_TYPE_USER, flags, tgid, chunks, out_tracker);
 }
 
 // Unpin a temporarily pinned chunk and set its reverse map to a VA block

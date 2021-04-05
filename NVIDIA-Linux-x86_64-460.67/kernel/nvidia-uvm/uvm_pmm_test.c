@@ -179,7 +179,7 @@ static NV_STATUS chunk_alloc_check(uvm_pmm_gpu_t *pmm,
     if (pmm->gpu->mem_info.size == 0)
         return NV_ERR_NO_MEMORY;
 
-    status = uvm_pmm_gpu_alloc(pmm, num_chunks, chunk_size, mem_type, flags, chunks, &local_tracker);
+    status = uvm_pmm_gpu_alloc(pmm, num_chunks, chunk_size, mem_type, flags, UVM_PMM_INVALID_TGID, chunks, &local_tracker);
     if (status != NV_OK)
         return status;
 
