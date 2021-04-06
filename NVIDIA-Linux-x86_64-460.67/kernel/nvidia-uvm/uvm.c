@@ -937,6 +937,8 @@ static long uvm_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
         UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_CLEAN_UP_ZOMBIE_RESOURCES,      uvm_api_clean_up_zombie_resources);
         UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_POPULATE_PAGEABLE,              uvm_api_populate_pageable);
         UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_VALIDATE_VA_RANGE,              uvm_api_validate_va_range);
+
+        UVM_ROUTE_CMD_STACK_INIT_CHECK(UVM_SET_PROCESS_CONTIG_INFO,         uvm_api_set_process_contig_info);
     }
 
     // Try the test ioctls if none of the above matched

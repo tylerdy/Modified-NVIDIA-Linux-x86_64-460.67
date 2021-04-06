@@ -3626,7 +3626,6 @@ NV_STATUS uvm_api_set_process_contig_info(UVM_SET_PROCESS_CONTIG_INFO_PARAMS *pa
     NV_STATUS status = NV_OK;
     uvm_va_space_t *va_space = uvm_va_space_get(filp);
     uvm_gpu_t *gpu = NULL;
-    NvU64 maxLength;
 
     uvm_va_space_down_read(va_space);
 
