@@ -258,6 +258,9 @@ static NvU32 prefix_fn_mask##_get_gpu_count(const mask_t *mask)                 
     return gpu_count;                                                                                        \
 }
 
+// Static processor id for the CPU
+#define UVM_CPU_ID (0)
+
 typedef struct
 {
     NvU32 val;

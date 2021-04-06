@@ -1983,6 +1983,47 @@ static uvm_gpu_chunk_t *block_phys_page_chunk(uvm_va_block_t *block, block_phys_
     return chunk;
 }
 
+#if defined(UVM_USER_MEM_COLORING)
+// Get the physical GPU address of a block's page from the POV of the specified GPU (colored block)
+// This is the address that should be used for making PTEs for the specified GPU.
+static uvm_gpu_phys_address_t block_colored_phys_page_address(uvm_va_block_t *block,
+                                                      block_phys_page_t block_page,
+                                                      uvm_gpu_t *gpu)
+{
+    uvm_va_block_gpu_state_t *accessing_gpu_state = block_gpu_state_get(block, gpu->id);
+    size_t chunk_offset;
+    uvm_gpu_chunk_t *chunk;
+
+    UVM_ASSERT(accessing_gpu_state);
+
+    if (block_page.processor.val == UVM_CPU_ID) {
+        NvU64 dma_addr = accessing_gpu_state->cpu_pages_dma_addrs[block_page.page_index];
+
+        // The page should be mapped for physical access already as we do that
+        // eagerly on CPU page population and GPU state alloc.
+        UVM_ASSERT(dma_addr != 0);
+
+        return uvm_gpu_phys_address(UVM_APERTURE_SYS, dma_addr);
+    }
+
+    chunk = block_phys_page_chunk(block, block_page, &chunk_offset);
+
+    if (block_page.processor.val == gpu->id.val) {
+        return uvm_gpu_phys_address(UVM_APERTURE_VID, chunk->colored_address + chunk_offset);
+    }
+    else {
+        uvm_gpu_phys_address_t phys_addr;
+        uvm_global_gpu_id_t ggpuid = {block_page.processor.val};
+        uvm_gpu_t *owning_gpu = uvm_gpu_get(ggpuid);
+        pr_err("Unsupported Pathway\n");
+        UVM_ASSERT(uvm_va_space_peer_enabled(block->va_range->va_space, gpu, owning_gpu));
+        phys_addr = uvm_pmm_gpu_peer_phys_address(&owning_gpu->pmm, chunk, gpu);
+        phys_addr.address += chunk_offset;
+        return phys_addr;
+    }
+}
+#endif
+
 // Get the physical GPU address of a block's page from the POV of the specified GPU
 // This is the address that should be used for making PTEs for the specified GPU.
 static uvm_gpu_phys_address_t block_phys_page_address(uvm_va_block_t *block,
@@ -4375,7 +4416,19 @@ static void block_gpu_pte_write_2m(uvm_va_block_t *block,
     // TODO: Bug 1766172: Use 2M sysmem pages on x86. Would need to dirty them.
     UVM_ASSERT(UVM_ID_IS_GPU(resident_id));
 
+#if defined(UVM_USER_MEM_COLORING)
+    if (uvm_gpu_supports_coloring(gpu->parent)) {
+        page_addr = block_colored_phys_page_address(block, block_phys_page(resident_id, 0), gpu);
+    } else {
+        page_addr = block_phys_page_address(block, block_phys_page(resident_id, 0), gpu);
+    }
+#else
+
     page_addr = block_phys_page_address(block, block_phys_page(resident_id, 0), gpu);
+#endif
+    pr_info("block_gpu_pte_write_2m:Start:%llx, End:%llx, page_addr:%llx\n",
+            block->start, block->end, page_addr.address);
+
     pte_val = tree->hal->make_pte(page_addr.aperture, page_addr.address, new_prot, is_vol);
     uvm_pte_batch_write_pte(pte_batch, pte_addr, pte_val, pte_size);
 
@@ -5472,7 +5525,7 @@ static void block_gpu_compute_new_pte_state(uvm_va_block_t *block,
     if (gpu_state->force_4k_ptes)
         return;
 
-#ifdef UVM_MEM_COLORING
+#if defined(UVM_MEM_COLORING) && !defined(UVM_USER_MEM_COLORING)
     // XXX: Should this be turned on? Might make faster?
     // XXX: So the issue is that of trying to merge PTEs into 64K PTEs.
     // Try to understand how this code works.
@@ -6724,6 +6777,11 @@ static NV_STATUS block_map_gpu_to(uvm_va_block_t *va_block,
                                     pages_to_map,
                                     &block_context->scratch_page_mask,
                                     new_pte_state);
+
+    pr_info("block_map_gpu_to:va_block:Start:%llx, End:%llx, pte_is_2m:%d, needs_4k:%d"
+            " pages_to_map:%d, pages_after:%d\n",
+            va_block->start, va_block->end, new_pte_state->pte_is_2m, new_pte_state->needs_4k,
+            uvm_page_mask_weight(pages_to_map), uvm_page_mask_weight(&block_context->scratch_page_mask));
 
     status = block_alloc_ptes_new_state(va_block, gpu, new_pte_state, out_tracker);
     if (status != NV_OK)

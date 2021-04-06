@@ -1,1 +1,0 @@
-#define NV_DRM_DISPLAY_MODE_HAS_VREFRESH types
