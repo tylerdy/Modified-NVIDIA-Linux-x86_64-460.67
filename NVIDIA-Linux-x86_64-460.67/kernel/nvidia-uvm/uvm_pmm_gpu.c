@@ -296,6 +296,7 @@ static NV_STATUS alloc_chunk(uvm_pmm_gpu_t *pmm,
                              uvm_pmm_gpu_memory_type_t type,
                              uvm_chunk_size_t chunk_size,
                              uvm_pmm_alloc_flags_t flags,
+                             NvU32 tgid,
                              uvm_gpu_chunk_t **chunk);
 static NV_STATUS alloc_root_chunk(uvm_pmm_gpu_t *pmm,
                                   uvm_pmm_gpu_memory_type_t type,
@@ -313,6 +314,17 @@ static struct list_head *find_free_list(uvm_pmm_gpu_t *pmm,
 static bool check_chunk(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t *chunk);
 static struct list_head *find_free_list_chunk(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t *chunk);
 static void chunk_free_locked(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t *chunk);
+
+static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm);
+static void free_reserved_contig_memory(uvm_pmm_gpu_t *pmm);
+static NV_STATUS try_alloc_chunk_from_contig(uvm_pmm_gpu_t *pmm,
+                      uvm_pmm_gpu_memory_type_t type,
+                      uvm_chunk_size_t chunk_size,
+                      uvm_pmm_alloc_flags_t flags,
+                      NvU32 tgid,
+                      uvm_gpu_chunk_t **out_chunk);
+static NV_STATUS try_free_chunk_from_contig(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t *chunk);
+static bool is_contig_chunk(uvm_gpu_chunk_t *chunk);
 
 static size_t root_chunk_index(uvm_pmm_gpu_t *pmm, uvm_gpu_root_chunk_t *root_chunk)
 {
@@ -2566,6 +2578,7 @@ static void free_chunk(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t *chunk)
 {
     bool try_free = true;
     const bool is_root = chunk_is_root_chunk(chunk);
+    NV_STATUS status;
     const uvm_pmm_gpu_memory_type_t type = chunk->type;
 
     UVM_ASSERT(chunk->state == UVM_PMM_GPU_CHUNK_STATE_ALLOCATED ||
@@ -3210,14 +3223,12 @@ NvU32 uvm_pmm_gpu_phys_to_virt(uvm_pmm_gpu_t *pmm, NvU64 phys_addr, NvU64 region
 
 static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
 {
-    int i;
     uvm_gpu_contig_range_t *range;
     uvm_gpu_chunk_t *chunk;
     NvU64 last_address = -1;
     NvU64 allocated;
-    size_t chunk_size = gpu->colored_allocation_chunk_size; // change to page size 2MB i think
-    size_t color;
-    size_t resv_mem;
+    size_t chunk_size = UVM_PMM_CONTIG_CHUNK_SIZE;
+    size_t resv_mem = UVM_PMM_CONTIG_REGION_SIZE;
     NV_STATUS status = NV_OK;
    
     range = uvm_kvmalloc(sizeof(uvm_gpu_contig_range_t));
@@ -3230,9 +3241,7 @@ static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
     range->start_phys_addr = range->end_phys_addr = 0;
     range->total_num_chunks = 0;
     range->left_num_chunks = 0;
-    range->parent = NULL;
 
-    resv_mem = TBD_AMOUNT;
     
     // Reserve chunks from the GPU
     for (allocated = 0; allocated < resv_mem;
@@ -3270,15 +3279,13 @@ done:
 
 static void free_reserved_contig_memory(uvm_pmm_gpu_t *pmm)
 {
-    int i;
     uvm_gpu_contig_range_t *range;
     uvm_gpu_chunk_t *chunk;
-    struct list_head *nr, *tr;
     struct list_head *nc, *tc;
 
     // Release all chunks
         
-    range = pmm->contig_range;
+    range = &pmm->contig_range;
 
     list_for_each_safe(nc, tc, &range->free_chunks) {
         chunk = list_entry(nc, uvm_gpu_chunk_t, list);
@@ -3291,23 +3298,21 @@ static void free_reserved_contig_memory(uvm_pmm_gpu_t *pmm)
     }
 
     UVM_ASSERT(range->left_num_chunks == 0);
-    list_del(&range->list);
     uvm_kvfree(range);
 
 }
 
-// Allocates reserved colored memory for a process
+// Assigns
 static NV_STATUS allocate_process_contig_memory_locked(uvm_pmm_gpu_t *pmm, NvU64 *start_phys_addr)
 {
     uvm_gpu_contig_range_t *range;
-    NvU64 num_chunks = memSize / chunk_size;
 
-    range = pmm->contig_range;
+    range = &pmm->contig_range;
     
     // TODO: Can be optimized
-    if (range->assigned_range_tgid == UVM_PMM_INVALID_TGID) {
+    if (pmm->assigned_range_tgid == UVM_PMM_INVALID_TGID) {
         pid_t current_pid = task_tgid_nr(current);
-        range->assigned_range_tgid = current_pid;
+        pmm->assigned_range_tgid = current_pid;
     } else {
         return NV_ERR_NO_MEMORY;
     }
@@ -3320,19 +3325,21 @@ static NV_STATUS allocate_process_contig_memory_locked(uvm_pmm_gpu_t *pmm, NvU64
 
 static void remove_process_contig_range_locked(uvm_pmm_gpu_t *pmm)
 {
+    uvm_gpu_contig_range_t *range;
+    range = &pmm->contig_range;
     UVM_ASSERT(range->total_num_chunks == range->left_num_chunks);
-    range->assigned_range_tgid = UVM_PMM_INVALID_TGID;
+    pmm->assigned_range_tgid = UVM_PMM_INVALID_TGID;
 
 }
 
-// Checks if the chunk can be colored (i.e. chunk matches property for coloring)
+// Checks if the chunk can be contig (i.e. chunk matches property for contig)
 static NvBool can_be_contig_chunk(uvm_pmm_gpu_t *pmm,
                                     uvm_pmm_gpu_memory_type_t chunk_type,
                                     uvm_chunk_size_t chunk_size)
 {
     // Currently only coloring user chunks
     return (chunk_type == UVM_PMM_GPU_MEMORY_TYPE_USER) && 
-            (chunk_size == pmm->gpu->colored_allocation_chunk_size); // TBD change to page size 2MB
+            (chunk_size == UVM_PMM_CONTIG_CHUNK_SIZE);
 }
 
 static NV_STATUS try_alloc_chunk_from_contig(uvm_pmm_gpu_t *pmm,
@@ -3354,7 +3361,7 @@ static NV_STATUS try_alloc_chunk_from_contig(uvm_pmm_gpu_t *pmm,
 
     uvm_spin_lock(&pmm->list_lock);
 
-    range = pmm->contig_range;
+    range = &pmm->contig_range;
     UVM_ASSERT(range);
 
     // Do we have chunks left?
@@ -3379,7 +3386,7 @@ static NV_STATUS try_alloc_chunk_from_contig(uvm_pmm_gpu_t *pmm,
 
 static bool is_contig_chunk(uvm_gpu_chunk_t *chunk)
 {
-    uvm_gpu_color_range_t *range = chunk->contig_range;
+    uvm_gpu_contig_range_t *range = chunk->contig_range;
     return !!(range);
 }
 
@@ -3417,7 +3424,7 @@ static NV_STATUS try_free_chunk_from_contig(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t 
 
     range->left_num_chunks++;
     if (range->left_num_chunks == range->total_num_chunks)
-        remove_process_contig_range_locked(pmm, range);
+        remove_process_contig_range_locked(pmm);
 
 
     uvm_spin_unlock(&pmm->list_lock);
@@ -3425,11 +3432,11 @@ static NV_STATUS try_free_chunk_from_contig(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t 
     return NV_OK;
 }
 
-NV_STATUS set_current_process_contig_info(uvm_pmm_gpu_t *pmm, NvU64 *start_phys_addr)
+NV_STATUS set_current_process_contig_info(uvm_pmm_gpu_t *pmm, NvU64 *start_phys_addr) {
+    NV_STATUS status;
     uvm_spin_lock(&pmm->list_lock);
 
-    status = allocate_process_color_memory_locked(pmm, new_node->color_range,
-                color, memSize, start_phys_addr);
+     status = allocate_process_contig_memory_locked(pmm, start_phys_addr);
 
     uvm_spin_unlock(&pmm->list_lock);
     return status;
@@ -3635,7 +3642,7 @@ NV_STATUS uvm_api_set_process_contig_info(UVM_SET_PROCESS_CONTIG_INFO_PARAMS *pa
             goto done;
         }
 
-        status = set_current_process_color_info(&gpu->pmm, &params->address);
+        status = set_current_process_contig_info(&gpu->pmm, &params->address);
         if (status != NV_OK)
             goto done;
     }
@@ -3900,6 +3907,7 @@ NV_STATUS uvm_test_pmm_alloc_free_root(UVM_TEST_PMM_ALLOC_FREE_ROOT_PARAMS *para
                                     1,
                                     UVM_CHUNK_SIZE_MAX,
                                     UVM_PMM_ALLOC_FLAGS_EVICT | UVM_PMM_ALLOC_FLAGS_DONT_BATCH,
+                                    UVM_PMM_INVALID_TGID,
                                     &chunk,
                                     &tracker);
 

@@ -993,6 +993,18 @@ typedef struct
 } UVM_PAGEABLE_MEM_ACCESS_ON_GPU_PARAMS;
 
 //
+// UvmSetProcessContigInfo
+//
+#define UVM_SET_PROCESS_CONTIG_INFO                                  UVM_IOCTL_BASE(2044)
+typedef struct
+{
+    NvProcessorUuid destinationUuid;                            // IN
+    NvU64           length;                                     // IN/OUT
+    NvU64           address;                                    // OUT
+    NV_STATUS       rmStatus;                                   // OUT
+} UVM_SET_PROCESS_CONTIG_INFO_PARAMS;
+
+//
 // UvmPopulatePageable
 //
 #define UVM_POPULATE_PAGEABLE                                         UVM_IOCTL_BASE(71)

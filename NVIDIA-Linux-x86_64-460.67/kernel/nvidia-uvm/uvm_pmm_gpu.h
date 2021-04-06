@@ -63,6 +63,9 @@
 // '0' Pid is used by init process only
 #define UVM_PMM_INVALID_TGID    0
 
+#define UVM_PMM_CONTIG_CHUNK_SIZE    UVM_PAGE_SIZE_2M
+#define UVM_PMM_CONTIG_REGION_SIZE    2097152
+
 typedef enum
 {
     UVM_CHUNK_SIZE_1       =           1ULL,
@@ -269,6 +272,9 @@ struct uvm_gpu_chunk_struct
 
     // Array describing suballocations
     uvm_pmm_gpu_chunk_suballoc_t *suballoc;
+
+    // Range of contig chunks of same process to which this chunk
+    uvm_gpu_contig_range_t *contig_range;
 };
 
 typedef struct uvm_gpu_root_chunk_struct
@@ -439,6 +445,7 @@ NV_STATUS uvm_pmm_gpu_alloc(uvm_pmm_gpu_t *pmm,
                             uvm_chunk_size_t chunk_size,
                             uvm_pmm_gpu_memory_type_t mem_type,
                             uvm_pmm_alloc_flags_t flags,
+                            NvU32 tgid,
                             uvm_gpu_chunk_t **chunks,
                             uvm_tracker_t *out_tracker);
 
