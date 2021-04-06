@@ -1789,12 +1789,13 @@ void uvm_mmu_init_gpu_chunk_sizes(uvm_parent_gpu_t *parent_gpu)
     // TODO: Only use color page size when need to allocate colored page
     uvm_chunk_sizes_mask_t sizes;
 
-    if (!uvm_gpu_supports_coloring(parent_gpu)) {
-        sizes = page_sizes_for_big_page_size(parent_gpu, UVM_PAGE_SIZE_64K)  |
-                                   page_sizes_for_big_page_size(parent_gpu, UVM_PAGE_SIZE_128K) |
-                                   PAGE_SIZE;
-    } else {
-        sizes = parent_gpu->colored_chunk_size;
+     sizes = page_sizes_for_big_page_size(parent_gpu, UVM_PAGE_SIZE_64K)  |
+                                page_sizes_for_big_page_size(parent_gpu, UVM_PAGE_SIZE_128K) |
+                                PAGE_SIZE;
+
+    // If coloring is supported, force the maximum page size to be chunk size
+    if (uvm_gpu_supports_coloring(parent_gpu)) {
+        sizes &= (parent_gpu->colored_chunk_size << 1) - 1;
     }
 
     // Although we may have to map PTEs smaller than PAGE_SIZE, user (managed)
