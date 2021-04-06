@@ -21,6 +21,7 @@
 
 *******************************************************************************/
 
+#include "nv_uvm_types.h"
 #include "uvm_hal.h"
 #include "uvm_gpu.h"
 #include "uvm_mem.h"
@@ -90,8 +91,15 @@ void uvm_hal_pascal_arch_init_properties(uvm_parent_gpu_t *parent_gpu)
     parent_gpu->fault_cancel_va_supported = false;
 
 #if defined(UVM_MEM_COLORING)
+
+#if defined(UVM_TEST_MEM_COLORING)
     parent_gpu->num_mem_colors = 1;
-    parent_gpu->colored_chunk_size = PAGE_SIZE;
+    parent_gpu->colored_chunk_size = UVM_PAGE_SIZE_2M;
+#else
+    parent_gpu->num_mem_colors = 2;
+    parent_gpu->colored_chunk_size = UVM_PAGE_SIZE_4K;
+#endif
+
 #else
     parent_gpu->num_mem_colors = 0;
 #endif
