@@ -978,7 +978,7 @@ struct uvm_parent_gpu_struct
     // This is set to 0 to indicate GPU doesn't support coloring yet.
     NvU32 num_mem_colors;
      // Only valid if num_mem_colors != 0
-    NvU32 colored_chunk_size;
+    NvU64 colored_chunk_size;
 
     // Structure to hold nvswitch specific information. In an nvswitch
     // environment, rather than using the peer-id field of the PTE (which can
