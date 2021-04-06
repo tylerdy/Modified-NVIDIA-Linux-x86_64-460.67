@@ -3365,6 +3365,26 @@ void uvm_pmm_gpu_deinit(uvm_pmm_gpu_t *pmm)
     pmm->gpu = NULL;
 }
 
+
+NV_STATUS uvm_api_get_device_color_info(UVM_GET_DEVICE_COLOR_INFO_PARAMS *params, struct file *filp)
+{
+    NV_STATUS status = NV_OK;
+    return status;
+}
+
+
+NV_STATUS uvm_api_get_process_color_info(UVM_GET_PROCESS_COLOR_INFO_PARAMS *params, struct file *filp)
+{
+    NV_STATUS status = NV_OK;
+    return status;
+}
+
+NV_STATUS uvm_api_set_process_color_info(UVM_SET_PROCESS_COLOR_INFO_PARAMS *params, struct file *filp)
+{
+    NV_STATUS status = NV_OK;
+    return status;
+}
+
 NV_STATUS uvm_test_evict_chunk(UVM_TEST_EVICT_CHUNK_PARAMS *params, struct file *filp)
 {
     NV_STATUS status = NV_OK;

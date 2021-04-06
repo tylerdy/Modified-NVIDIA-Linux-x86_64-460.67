@@ -1,0 +1,1 @@
+cmd_/playpen/leochanj/chkdr/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/nvidia/nv-kernel.o := ln -sf /playpen/leochanj/chkdr/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/nvidia/nv-kernel.o_binary /playpen/leochanj/chkdr/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/nvidia/nv-kernel.o

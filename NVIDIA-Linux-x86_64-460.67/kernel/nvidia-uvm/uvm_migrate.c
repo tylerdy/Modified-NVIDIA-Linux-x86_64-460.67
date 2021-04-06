@@ -670,6 +670,41 @@ static NV_STATUS uvm_migrate(uvm_va_space_t *va_space,
     return status;
 }
 
+static NV_STATUS uvm_memcpy_colored(uvm_va_space_t *va_space,
+                                    NvU64 srcBase,
+                                    NvU64 destBase,
+                                    NvU64 length,
+                                    NvU32 color,
+                                    uvm_processor_id_t src_id,
+                                    uvm_processor_id_t dest_id,
+                                    uvm_tracker_t *out_tracker)
+{
+    NV_STATUS status = NV_OK;
+    return status;
+}
+
+NV_STATUS uvm_api_memcpy_colored(UVM_MEMCPY_COLORED_PARAMS *params, struct file *filp)
+{
+    return NV_OK;
+}
+
+static NV_STATUS  uvm_memset_colored  (uvm_va_space_t *va_space,
+                                    NvU64 base,
+                                    NvU64 length,
+                                    NvU8 value,
+                                    NvU32 color,
+                                    uvm_processor_id_t id,
+                                    uvm_tracker_t *out_tracker)
+{
+    NV_STATUS status = NV_OK;
+    return status;
+}
+
+NV_STATUS uvm_api_memset_colored(UVM_MEMSET_COLORED_PARAMS *params, struct file *filp)
+{
+    return NV_OK;
+}
+
 static NV_STATUS uvm_push_async_user_sem_release(uvm_gpu_t *release_from_gpu,
                                                  uvm_va_range_semaphore_pool_t *sema_va_range,
                                                  NvU64 sema_user_addr,
