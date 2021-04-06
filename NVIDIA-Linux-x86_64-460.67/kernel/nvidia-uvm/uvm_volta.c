@@ -81,6 +81,8 @@ void uvm_hal_volta_arch_init_properties(uvm_parent_gpu_t *parent_gpu)
 
     parent_gpu->fault_cancel_va_supported = true;
 
+    parent_gpu->num_mem_colors = 0;
+
     parent_gpu->scoped_atomics_supported = true;
 
     parent_gpu->has_pulse_based_interrupts = false;
