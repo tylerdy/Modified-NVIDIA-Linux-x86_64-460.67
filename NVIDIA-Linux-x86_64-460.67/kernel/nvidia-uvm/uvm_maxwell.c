@@ -60,6 +60,8 @@ void uvm_hal_maxwell_arch_init_properties(uvm_parent_gpu_t *parent_gpu)
 
     parent_gpu->fault_cancel_va_supported = false;
 
+    parent_gpu->num_mem_colors = 0;
+
     parent_gpu->scoped_atomics_supported = false;
 
     parent_gpu->has_pulse_based_interrupts = false;

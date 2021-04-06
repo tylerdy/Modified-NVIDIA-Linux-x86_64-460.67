@@ -975,6 +975,11 @@ struct uvm_parent_gpu_struct
     uvm_hmm_gpu_t hmm_gpu;
 #endif
 
+    // This is set to 0 to indicate GPU doesn't support coloring yet.
+    NvU32 num_mem_colors;
+     // Only valid if num_mem_colors != 0
+    NvU32 colored_chunk_size;
+
     // Structure to hold nvswitch specific information. In an nvswitch
     // environment, rather than using the peer-id field of the PTE (which can
     // only address 8 gpus), all gpus are assigned a 47-bit physical address
@@ -1270,8 +1275,19 @@ static bool uvm_gpu_is_gk110_plus(uvm_gpu_t *gpu)
 // The GPU must be initialized before calling this function.
 bool uvm_gpu_can_address(uvm_gpu_t *gpu, NvU64 addr);
 
+static bool uvm_gpu_supports_coloring(uvm_parent_gpu_t *parent_gpu)
+{
+    if (parent_gpu->num_mem_colors == 0)
+        return false;
+    return true;
+}
+
 static bool uvm_gpu_supports_eviction(uvm_gpu_t *gpu)
 {
+    // XXX: Restricting eviction for now as it is not working correctly.
+    if (uvm_gpu_supports_coloring(gpu->parent))
+        return false;
+    
     // Eviction is supported only if the GPU supports replayable faults
     return gpu->parent->replayable_faults_supported;
 }

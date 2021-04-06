@@ -1786,9 +1786,16 @@ uvm_gpu_address_t uvm_mmu_gpu_address_for_big_page_physical(uvm_gpu_address_t ph
 
 void uvm_mmu_init_gpu_chunk_sizes(uvm_parent_gpu_t *parent_gpu)
 {
-    uvm_chunk_sizes_mask_t sizes = page_sizes_for_big_page_size(parent_gpu, UVM_PAGE_SIZE_64K)  |
+    // TODO: Only use color page size when need to allocate colored page
+    uvm_chunk_sizes_mask_t sizes;
+
+    if (!uvm_gpu_supports_coloring(parent_gpu)) {
+        sizes = page_sizes_for_big_page_size(parent_gpu, UVM_PAGE_SIZE_64K)  |
                                    page_sizes_for_big_page_size(parent_gpu, UVM_PAGE_SIZE_128K) |
                                    PAGE_SIZE;
+    } else {
+        sizes = parent_gpu->colored_chunk_size;
+    }
 
     // Although we may have to map PTEs smaller than PAGE_SIZE, user (managed)
     // memory is never allocated with granularity smaller than PAGE_SIZE. Force

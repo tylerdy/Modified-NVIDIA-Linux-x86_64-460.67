@@ -261,10 +261,10 @@ nv-frontend.o: \
  include/linux/moduleparam.h include/linux/rbtree_latch.h \
  include/linux/error-injection.h include/asm-generic/error-injection.h \
  arch/x86/include/asm/module.h include/asm-generic/module.h \
- arch/x86/include/asm/orc_types.h include/linux/ctype.h \
- include/linux/console.h include/linux/cpufreq.h include/linux/clk.h \
- include/linux/pm_qos.h include/linux/device.h include/linux/klist.h \
- include/linux/pm.h include/linux/ratelimit.h \
+ arch/x86/include/asm/orc_types.h include/linux/hashtable.h \
+ include/linux/ctype.h include/linux/console.h include/linux/cpufreq.h \
+ include/linux/clk.h include/linux/pm_qos.h include/linux/device.h \
+ include/linux/klist.h include/linux/pm.h include/linux/ratelimit.h \
  arch/x86/include/asm/device.h include/linux/pm_wakeup.h \
  include/linux/slab.h include/linux/kasan.h include/linux/poll.h \
  include/uapi/linux/poll.h arch/x86/include/generated/uapi/asm/poll.h \

@@ -247,6 +247,9 @@ static uvm_hal_class_ops_t arch_table[] =
             .mmu_mode_hal = uvm_hal_mmu_mode_kepler,
             .enable_prefetch_faults = uvm_hal_kepler_mmu_enable_prefetch_faults_unsupported,
             .disable_prefetch_faults = uvm_hal_kepler_mmu_disable_prefetch_faults_unsupported,
+            .phys_addr_to_color = uvm_hal_kepler_mmu_phys_addr_to_color_unsupported,
+            .phys_addr_to_base_color_addr = uvm_hal_kepler_mmu_phys_addr_to_base_color_addr_unsupported,
+            .phys_addr_to_color_idx = uvm_hal_kepler_mmu_phys_addr_to_color_idx_unsupported,
             .mmu_engine_id_to_type = uvm_hal_kepler_mmu_engine_id_to_type_unsupported,
             .mmu_client_id_to_utlb_id = uvm_hal_kepler_mmu_client_id_to_utlb_id_unsupported,
         }
@@ -281,6 +284,9 @@ static uvm_hal_class_ops_t arch_table[] =
             .mmu_mode_hal = uvm_hal_mmu_mode_pascal,
             .enable_prefetch_faults = uvm_hal_pascal_mmu_enable_prefetch_faults,
             .disable_prefetch_faults = uvm_hal_pascal_mmu_disable_prefetch_faults,
+            .phys_addr_to_color = uvm_hal_pascal_mmu_phys_addr_to_color,
+            .phys_addr_to_base_color_addr = uvm_hal_pascal_mmu_phys_addr_to_base_color_addr,
+            .phys_addr_to_color_idx = uvm_hal_pascal_mmu_phys_addr_to_color_idx,
             .mmu_client_id_to_utlb_id = uvm_hal_pascal_mmu_client_id_to_utlb_id,
         }
     },

@@ -29,6 +29,11 @@
 #define NV_MAX_DEVICES 32
 
 /*
+ * This is the maximum number of memory colors supported in single GPU.
+ */
+#define NV_MAX_MEM_COLORS     1
+
+/*
  * This is the maximum number of subdevices within a single device.
  */
 #define NV_MAX_SUBDEVICES 8
