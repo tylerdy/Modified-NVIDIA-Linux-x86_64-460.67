@@ -3270,6 +3270,8 @@ static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
         last_address = chunk->address;
     }
 
+    pmm->contig_range = range;
+
 done:
     if (status != NV_OK)
         free_reserved_contig_memory(pmm);
@@ -3284,21 +3286,32 @@ static void free_reserved_contig_memory(uvm_pmm_gpu_t *pmm)
     struct list_head *nc, *tc;
 
     // Release all chunks
-        
-    range = &pmm->contig_range;
-
+    range = pmm->contig_range;
+    printk("after pmm\n");
+    if(!range) printk("range null\n");
+    if(!&range->free_chunks) printk("free chunks null\n");
     list_for_each_safe(nc, tc, &range->free_chunks) {
+        printk("list for each safe\n");
         chunk = list_entry(nc, uvm_gpu_chunk_t, list);
+        printk("chunk\n");
+        if(!chunk->contig_range) printk("contig range null\n");
         list_del_init(&chunk->list);
+        printk("list del init\n");
         range->left_num_chunks--;
 //                pr_info("Freeing Chunk:0x%llx, Size:0x%x, Left:0x%llx, Total:0x%llx, Range:%p, ColorRange:%p\n", chunk->address,
 //                        uvm_gpu_chunk_get_size(chunk), range->total_num_chunks,
 //                        range->left_num_chunks, range, chunk->color_range);
+        printk("--\n");
+        chunk->contig_range = NULL;
+        printk("contig range nullt\n");
         free_chunk(pmm, chunk);
+        printk("free chunk\n");
     }
-
+    printk("done list\n");
     UVM_ASSERT(range->left_num_chunks == 0);
+    printk("asserted\n");
     uvm_kvfree(range);
+    printk("freed\n");
 
 }
 
@@ -3307,7 +3320,7 @@ static NV_STATUS allocate_process_contig_memory_locked(uvm_pmm_gpu_t *pmm, NvU64
 {
     uvm_gpu_contig_range_t *range;
 
-    range = &pmm->contig_range;
+    range = pmm->contig_range;
     
     // TODO: Can be optimized
     if (pmm->assigned_range_tgid == UVM_PMM_INVALID_TGID) {
@@ -3326,7 +3339,7 @@ static NV_STATUS allocate_process_contig_memory_locked(uvm_pmm_gpu_t *pmm, NvU64
 static void remove_process_contig_range_locked(uvm_pmm_gpu_t *pmm)
 {
     uvm_gpu_contig_range_t *range;
-    range = &pmm->contig_range;
+    range = pmm->contig_range;
     UVM_ASSERT(range->total_num_chunks == range->left_num_chunks);
     pmm->assigned_range_tgid = UVM_PMM_INVALID_TGID;
 
@@ -3361,7 +3374,7 @@ static NV_STATUS try_alloc_chunk_from_contig(uvm_pmm_gpu_t *pmm,
 
     uvm_spin_lock(&pmm->list_lock);
 
-    range = &pmm->contig_range;
+    range = pmm->contig_range;
     UVM_ASSERT(range);
 
     // Do we have chunks left?

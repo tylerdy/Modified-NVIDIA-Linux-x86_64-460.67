@@ -391,7 +391,7 @@ typedef struct
 
     bool pma_address_cache_initialized;
 
-    uvm_gpu_contig_range_t contig_range;
+    uvm_gpu_contig_range_t *contig_range;
 
     NvU32 assigned_range_tgid;
 } uvm_pmm_gpu_t;
