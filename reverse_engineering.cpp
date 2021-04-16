@@ -18,7 +18,7 @@
 #include <stdarg.h>
 
 #include <algorithm>
-#include <vector>
+
 
 #include <reverse_engineering.hpp>
 
@@ -450,8 +450,10 @@ void *find_next_cache_partition_pair(void *phy_addr1, void *phy_start_addr,
     phy_addr2 = (void *)((uintptr_t)ret_addr - data->virt_start + data->phy_start);
     dprintf("Found valid pair: (%p, %p)\n", phy_addr1, phy_addr2);
 
-    if ((uintptr_t)phy_addr2 > (uintptr_t)phy_end_addr)
+    if ((uintptr_t)phy_addr2 > (uintptr_t)phy_end_addr) {
+        dprintf("Even though found valid %lu, it was greater than end address %lu\n", (uintptr_t)phy_addr2, (uintptr_t)phy_end_addr);        
         return NULL;
+    }
 
     return phy_addr2;
 }
@@ -721,8 +723,12 @@ int main(int argc, char *argv[])
     }
 
     req_allocated = (1ULL << (max_bit + 1)) - 1;
+    if(CONTIG_SIZE<req_allocated) {
+        fprintf(stderr, "Reserving less than requested - %zu\n",CONTIG_SIZE);
+        //return -1;
+    }
 
-    ret = device_init();
+    ret = device_init(true);
     if (ret < 0) {
         fprintf(stderr, "Init failed\n");
         return -1;
@@ -734,12 +740,12 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    printf("Finding DRAM Banks hash function\n");
+    /*printf("Finding DRAM Banks hash function\n");
     dram_hctx = run_dram_exp(virt_start, phy_start, CONTIG_SIZE, min_bit, max_bit);
     if (dram_hctx == NULL) {
         fprintf(stderr, "Couldn't find DRAM Banks hash function\n");
         return -1;
-    }
+    }*/
 
     printf("Finding Cacheline hash function\n");
     cache_hctx = run_cache_exp(virt_start, phy_start, CONTIG_SIZE, min_bit, max_bit);

@@ -1,4 +1,6 @@
-
+#ifndef __REVERSE_ENGINEERING_HPP__
+#define __REVERSE_ENGINEERING_HPP__
+#include <vector>
 /* TODO: Add support for CPU also if needed */
 
 #ifndef NDEBUG
@@ -83,3 +85,4 @@ inline int ilog2(unsigned long long x)
     return sizeof(unsigned long long ) * 8 - __builtin_clzll(x) - 1;
 }
 
+#endif /* __REVERSE_ENGINEERING_HPP__ */

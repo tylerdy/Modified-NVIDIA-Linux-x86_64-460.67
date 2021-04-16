@@ -577,8 +577,11 @@ hash_context_t *hash_init(int min_bit, int max_bit,
 
     /* Do we have sufficient address space to find all the bits? */
     length = (uintptr_t)end_addr - (uintptr_t)start_addr;
-    if (length < (1ULL << max_bit))
+    printf("required size is %llu\n", (1ULL << max_bit));
+    if (length < (1ULL << max_bit)) {
+        printf("only reserved %zu\n", length);
         return NULL;
+    }
 
     ctx = new hash_context_t();
     

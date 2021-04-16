@@ -10,9 +10,9 @@ project(fractional_gpu VERSION 1.0.1 LANGUAGES CXX CUDA DESCRIPTION "Split GPU i
 
 
 # Configure the build type
-#set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Debug)
 #set(CMAKE_BUILD_TYPE RelWithDebInfo)
-set(CMAKE_BUILD_TYPE Release)
+#set(CMAKE_BUILD_TYPE Release)
 
 find_package(CUDA  REQUIRED)
 include_directories("${CUDA_INCLUDE_DIRS}")
@@ -57,13 +57,15 @@ set_property(TARGET fractional_gpu PROPERTY VERSION ${PROJECT_VERSION})
 target_compile_features(fractional_gpu PUBLIC cxx_std_11)
 target_link_libraries(fractional_gpu cuda cudart nvidia-ml)
 
+add_persistent_target(gpu_reverse_engineering .
+        gpu.cu
+        reverse_engineering.cpp
+        hash_function.cpp
+        )
+
 add_persistent_target(test .
         gpu.cu
         test.cpp
         )
 
-#add_persistent_target(gpu_reverse_engineering .
-#        gpu.cu
-#        reverse_engineering.cpp
-#        hash_function.cpp
-#        )
+

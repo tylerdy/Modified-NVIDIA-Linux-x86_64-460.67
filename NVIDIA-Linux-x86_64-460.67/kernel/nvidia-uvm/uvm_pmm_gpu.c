@@ -3221,6 +3221,16 @@ NvU32 uvm_pmm_gpu_phys_to_virt(uvm_pmm_gpu_t *pmm, NvU64 phys_addr, NvU64 region
     return num_mappings;
 }
 
+/*static size_t max_reserve_contig_memory_size(uvm_gpu_t *gpu)
+{
+    size_t s = ((UVM_MAX_CONTIG_MEM_RESV_PERCENTAGE) * 
+        gpu->vidmem_max_allocatable_address) / 100;
+    Round down according to the chunk size 
+    s &= ~(gpu->colored_allocation_chunk_size - 1);
+    return s;
+}*/
+
+
 static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
 {
     uvm_gpu_contig_range_t *range;
@@ -3228,7 +3238,7 @@ static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
     NvU64 last_address = -1;
     NvU64 allocated;
     size_t chunk_size = UVM_PMM_CONTIG_CHUNK_SIZE;
-    size_t resv_mem = UVM_PMM_CONTIG_REGION_SIZE;
+    size_t resv_mem;
     NV_STATUS status = NV_OK;
    
     range = uvm_kvmalloc(sizeof(uvm_gpu_contig_range_t));
@@ -3241,6 +3251,10 @@ static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
     range->start_phys_addr = range->end_phys_addr = 0;
     range->total_num_chunks = 0;
     range->left_num_chunks = 0;
+
+    resv_mem = UVM_PMM_CONTIG_REGION_SIZE;
+    //resv_mem = min(max_reserve_contig_memory_size(gpu), UVM_PMM_CONTIG_REGION_SIZE);
+    printk("Reserving %zu bytes.\n", resv_mem);
 
     
     // Reserve chunks from the GPU
@@ -3287,31 +3301,18 @@ static void free_reserved_contig_memory(uvm_pmm_gpu_t *pmm)
 
     // Release all chunks
     range = pmm->contig_range;
-    printk("after pmm\n");
-    if(!range) printk("range null\n");
-    if(!&range->free_chunks) printk("free chunks null\n");
     list_for_each_safe(nc, tc, &range->free_chunks) {
-        printk("list for each safe\n");
         chunk = list_entry(nc, uvm_gpu_chunk_t, list);
-        printk("chunk\n");
-        if(!chunk->contig_range) printk("contig range null\n");
         list_del_init(&chunk->list);
-        printk("list del init\n");
         range->left_num_chunks--;
 //                pr_info("Freeing Chunk:0x%llx, Size:0x%x, Left:0x%llx, Total:0x%llx, Range:%p, ColorRange:%p\n", chunk->address,
 //                        uvm_gpu_chunk_get_size(chunk), range->total_num_chunks,
 //                        range->left_num_chunks, range, chunk->color_range);
-        printk("--\n");
         chunk->contig_range = NULL;
-        printk("contig range nullt\n");
         free_chunk(pmm, chunk);
-        printk("free chunk\n");
     }
-    printk("done list\n");
     UVM_ASSERT(range->left_num_chunks == 0);
-    printk("asserted\n");
     uvm_kvfree(range);
-    printk("freed\n");
 
 }
 
@@ -3332,7 +3333,7 @@ static NV_STATUS allocate_process_contig_memory_locked(uvm_pmm_gpu_t *pmm, NvU64
 
     if (start_phys_addr)
         *start_phys_addr = range->start_phys_addr;
-
+    printk("allocating to proc at %llx\n", *start_phys_addr);
     return NV_OK;
 }
 
@@ -3394,6 +3395,8 @@ static NV_STATUS try_alloc_chunk_from_contig(uvm_pmm_gpu_t *pmm,
     chunk->contig_range = range;
     *out_chunk = chunk;
 
+    printk("Allocated chunk from contig range at %llx\n",chunk->address);
+
     return NV_OK;
 }
 
@@ -3450,7 +3453,7 @@ NV_STATUS set_current_process_contig_info(uvm_pmm_gpu_t *pmm, NvU64 *start_phys_
     uvm_spin_lock(&pmm->list_lock);
 
      status = allocate_process_contig_memory_locked(pmm, start_phys_addr);
-
+    printk("in setcurrentprocesscontiginfo addr is %llx\n", *start_phys_addr);
     uvm_spin_unlock(&pmm->list_lock);
     return status;
 }
@@ -3655,6 +3658,7 @@ NV_STATUS uvm_api_set_process_contig_info(UVM_SET_PROCESS_CONTIG_INFO_PARAMS *pa
         }
 
         status = set_current_process_contig_info(&gpu->pmm, &params->address);
+        printk("uvmapisetproc has addr of %llx\n", params->address);
         if (status != NV_OK)
             goto done;
     }

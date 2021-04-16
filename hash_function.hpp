@@ -1,4 +1,5 @@
-
+#ifndef __HASH_FUNCTION_HPP__
+#define __HASH_FUNCTION_HPP__
 /* Forward declarations for external use */
 struct hash_context;
 typedef struct hash_context hash_context_t;
@@ -32,3 +33,4 @@ hash_context_t *hash_get_common(void);
 
 void hash_del(hash_context *ctx);
 
+#endif /* __HASH_FUNCTION_HPP__ */
