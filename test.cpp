@@ -16,9 +16,4 @@ int main(int argc, char *argv[])
   virt_start = device_allocate_contigous(CONTIG_SIZE, &phy_start);
 
   fprintf(stdout, "virt %p phys %p\n", virt_start, phy_start);
-
-  uintptr_t start = (uintptr_t) virt_start;
-  uintptr_t next = start + CONTIG_SIZE/2;
-
-  fprintf(stdout, "first chunk addr val %d, second chunk addr val %d\n",*(int*)start, *(int*)next);
 }

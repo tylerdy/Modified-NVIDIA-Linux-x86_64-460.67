@@ -3115,6 +3115,9 @@ typedef struct
 // - NV_OK: allocated physical chunks may have been found. Check num_mappings
 static NV_STATUS get_chunk_mappings_in_range(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t *chunk, void *data)
 {
+    if(!chunk) printk("no chunk\n");
+    if(!pmm) printk("no pmm\n");
+    printk("called with chunk %llu\n", chunk->va_block->start);
     get_chunk_mappings_data_t *get_chunk_mappings_data = (get_chunk_mappings_data_t *)data;
     NvU64 chunk_end = chunk->address + uvm_gpu_chunk_get_size(chunk) - 1;
 
@@ -3286,6 +3289,8 @@ static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
 
     pmm->contig_range = range;
 
+    if(list_empty(&range->free_chunks)) printk("3list empty\n");
+
 done:
     if (status != NV_OK)
         free_reserved_contig_memory(pmm);
@@ -3298,7 +3303,7 @@ static void free_reserved_contig_memory(uvm_pmm_gpu_t *pmm)
     uvm_gpu_contig_range_t *range;
     uvm_gpu_chunk_t *chunk;
     struct list_head *nc, *tc;
-
+    printk("free reserved contig memory\n");
     // Release all chunks
     range = pmm->contig_range;
     list_for_each_safe(nc, tc, &range->free_chunks) {
@@ -3334,6 +3339,8 @@ static NV_STATUS allocate_process_contig_memory_locked(uvm_pmm_gpu_t *pmm, NvU64
     if (start_phys_addr)
         *start_phys_addr = range->start_phys_addr;
     printk("allocating to proc at %llx\n", *start_phys_addr);
+
+    if(list_empty(&range->free_chunks)) printk("2list empty\n");
     return NV_OK;
 }
 
@@ -3448,13 +3455,52 @@ static NV_STATUS try_free_chunk_from_contig(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t 
     return NV_OK;
 }
 
+NV_STATUS get_current_process_contig_info(uvm_pmm_gpu_t *pmm, NvU64 *start_virt_addr, NvU64 *start_phys_addr) {
+    /*NV_STATUS status;
+    uvm_gpu_contig_range_t *contig_range;
+    uvm_reverse_map_t *out_mappings;
+    uvm_va_block_t *va_block;
+    NvU64 va_block_start;
+    NvU64 region_size;
+    int num_mappings;
+    int i;
+
+    contig_range = pmm->contig_range;
+
+    *start_phys_addr = contig_range->start_phys_addr;
+
+    region_size = contig_range->end_phys_addr - *start_phys_addr;
+
+    printk("args: %llu %llu\n",*start_phys_addr, region_size);
+
+    num_mappings = uvm_pmm_gpu_phys_to_virt(pmm,*start_phys_addr, region_size, out_mappings);
+
+    for(i=0;i<num_mappings; i++) {
+        uvm_reverse_map_t rm = out_mappings[i];
+        printk("mapping from %llu to %llu\n", rm.va_block->start, rm.va_block->end);
+    }
+
+    va_block = out_mappings->va_block;
+
+    va_block_start = va_block->start;
+
+    
+*/
+    return NV_OK;
+}
+
 NV_STATUS set_current_process_contig_info(uvm_pmm_gpu_t *pmm, NvU64 *start_phys_addr) {
     NV_STATUS status;
+    uvm_gpu_contig_range_t *contig_range;
+
     uvm_spin_lock(&pmm->list_lock);
 
      status = allocate_process_contig_memory_locked(pmm, start_phys_addr);
     printk("in setcurrentprocesscontiginfo addr is %llx\n", *start_phys_addr);
     uvm_spin_unlock(&pmm->list_lock);
+    
+    contig_range = pmm->contig_range;
+    if(list_empty(&contig_range->free_chunks)) printk("1list empty\n");
     return status;
 }
 
@@ -3635,6 +3681,37 @@ void uvm_pmm_gpu_deinit(uvm_pmm_gpu_t *pmm)
     deinit_caches(pmm);
 
     pmm->gpu = NULL;
+}
+
+NV_STATUS uvm_api_get_process_contig_info(UVM_GET_PROCESS_CONTIG_INFO_PARAMS *params, struct file *filp)
+{
+    NV_STATUS status = NV_OK;
+    uvm_va_space_t *va_space = uvm_va_space_get(filp);
+    uvm_gpu_t *gpu = NULL;
+
+    uvm_va_space_down_read(va_space);
+
+    // Bank coloring only supported on gpus
+    if (uvm_uuid_is_cpu(&params->destinationUuid)) {
+        status = NV_ERR_INVALID_DEVICE;
+        goto done;
+    }
+    else {
+        gpu = uvm_va_space_get_gpu_by_uuid_with_gpu_va_space(va_space, &params->destinationUuid);
+        if (!gpu) {
+            status = NV_ERR_INVALID_DEVICE;
+            goto done;
+        }
+
+        status = get_current_process_contig_info(&gpu->pmm, &params->virt_start,
+                                        &params->phys_start);
+        if (status != NV_OK)
+            goto done;
+    }
+
+done:
+    uvm_va_space_up_read(va_space);
+    return status;
 }
 
 NV_STATUS uvm_api_set_process_contig_info(UVM_SET_PROCESS_CONTIG_INFO_PARAMS *params, struct file *filp)

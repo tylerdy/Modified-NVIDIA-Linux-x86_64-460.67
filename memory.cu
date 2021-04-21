@@ -33,6 +33,7 @@
 
 /* Ioctl codes */
 #define IOCTL_SET_PROCESS_CONTIG_INFO    _IOC(0, 0, UVM_SET_PROCESS_CONTIG_INFO, 0)
+#define IOCTL_GET_PROCESS_CONTIG_INFO    _IOC(0, 0, UVM_GET_PROCESS_CONTIG_INFO, 0)
 
 /* UVM device fd */
 static int g_uvm_fd = -1;
@@ -295,6 +296,15 @@ if (!g_memory_ctx.allocator) {
   fprintf(stderr, "FGPU:Allocator Initialization Failed\n");
   return -EINVAL;
 }
+/*UVM_GET_PROCESS_CONTIG_INFO_PARAMS get_params;
+get_params.destinationUuid = params.destinationUuid;
+
+ret = ioctl(g_uvm_fd, IOCTL_GET_PROCESS_CONTIG_INFO, &get_params);
+if (ret < 0)
+  return ret;
+
+fprintf(stdout, "Get contig info returned virt %llu and phys %llu. Allocated address is %llu\n",get_params.virt_start, get_params.phys_start, g_memory_ctx.allocator);*/
+
 return 0;
 }
 

@@ -512,7 +512,7 @@ static hash_context_t *run_cache_exp(void *virt_start, void *phy_start, size_t a
     running_threshold = (avg * (100.0 + OUTLIER_CACHE_PERCENTAGE)) / 100.0;
 
     dprintf("Running threshold is: %f\n", running_threshold);
-
+    return NULL;
     phy_end = (void *)((uintptr_t)phy_start + allocated - device_allocation_overhead());
 
     data.running_threshold = running_threshold;
@@ -740,12 +740,12 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    /*printf("Finding DRAM Banks hash function\n");
+    printf("Finding DRAM Banks hash function\n");
     dram_hctx = run_dram_exp(virt_start, phy_start, CONTIG_SIZE, min_bit, max_bit);
     if (dram_hctx == NULL) {
         fprintf(stderr, "Couldn't find DRAM Banks hash function\n");
         return -1;
-    }*/
+    }
 
     printf("Finding Cacheline hash function\n");
     cache_hctx = run_cache_exp(virt_start, phy_start, CONTIG_SIZE, min_bit, max_bit);

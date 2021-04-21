@@ -993,6 +993,18 @@ typedef struct
 } UVM_PAGEABLE_MEM_ACCESS_ON_GPU_PARAMS;
 
 //
+// UvmGetProcessContigInfo
+//
+#define UVM_GET_PROCESS_CONTIG_INFO                                  UVM_IOCTL_BASE(2043)
+typedef struct
+{
+    NvProcessorUuid destinationUuid;                            // IN
+    NvU64           virt_start             NV_ALIGN_BYTES(8);   // OUT
+    NvU64           phys_start             NV_ALIGN_BYTES(8);   // OUT
+    NV_STATUS       rmStatus;                                   // OUT
+} UVM_GET_PROCESS_CONTIG_INFO_PARAMS;
+
+//
 // UvmSetProcessContigInfo
 //
 #define UVM_SET_PROCESS_CONTIG_INFO                                  UVM_IOCTL_BASE(2044)

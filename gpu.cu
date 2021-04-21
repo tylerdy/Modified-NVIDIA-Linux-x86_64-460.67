@@ -606,27 +606,29 @@ void cacheline_read_time(volatile uint64_t *base, volatile uint64_t *end_addr,
     volatile uint64_t *lastaddr;
     uint64_t count;
     uint64_t sum;
-    uint64_t start_ticks, tick;
+    uint64_t start_ticks, end_ticks, tick;
 
     for (sum = 0, count = 0; count < GPU_MAX_OUTER_LOOP + 1; count++) {
    
         /* Read first word */
         start_ticks = clock64();
-        curindex = *base;
-        sum += curindex;
-        tick = clock64() - start_ticks;
-        
+        end_ticks = clock64();
+        //curindex = *base;
+        //curindex = start_ticks;
+        //sum += curindex;
+        tick = end_ticks - start_ticks;
+
         /* First read might be cold miss */
         if (count != 0)
             ticks[count - 1] = tick;
 
         lastaddr = base;
         /* Read bunch of words */
-        for (int i = 0; i < count && ((uintptr_t)lastaddr < (uintptr_t)end_addr); i++) {
+        /*for (int i = 0; i < count && ((uintptr_t)lastaddr < (uintptr_t)end_addr); i++) {
             lastaddr = &base[curindex];
             curindex = *lastaddr;
             sum += curindex;
-        }
+        }*/
     }
 
     *psum = sum;
@@ -649,7 +651,6 @@ int device_cacheline_test_init(void *gpu_start_addr, size_t size)
 
     ct_last_start_addr = ct_start_addr;
     ct_start_count = 0;
-
     return 0;
 }
 

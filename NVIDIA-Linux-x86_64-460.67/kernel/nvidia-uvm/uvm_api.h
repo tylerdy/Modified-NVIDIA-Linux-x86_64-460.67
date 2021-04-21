@@ -254,5 +254,6 @@ NV_STATUS uvm_api_alloc_semaphore_pool(UVM_ALLOC_SEMAPHORE_POOL_PARAMS *params, 
 NV_STATUS uvm_api_populate_pageable(const UVM_POPULATE_PAGEABLE_PARAMS *params, struct file *filp);
 
 NV_STATUS uvm_api_set_process_contig_info(UVM_SET_PROCESS_CONTIG_INFO_PARAMS *params, struct file *filp);
+NV_STATUS uvm_api_get_process_contig_info(UVM_GET_PROCESS_CONTIG_INFO_PARAMS *params, struct file *filp);
 
 #endif // __UVM_API_H__
