@@ -253,14 +253,18 @@ if (g_memory_ctx.is_initialized) {
 }
 
 ret = get_device_UUID(device, &params.destinationUuid);
-if (ret < 0)
-  return ret;
+if (ret < 0) {
+    fprintf(stderr, "Failed to get device UUID\n");
+    return ret;
+}
 
 params.length = actual_length;
 
 ret = ioctl(g_uvm_fd, IOCTL_SET_PROCESS_CONTIG_INFO, &params);
-if (ret < 0)
-  return ret;
+if (ret < 0) {
+    fprintf(stderr, "Set process contig ioctl failed\n");
+    return ret;
+}
 
 if (params.rmStatus != NV_OK) {
   fprintf(stderr, "FGPU:Couldn't set process color property\n");

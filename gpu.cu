@@ -92,14 +92,19 @@ static void init_pointer_chase(uint64_t *array, size_t size, size_t offset)
 
 int device_init(bool init_reverse_engineer)
 {
-    cudaFree(0);
+    gpuErrAssert(cudaFree(0));
     int deviceCount = 0;
     int nDevices;
 
-    cudaGetDeviceCount(&nDevices);
+    gpuErrAssert(cudaGetDeviceCount(&nDevices));
+
+    if (nDevices != 1) {
+        fprintf(stderr, "Invalid number of devices (%d)\n", nDevices);
+        return -1;
+    }
     for (int i = 0; i < nDevices; i++) {
       cudaDeviceProp prop;
-      cudaGetDeviceProperties(&prop, i);
+      gpuErrAssert(cudaGetDeviceProperties(&prop, i));
       printf("Device Number: %d\n", i);
       printf("  Device name: %s\n", prop.name);
       printf("  Memory Clock Rate (KHz): %d\n",
@@ -109,6 +114,8 @@ int device_init(bool init_reverse_engineer)
       printf("  Peak Memory Bandwidth (GB/s): %f\n\n",
              2.0*prop.memoryClockRate*(prop.memoryBusWidth/8)/1.0e6);
     }
+
+    
 
     cudaDeviceProp deviceProp;
     size_t l2_size, resv_memory;
@@ -438,7 +445,6 @@ bool is_cacheline_evicted(volatile uint64_t *base, uint64_t count,
                             uint64_t threshold, bool *reached_end,
                             uint64_t **ret_addr, volatile uint64_t *psum)
 {
-    dprintf("new is cacheline evicted: %llu, %d\n", (uint64_t *)base, count);
     volatile uint64_t *lastaddr;
     uint64_t sum = 0;
     uint64_t start_ticks, ticks;
@@ -476,7 +482,6 @@ bool is_cacheline_evicted(volatile uint64_t *base, uint64_t count,
         sum += curindex;
         ticks = clock64() - start_ticks;
 
-        dprintf("for base %llu: ticks is %llu (threshold %llu), first is %s\n", (uint64_t *)base, ticks, threshold, lastaddr==base?"true":"false");
         /* 
         * Has the word been evicted 
         * (Reading first time might seem like cache eviction due to cold miss)
@@ -496,7 +501,6 @@ bool is_cacheline_evicted(volatile uint64_t *base, uint64_t count,
         } else {
             /* Due to noise, false negatives might crop in */
             confirm--;
-            dprintf("confirm now at %d out of %d\n", confirm, limit);
             if (confirm == -1 * limit) {
                 return false;
             } else {
@@ -598,41 +602,39 @@ success:
 /*
  * Returns the time to read word from cache
  */
-__global__
-void cacheline_read_time(volatile uint64_t *base, volatile uint64_t *end_addr,
-        double *ticks, volatile uint64_t *psum)
-{
-    uint64_t curindex;
-    volatile uint64_t *lastaddr;
-    uint64_t count;
-    uint64_t sum;
-    uint64_t start_ticks, end_ticks, tick;
-
-    for (sum = 0, count = 0; count < GPU_MAX_OUTER_LOOP + 1; count++) {
-   
-        /* Read first word */
-        start_ticks = clock64();
-        end_ticks = clock64();
-        //curindex = *base;
-        //curindex = start_ticks;
-        //sum += curindex;
-        tick = end_ticks - start_ticks;
-
-        /* First read might be cold miss */
-        if (count != 0)
-            ticks[count - 1] = tick;
-
-        lastaddr = base;
-        /* Read bunch of words */
-        /*for (int i = 0; i < count && ((uintptr_t)lastaddr < (uintptr_t)end_addr); i++) {
-            lastaddr = &base[curindex];
-            curindex = *lastaddr;
-            sum += curindex;
-        }*/
-    }
-
-    *psum = sum;
-}
+ __global__
+ void cacheline_read_time(volatile uint64_t *base, volatile uint64_t *end_addr,
+         double *ticks, volatile uint64_t *psum)
+ {
+     uint64_t curindex;
+     volatile uint64_t *lastaddr;
+     uint64_t count;
+     uint64_t sum;
+     uint64_t start_ticks, tick;
+ 
+     for (sum = 0, count = 0; count < GPU_MAX_OUTER_LOOP + 1; count++) {
+    
+         /* Read first word */
+         start_ticks = clock64();
+         curindex = *base;
+         sum += curindex;
+         tick = clock64() - start_ticks;
+         
+         /* First read might be cold miss */
+         if (count != 0)
+             ticks[count - 1] = tick;
+ 
+         lastaddr = base;
+         /* Read bunch of words */
+         for (int i = 0; i < count && ((uintptr_t)lastaddr < (uintptr_t)end_addr); i++) {
+             lastaddr = &base[curindex];
+             curindex = *lastaddr;
+             sum += curindex;
+         }
+     }
+ 
+     *psum = sum;
+ }
 
 static uintptr_t ct_start_addr;
 static uintptr_t ct_end_addr;

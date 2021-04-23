@@ -493,6 +493,7 @@ static hash_context_t *run_cache_exp(void *virt_start, void *phy_start, size_t a
     double avg, running_threshold;
     size_t num_words;
     pchase_cb_arg_t pchase_cb_arg;
+    int *partition_map;
 
     printf("Doing initialization\n");
     ret = device_cacheline_test_init(virt_start, allocated);
@@ -512,7 +513,6 @@ static hash_context_t *run_cache_exp(void *virt_start, void *phy_start, size_t a
     running_threshold = (avg * (100.0 + OUTLIER_CACHE_PERCENTAGE)) / 100.0;
 
     dprintf("Running threshold is: %f\n", running_threshold);
-    return NULL;
     phy_end = (void *)((uintptr_t)phy_start + allocated - device_allocation_overhead());
 
     data.running_threshold = running_threshold;
@@ -547,6 +547,13 @@ static hash_context_t *run_cache_exp(void *virt_start, void *phy_start, size_t a
         fprintf(stderr, "Couldn't find number of words in a cachline\n");
     }
     print_highlighted("Number of words in a cachline:%zd", num_words);
+
+
+    //print_full_coverage_sizes(hctx);
+
+    hash_print_partitions(hctx);
+
+
     
     return hctx;
 }
@@ -739,13 +746,13 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Couldn't find the physical contiguous addresses\n");
         return -1;
     }
-
+    /*
     printf("Finding DRAM Banks hash function\n");
     dram_hctx = run_dram_exp(virt_start, phy_start, CONTIG_SIZE, min_bit, max_bit);
     if (dram_hctx == NULL) {
         fprintf(stderr, "Couldn't find DRAM Banks hash function\n");
         return -1;
-    }
+    }*/
 
     printf("Finding Cacheline hash function\n");
     cache_hctx = run_cache_exp(virt_start, phy_start, CONTIG_SIZE, min_bit, max_bit);
@@ -754,6 +761,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    /*
     print_highlighted("Finding common solutions between DRAM and Cache");
     common_hctx = hash_get_common_solutions(dram_hctx, cache_hctx);
 
@@ -771,7 +779,7 @@ int main(int argc, char *argv[])
             fprintf(stderr, "Couldn't run interference tests\n");
             return -1;
         }
-    }
+    }*/
 
     hash_del(dram_hctx);
     hash_del(cache_hctx);

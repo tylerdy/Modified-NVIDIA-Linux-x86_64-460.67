@@ -809,6 +809,76 @@ int hash_find_solutions2(hash_context_t *ctx, void *arg,
     return hash_find_solutions(ctx, &data, local_find_next_partition_pair);
 }
 
+void hash_get_partition_map(hash_context_t *ctx, int *map, int num_addresses) {
+    size_t min_offset = 1ULL << ctx->min_bit;
+
+
+    for(uintptr_t a = ctx->start_addr; a<ctx->end_addr; a+=min_offset) {
+        int ind = (a-ctx->start_addr)/min_offset;
+        if(ind>=num_addresses) {
+            printf("BAD IND %d>%d\n", ind, num_addresses);
+            return;
+        }
+        map[ind] = get_full_partitions_num(a, ctx->solutions);
+    }
+}
+
+void print_full_coverage_sizes(hash_context_t *ctx) {
+    int *partition_map;
+    size_t min_offset = 1ULL << ctx->min_bit;
+    int num_addrs = (ctx->end_addr-ctx->start_addr)/min_offset; 
+    printf("num addrs %d\n",num_addrs);
+    partition_map = (int*) malloc(sizeof(int)*num_addrs);
+    hash_get_partition_map(ctx, partition_map, num_addrs);
+
+    uintptr_t a = ctx->start_addr;
+    while(a<ctx->end_addr) {
+        size_t coverage_size = hash_get_size_full_coverage_from_addr(ctx, partition_map, a);
+        if(coverage_size==-1) {
+            printf("Error with coverage sizes\n");
+            return;
+        }
+        printf("Starting at %lu, full coverage in %lu\n", a, coverage_size);
+        a+=coverage_size;
+    }
+
+    free(partition_map);
+}
+
+size_t hash_get_size_full_coverage_from_addr(hash_context_t *ctx, int *partition_map, uintptr_t start) {
+    int total_coverage = 0;
+    int partition_freq[1024] = {0};
+    size_t min_offset = 1ULL << ctx->min_bit;
+
+    if(start<ctx->start_addr || start>=ctx->end_addr) {
+        printf("invalid start addr\n");
+        return -1;
+    }
+
+    int num_addrs = (ctx->end_addr-ctx->start_addr)/min_offset;
+
+    int start_i = (start-ctx->start_addr)/min_offset;
+    for(int i=start_i; i<num_addrs; i++) {
+        if(partition_map[i]>=1024) printf("BAD PART MAP IND\n");
+        if(partition_freq[partition_map[i]]<16) {
+            partition_freq[partition_map[i]]++;
+            total_coverage++;
+        }
+        if(total_coverage==16*1024) {
+            return (size_t) min_offset*(i+1-start_i);
+        }
+    }
+    return -1;
+}
+
+void hash_print_partitions(hash_context_t *ctx) {
+    size_t min_offset = 1ULL << ctx->min_bit;
+
+    for(uintptr_t a = ctx->start_addr; a<ctx->start_addr+min_offset*16*1024; a+=min_offset) {
+        printf("%lu: %d\n",a,get_full_partitions_num(a, ctx->solutions));
+    }
+}
+
 void hash_print_solutions(hash_context_t *ctx)
 {
     for (size_t i = 0; i < ctx->solutions.size(); i++)

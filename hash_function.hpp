@@ -18,6 +18,14 @@ void hash_sort_solutions(hash_context_t *ctx);
 
 void hash_print_solutions(hash_context_t *ctx);
 
+void hash_print_partitions(hash_context_t *ctx);
+
+void hash_get_partition_map(hash_context_t *ctx, int *map, int num_addresses);
+
+void print_full_coverage_sizes(hash_context_t *ctx);
+
+size_t hash_get_size_full_coverage_from_addr(hash_context_t *ctx, int *partition_map, uintptr_t start);
+
 hash_context_t *hash_get_common_solutions(hash_context_t *ctx1, hash_context_t *ctx2);
 
 void *hash_get_next_addr(std::vector<hash_context_t *> ctx, 

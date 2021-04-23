@@ -10,9 +10,9 @@ project(fractional_gpu VERSION 1.0.1 LANGUAGES CXX CUDA DESCRIPTION "Split GPU i
 
 
 # Configure the build type
-set(CMAKE_BUILD_TYPE Debug)
+#set(CMAKE_BUILD_TYPE Debug)
 #set(CMAKE_BUILD_TYPE RelWithDebInfo)
-#set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Release)
 
 find_package(CUDA  REQUIRED)
 include_directories("${CUDA_INCLUDE_DIRS}")
@@ -20,7 +20,7 @@ include_directories(./)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm/)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/common/inc/)
 
-string(APPEND CMAKE_CUDA_FLAGS " -g -G -m 64 -arch=${TARGET}")
+string(APPEND CMAKE_CUDA_FLAGS " -m 64 -arch=${TARGET}")
 
 
 # Add programs to be built using persistent threads model
