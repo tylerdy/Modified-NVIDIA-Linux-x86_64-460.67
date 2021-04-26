@@ -19,7 +19,7 @@ include_directories("${CUDA_INCLUDE_DIRS}")
 include_directories(./)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm/)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/common/inc/)
-
+include_directories(/usr/local/cuda-11.1/samples/common/inc)
 string(APPEND CMAKE_CUDA_FLAGS " -m 64 -arch=${TARGET}")
 
 
@@ -57,15 +57,15 @@ set_property(TARGET fractional_gpu PROPERTY VERSION ${PROJECT_VERSION})
 target_compile_features(fractional_gpu PUBLIC cxx_std_11)
 target_link_libraries(fractional_gpu cuda cudart nvidia-ml)
 
-add_persistent_target(gpu_reverse_engineering .
-        gpu.cu
-        reverse_engineering.cpp
-        hash_function.cpp
-        )
+#add_persistent_target(gpu_reverse_engineering .
+#       gpu.cu
+#       reverse_engineering.cpp
+#       hash_function.cpp
+#       )
 
-add_persistent_target(test .
+add_persistent_target(stress .
         gpu.cu
-        test.cpp
+        stress.cu
         )
 
 
