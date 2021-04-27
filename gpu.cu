@@ -28,7 +28,7 @@ void *device_allocate_contigous(size_t contiguous_size, void **phy_start_p)
     if (!phy_start)
         return NULL;
 
-    *phy_start_p = phy_start;
+    if(!!phy_start_p) *phy_start_p = phy_start;
 
     return gpu_mem;
 }

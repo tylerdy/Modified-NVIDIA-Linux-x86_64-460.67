@@ -17,6 +17,7 @@ set(CMAKE_BUILD_TYPE Release)
 find_package(CUDA  REQUIRED)
 include_directories("${CUDA_INCLUDE_DIRS}")
 include_directories(./)
+include_directories(/usr/local/cuda-11.1/samples/common/inc)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm/)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/common/inc/)
 
@@ -68,4 +69,7 @@ add_persistent_target(test .
         test.cpp
         )
 
-
+add_persistent_target(linear_stress ./LinearStress
+        gpu.cu
+        ./LinearStress/stressLinear.cu
+        )
