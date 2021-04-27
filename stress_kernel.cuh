@@ -86,8 +86,8 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
  
     int flush_max = bytesize / sizeof(unsigned int);
     //flush existing data from the cache by references to c_flush
-    for (i = 0; i < flush_max; i++)
-       r_sum = r_sum + c_flush[i];
+    for (i = 0; i < flush_max*16; i++)
+        r_sum = r_sum + c_flush[i];
 
     //record the kernel start and current times in nanoseconds
     __syncthreads();

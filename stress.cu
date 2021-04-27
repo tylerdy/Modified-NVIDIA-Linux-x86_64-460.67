@@ -24,7 +24,7 @@
 
 #define MAX_SPACES 20           // max number of cache-size spaces with pointer chasing
 #define NUM_SPACES 1            // number of spaces for this instance
-#define NUM_PASSES 1  		// number of read passes over each space
+#define NUM_PASSES 16  		// number of read passes over each space
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
@@ -145,15 +145,15 @@ int main(int argc, char *argv[])
   cudaStreamCreate(&my_stream);
   // allocate list of device memory spaces 
   checkCudaErrors(cudaMalloc((void **) &d_ptrs, sizeof(h_ptrs))); 
-  // d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
-   checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
+  d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
+  //  checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
   h_ptrs[0] = d_data; 
   // fprintf(stdout, "virt %p phys %p\n", h_ptrs[0], phy_start);
 
   checkCudaErrors(cudaMemcpy(d_ptrs, h_ptrs, sizeof(h_ptrs), cudaMemcpyHostToDevice));
   
   // allocate another 512 KB space for initial cache flush by kernel
-  checkCudaErrors(cudaMalloc((void **) &d_flush, bytesize));  
+  checkCudaErrors(cudaMalloc((void **) &d_flush, bytesize*16));  
 
   // space needed to log times for reading each element in each device space
   wrp_log = NUM_SPACES * element_count * sizeof(unsigned short);
