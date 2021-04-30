@@ -24,7 +24,7 @@
 
 #define MAX_SPACES 20           // max number of cache-size spaces with pointer chasing
 #define NUM_SPACES 1            // number of spaces for this instance
-#define NUM_PASSES 16  		// number of read passes over each space
+#define NUM_PASSES 2  		// number of read passes over each space
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
   }
 
   run_time = run_seconds * 1000000000ULL;  //seconds to nanoseconds
-  shared_space = MAX_WARP_LOG * sizeof(unsigned short); //32KB per block/SM
+  shared_space = MAX_WARP_LOG * sizeof(unsigned short) + (1<<10); //32KB per block/SM
 
   memoryKernel<<<Blocks, Threads, shared_space, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
 

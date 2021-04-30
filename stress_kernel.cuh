@@ -57,55 +57,66 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
     unsigned int *k_data;  //pointer to current array
     
     // Use built-in variables to compute block, thread, and warp numbers
-    int gbl_blk = (blockIdx.y * gridDim.x) + blockIdx.x;
-    int lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
-    int lcl_wrp = lcl_thd / 32;
+    extern __shared__ int gbl_blk;
+    gbl_blk = (blockIdx.y * gridDim.x) + blockIdx.x;
+    extern __shared__ int lcl_thd;
+    lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
+    extern __shared__ int lcl_wrp;
+    lcl_wrp = lcl_thd / 32;
 
-    int i, k;
+    extern __shared__ int i, k;
 
-    int ptr;  // holds the index of the next array element to be read
-    
-    unsigned int r_sum = 0;  //a nonsense variable used to help defeat optimization
-
-    unsigned long long clock_begin;   //clock value kernel marks as its start time
-    unsigned long long clock_now;     //clock value current instant
-    
     int wrp_count;
     
     // the number of array elements in each warp's non-overlapping
     // partition of the array
-    int wrp_max = (bytesize / TX2_CACHE_LINE) / (NUM_BLOCKS * NUM_WARPS);
+    int wrp_max;
+    wrp_max = (bytesize / TX2_CACHE_LINE) / (NUM_BLOCKS * NUM_WARPS);
 
     /* Uncomment the following for logging read access times
      * Logging must be coordinated with the launching CUDA program
      */
-    unsigned long long cycles_before;
-    int wrp_log =  ((gbl_blk * NUM_WARPS) + lcl_wrp) * wrp_max;
+    extern __shared__ unsigned long long cycles_before;
+    int wrp_log;
+    wrp_log =  ((gbl_blk * NUM_WARPS) + lcl_wrp) * wrp_max;
     int log_idx;
+
+    int ptr;  // holds the index of the next array element to be read
+    extern __shared__ int ptr_start;
+    ptr_start = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
+    extern __shared__ unsigned int r_sum;  //a nonsense variable used to help defeat optimization
+    r_sum = 0;
+    //extern __shared__ unsigned long long clock_begin;   //clock value kernel marks as its start time
+    //extern __shared__ unsigned long long clock_now;     //clock value current instant
+    
+    
+
+    
     int j;
  
-    int flush_max = bytesize / sizeof(unsigned int);
+    //int flush_max = bytesize / sizeof(unsigned int);
     //flush existing data from the cache by references to c_flush
-    for (i = 0; i < flush_max*16; i++)
-        r_sum = r_sum + c_flush[i];
+    // for (i = 0; i < flush_max; i++)
+        // r_sum = r_sum + c_flush[i];
 
     //record the kernel start and current times in nanoseconds
     __syncthreads();
-    clock_begin = gclock64();
-    clock_now = clock_begin;
+    //clock_begin = gclock64();
+    //clock_now = clock_begin;
 
     //Main loop runs while the time elapsed since the start is less
     //than the run_time parameter 
    // while ((clock_now - clock_begin) < (run_time+100)) {
     
        // loop over all the device memory spaces
-       for (k = 0; k < NUM_SPACES; k++) {
-          k_data = k_ptrs[k];  //get pointer to next device space
+      // for (k = 0; k < NUM_SPACES; k++) {
+          k_data = k_ptrs[0];  //get pointer to next device space
 
           // loop over each space for the number of passes specified
           for (i = 0; i < NUM_PASSES; i++) {
 	      // compute the local warp number and the start index in its array partition
-              ptr = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
+              //ptr = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
+              ptr = ptr_start;
               __syncthreads();
 
               // the local warp loops while chasing the pointers in its partition
@@ -120,18 +131,19 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
  * from shared memory to device memory log
  */
 //#ifdef DO_LOG	       
+          }
                __syncthreads();
                log_idx = k * MAX_WARP_LOG;
                for (j = 0; j < wrp_max; j++)
                   k_result[log_idx + wrp_log + j] = blk_log[wrp_log + j];
 //#endif		  
-	  } //end loop for passes through a device space
-       } // end loop over all spaces	  
+	//   } //end loop for passes through a device space
+      //} // end loop over all spaces	  
        __syncthreads();
-       clock_now = gclock64();
+       //clock_now = gclock64();
    //} //end outer loop for run time
 
-    __syncthreads();
+    //__syncthreads();
     ptr = ptr + r_sum;    
 
     k_data[0] = wrp_count;
