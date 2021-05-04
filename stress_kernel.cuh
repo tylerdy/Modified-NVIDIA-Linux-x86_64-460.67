@@ -45,6 +45,24 @@ static __device__ __inline__ unsigned long long int cycles64() {
  * log read access times for elements of the arrays.  Logging must be
  * coordinated between the kernel and the CUDA program.
  */
+__global__ void
+testKernel(unsigned int *k_ptr[MAX_SPACES], unsigned short *k_result){
+    int gbl_blk,lcl_thd,lcl_wrp;
+    gbl_blk = (blockIdx.y * gridDim.x) + blockIdx.x;
+    lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
+    lcl_wrp = lcl_thd / 32;
+
+    int wrp_count;
+
+    int wrp_max;
+    wrp_max =(TX2_CACHE_SIZE / TX2_CACHE_LINE) /(NUM_BLOCKS * NUM_WARPS);
+
+    int wrp_log;
+    wrp_log =  ((gbl_blk * NUM_WARPS) + lcl_wrp) * wrp_max;
+    unsigned int *k_data = k_ptr[0];
+    for (int j = 0; j < wrp_max; j++)
+        k_result[wrp_log + j] = k_data[wrp_log + j];
+}
 
 __global__ void
 memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int bytesize, unsigned long long run_time, int myZero, unsigned int *c_flush)  //c_flush is size of k_data (bytesize) and used to flush cache initially

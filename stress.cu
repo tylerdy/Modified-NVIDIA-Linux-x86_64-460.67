@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
   cudaStream_t my_stream;
 
   // Device memory pointers
-  unsigned int *d_data;   //cache-size device space to hold pointer-chasing array
+  unsigned int *d_data, *device_p;   //cache-size device space to hold pointer-chasing array
   //unsigned int *d_skip;   //device space skipped to create non-continuous areas
   unsigned int **d_ptrs;  //list of device spaces passed to kernel
   
@@ -146,8 +146,14 @@ int main(int argc, char *argv[])
   // allocate list of device memory spaces 
   checkCudaErrors(cudaMalloc((void **) &d_ptrs, sizeof(h_ptrs))); 
   d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
-  //  checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
+  //printf("%016x\n", device_p);
+  // checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
+  //printf("%016x\n", d_data);
+  //checkCudaErrors(cudaStreamSynchronize(my_stream));
+
   h_ptrs[0] = d_data; 
+  
+
   // fprintf(stdout, "virt %p phys %p\n", h_ptrs[0], phy_start);
 
   checkCudaErrors(cudaMemcpy(d_ptrs, h_ptrs, sizeof(h_ptrs), cudaMemcpyHostToDevice));
@@ -185,13 +191,12 @@ int main(int argc, char *argv[])
      checkCudaErrors(cudaMemcpyAsync(h_ptrs[i],  h_data, bytesize, cudaMemcpyHostToDevice, my_stream)); 
      checkCudaErrors(cudaStreamSynchronize(my_stream));
   }
-
   run_time = run_seconds * 1000000000ULL;  //seconds to nanoseconds
   shared_space = MAX_WARP_LOG * sizeof(unsigned short) + (1<<10); //32KB per block/SM
 
   //memoryKernel<<<Blocks, Threads, shared_space, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
   memoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
-
+  //testKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result);
   checkCudaErrors(cudaStreamSynchronize(my_stream));
 
   // copy any logged data back to host memory
@@ -214,4 +219,5 @@ int main(int argc, char *argv[])
   }
   printf("%d out of %d\n", cnt, element_count);
   //printf("min: %d\n", min);
+    cudaDeviceReset();
 }
