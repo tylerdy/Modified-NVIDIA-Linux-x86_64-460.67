@@ -105,14 +105,14 @@ int device_init(bool init_reverse_engineer)
     for (int i = 0; i < nDevices; i++) {
       cudaDeviceProp prop;
       gpuErrAssert(cudaGetDeviceProperties(&prop, i));
-      printf("Device Number: %d\n", i);
-      printf("  Device name: %s\n", prop.name);
-      printf("  Memory Clock Rate (KHz): %d\n",
-             prop.memoryClockRate);
-      printf("  Memory Bus Width (bits): %d\n",
-             prop.memoryBusWidth);
-      printf("  Peak Memory Bandwidth (GB/s): %f\n\n",
-             2.0*prop.memoryClockRate*(prop.memoryBusWidth/8)/1.0e6);
+      //printf("Device Number: %d\n", i);
+     // printf("  Device name: %s\n", prop.name);
+     // printf("  Memory Clock Rate (KHz): %d\n",
+      //       prop.memoryClockRate);
+      //printf("  Memory Bus Width (bits): %d\n",
+      //       prop.memoryBusWidth);
+      //printf("  Peak Memory Bandwidth (GB/s): %f\n\n",
+      //       2.0*prop.memoryClockRate*(prop.memoryBusWidth/8)/1.0e6);
     }
 
     
@@ -867,11 +867,11 @@ void do_interference_exp(volatile uint64_t **bases, int num_interferening_blocks
         avg_ticks = (double)sum_ticks / 2 / loop_count;
     }
 
-    if (blockIdx.x == 0)
-        dprintf("Interference Exp: Block:%d, Loop Count:%d, Num Blocks:%d, "
-                "Avg Ticks: %f, Min Ticks:%f, Max Ticks:%f\n",
+    /*if (blockIdx.x == 0)
+        dprintf("Interferenc"e Exp: Block:%d, Loop Count:%d, Num Blocks:%d, "
+                "Avg Ticks: %f, Min Ticks:%f, Max Ticks:%f\n,
                 blockIdx.x, loop_count, gridDim.x,
-                (double)avg_ticks, (double)min_ticks, (double)max_ticks);
+                (double)avg_ticks, (double)min_ticks, (double)max_ticks);*/
 
     *psum = sum;
 }

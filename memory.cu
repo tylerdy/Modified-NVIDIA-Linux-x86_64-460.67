@@ -118,7 +118,7 @@ static int init(bool do_post_init)
         fprintf(stderr, "FGPU:Initialization failed\n");
         return -EINVAL;
     }
-    fprintf(stdout,"returning 0\n");
+    //fprintf(stdout,"returning 0\n");
     return 0;
 }
 
@@ -270,7 +270,7 @@ if (params.rmStatus != NV_OK) {
   fprintf(stderr, "FGPU:Couldn't set process color property\n");
   return -EINVAL;
 }
-fprintf(stdout, "about to alloc contig range\n");
+//fprintf(stdout, "about to alloc contig range\n");
 ret = gpuErrCheck(cudaMallocManaged(&g_memory_ctx.base_addr, actual_length));
 if (ret < 0)
   return ret;
@@ -291,7 +291,7 @@ cudaFree(g_memory_ctx.base_addr);
 
 g_memory_ctx.is_initialized = true;
 g_memory_ctx.base_phy_addr = (void *)params.address;
-fprintf(stdout, "paramsaddress is %llx, basephysaddr (void*) is %p\n", params.address, g_memory_ctx.base_phy_addr);
+//fprintf(stdout, "paramsaddress is %llx, basephysaddr (void*) is %p\n", params.address, g_memory_ctx.base_phy_addr);
 g_memory_ctx.reserved_len = req_length;
 
 g_memory_ctx.allocator = allocator_init(g_memory_ctx.base_addr, 

@@ -24,12 +24,12 @@
 
 #define MAX_SPACES 20           // max number of cache-size spaces with pointer chasing
 #define NUM_SPACES 1            // number of spaces for this instance
-#define NUM_PASSES 2  		// number of read passes over each space
+#define NUM_PASSES 2 		// number of read passes over each space
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
-#define NUM_BLOCKS  2        // fixed number of blocks
-#define NUM_WARPS   4         // fixed number of warps per block
+#define NUM_BLOCKS  1        // fixed number of blocks
+#define NUM_WARPS   2         // fixed number of warps per block
 #include "stress_kernel.cuh" 
  
 #define min(a,b) ((a) <= (b) ? (a) : (b))
@@ -172,6 +172,7 @@ int main(int argc, char *argv[])
      // index values separated by number of elements per line (32)
      nextptr = i * line_elements;
      h_data[ptr] = nextptr;
+     //printf("[%d] = %d\n", ptr, nextptr);
      ptr = nextptr;
    }
    h_data[ptr] = 0;  //last points to first
@@ -188,7 +189,8 @@ int main(int argc, char *argv[])
   run_time = run_seconds * 1000000000ULL;  //seconds to nanoseconds
   shared_space = MAX_WARP_LOG * sizeof(unsigned short) + (1<<10); //32KB per block/SM
 
-  memoryKernel<<<Blocks, Threads, shared_space, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
+  //memoryKernel<<<Blocks, Threads, shared_space, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
+  memoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
 
   checkCudaErrors(cudaStreamSynchronize(my_stream));
 
@@ -199,16 +201,17 @@ int main(int argc, char *argv[])
   // copy any side information stored in device space zero back to host memory
   checkCudaErrors(cudaMemcpyAsync(h_data, h_ptrs[0], bytesize, cudaMemcpyDeviceToHost, my_stream));
   checkCudaErrors(cudaStreamSynchronize(my_stream));
-
-  int cnt  =0;
+  int min =  10000;
+  int cnt  = 0;
   for (i = 0; i < NUM_SPACES; i++) {
     for (j = 0; j < element_count; j++) {
+      int tmp = h_result[log_idx + j];
       log_idx = (i * element_count);
-      printf("%hu\n", h_result[log_idx + j]); 
-      if(h_result[log_idx+j] < 300)
-          cnt++;
-      // printf("%hu\n", h_result[log_idx + j]); 
+      printf("%hu\n", tmp); 
+      //if(min > tmp && tmp >0) min = tmp;
+      if(tmp < 300) cnt++;
     }	
   }
   printf("%d out of %d\n", cnt, element_count);
+  //printf("min: %d\n", min);
 }
