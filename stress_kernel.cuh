@@ -71,9 +71,12 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
 
     // uncomment next statement to allocate a shared memory array for logging read times
     __shared__ unsigned short blk_log[MAX_WARP_LOG + 1];
-
-    unsigned int *k_data;  //pointer to current array
     
+    unsigned int *k_data;  //pointer to current array
+    // int *k_data;  //pointer to current array
+    // k_data = k_ptrs[0];
+    // k_data[1] = k_data[32];
+    // return;
     // Use built-in variables to compute block, thread, and warp numbers
     int gbl_blk,lcl_thd,lcl_wrp;
     gbl_blk = (blockIdx.y * gridDim.x) + blockIdx.x;
@@ -92,7 +95,8 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
     /* Uncomment the following for logging read access times
      * Logging must be coordinated with the launching CUDA program
      */
-    unsigned long long cycles_before, cycles_after, cycles_add;
+    unsigned long long cycles_before, cycles_after;
+    unsigned short cycles_add;
     int wrp_log;
     wrp_log =  ((gbl_blk * NUM_WARPS) + lcl_wrp) * wrp_max;
 
@@ -105,16 +109,18 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
     //extern __shared__ unsigned long long clock_now;     //clock value current instant
     //ptr = __ldcg(&(k_ptrs[0][myZero]));
     cycles_before = clock64();
-    r_sum += ptr;
+    // r_sum += ptr;
     cycles_after = clock64();
     cycles_add = (unsigned short) (cycles_after - cycles_before);
     //cycles_add = 0;
     int flush_max = bytesize / sizeof(unsigned int);
     //flush existing data from the cache by references to c_flush
     for (i = 0; i < flush_max; i++)
-         r_sum = r_sum + c_flush[i];
+        r_sum = r_sum + c_flush[i];
+        // r_sum = r_sum + __ldcg(&(c_flush[i]));
     
     //record the kernel start and current times in nanoseconds
+    cycles_after = clock64();
     __syncthreads();
     //clock_begin = gclock64();
     //clock_now = clock_begin;
@@ -125,7 +131,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
     
        // loop over all the device memory spaces
        for (k = 0; k < NUM_SPACES; k++) {
-          k_data = k_ptrs[0];  //get pointer to next device space
+         k_data = k_ptrs[0];  //get pointer to next device space
 
           // loop over each space for the number of passes specified
           for (i = 0; i < NUM_PASSES; i++) {
@@ -140,7 +146,8 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
 #pragma unroll 1
         for (wrp_count = 0; wrp_count < wrp_max; wrp_count++) {
                  cycles_before = clock64();
-                 ptr = __ldcg(&(k_data[ptr]));
+                //  ptr = __ldcv(&(k_data[ptr]));
+                ptr = k_data[ptr];
                  r_sum += ptr;
                  cycles_after = clock64();
                  blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
@@ -155,15 +162,15 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
                __syncthreads();
                int log_idx;
                log_idx = k * MAX_WARP_LOG;
-               for (j = 0; j < wrp_max; j++)
-                    k_result[log_idx + wrp_log + j] = blk_log[wrp_log + j] - cycles_add;
-                  //k_result[log_idx + wrp_log + j] = cycles_add;
+              for (j = 0; j < wrp_max; j++)
+                  k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
+                //   k_result[log_idx + wrp_log + j] = (unsigned short)cycles_add;
 //#endif		  
 	//   } //end loop for passes through a device space
-      } // end loop over all spaces	  
+    //   } // end loop over all spaces	  
        __syncthreads();
        //clock_now = gclock64();
-   //} //end outer loop for run time
+   } //end outer loop for run time
 
     //__syncthreads();
     ptr = ptr + r_sum;    

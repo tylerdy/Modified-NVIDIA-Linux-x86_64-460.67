@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -O3 -DNDEBUG -shared -Wl,-soname,libfractional_gpu.so.1.0.1 -o libfractional_gpu.so.1.0.1 CMakeFiles/fractional_gpu.dir/memory.cu.o CMakeFiles/fractional_gpu.dir/allocator.cpp.o   -L/usr/local/cuda-11.1/targets/x86_64-linux/lib/stubs  -L/usr/local/cuda-11.1/targets/x86_64-linux/lib  -lcuda -lcudart -lnvidia-ml -lcudadevrt -lcudart_static -lrt -lpthread -ldl 

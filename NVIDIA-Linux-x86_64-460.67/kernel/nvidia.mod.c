@@ -213,7 +213,7 @@ __used __section(__versions) = {
 	{ 0x4a3b5e69, "pci_read_config_dword" },
 	{ 0x577cebb0, "dev_driver_string" },
 	{ 0x7f24de73, "jiffies_to_usecs" },
-	{ 0x3129b92e, "wake_up_process" },
+	{ 0x77b1976d, "wake_up_process" },
 	{ 0xbdfb6dbb, "__fentry__" },
 	{ 0xd6eaaea1, "full_name_hash" },
 	{ 0x1035c7c2, "__release_region" },
