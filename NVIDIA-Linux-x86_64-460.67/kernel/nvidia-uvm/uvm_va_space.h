@@ -464,7 +464,6 @@ static NV_STATUS uvm_va_space_initialized(uvm_va_space_t *va_space)
     // on_each_cpu to broadcast memory barriers.
     if (likely(atomic_read_acquire(&va_space->initialized)))
         return NV_OK;
-
     return NV_ERR_ILLEGAL_ACTION;
 }
 

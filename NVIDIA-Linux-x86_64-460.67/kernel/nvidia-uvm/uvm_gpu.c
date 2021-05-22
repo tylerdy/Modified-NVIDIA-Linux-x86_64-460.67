@@ -1113,7 +1113,6 @@ static NV_STATUS init_gpu(uvm_gpu_t *gpu, const UvmGpuInfo *gpu_info)
         return status;
     }
 
-    printk("in init gpu, about to call uvm_pmm_gpu_init\n");
     status = uvm_pmm_gpu_init(gpu, &gpu->pmm);
     if (status != NV_OK) {
         UVM_ERR_PRINT("PMM initialization failed: %s, GPU %s\n", nvstatusToString(status), uvm_gpu_name(gpu));

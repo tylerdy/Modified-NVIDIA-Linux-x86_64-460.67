@@ -64,7 +64,7 @@
 #define UVM_PMM_INVALID_TGID    0
 
 #define UVM_PMM_CONTIG_CHUNK_SIZE    UVM_PAGE_SIZE_2M
-#define UVM_PMM_CONTIG_REGION_SIZE    4297064448 // also set in test.hpp
+#define UVM_PMM_CONTIG_REGION_SIZE    33554432 // also set in test.hpp
 
 typedef enum
 {

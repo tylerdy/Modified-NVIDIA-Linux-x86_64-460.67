@@ -26,6 +26,7 @@
 #include <userlib.hpp>
 
 #include <uvm_ioctl.h>
+#include <uvm_linux_ioctl.h>
 
 #define NVIDIA_UVM_DEVICE_PATH  "/dev/nvidia-uvm" // tbd fix
 /* TODO: This path can be changed via environment variable */
@@ -215,11 +216,15 @@ int open(const char *pathname, int flags, int mode)
             strncmp(pathname, NVIDIA_UVM_DEVICE_PATH, strlen(NVIDIA_UVM_DEVICE_PATH)) == 0) {
         g_uvm_fd = ret;
     }
+    if (g_uvm_fd < 0 && // this works too for some reason
+        strncmp(pathname, "/sys/devices/system/memory/block_size_bytes", strlen("/sys/devices/system/memory/block_size_bytes")) == 0) {
+        g_uvm_fd = ret;
+    }
     return ret;
 }
 
 /* Trap connect() calls (interested in connection to MPS) */
-int connect(int sockfd, const struct sockaddr *addr,
+/*int connect(int sockfd, const struct sockaddr *addr,
                    socklen_t addrlen)
 {
     int ret;
@@ -233,9 +238,11 @@ int connect(int sockfd, const struct sockaddr *addr,
     if (ret >= 0 && g_uvm_fd < 0 && addr && addr->sa_family == AF_LOCAL && 
             strncmp(addr->sa_data, NVIDIA_MPS_CONTROL_PATH, strlen(NVIDIA_MPS_CONTROL_PATH)) == 0) {
         g_uvm_fd = sockfd;
+        printf("set in connect %d\n", g_uvm_fd);
     }
+    printf("connect with fd %d addr->sa_data %s addr->sa_family %d (AF_LOCAL %d) g_uvm_fd %d ret %d\n", sockfd, addr->sa_data, addr->sa_family, AF_LOCAL, g_uvm_fd, ret);
     return ret;
-}
+}*/
 
 } /* extern "C" */
 
@@ -260,17 +267,34 @@ if (ret < 0) {
 
 params.length = actual_length;
 
+
+/*UVM_INITIALIZE_PARAMS init_params;
+init_params.flags = 2;
+ret = ioctl(g_uvm_fd, 805306369, &init_params);
+if (ret < 0) {
+    fprintf(stderr, "Init ioctl failed\n");
+    perror(NULL);
+    return ret;
+}
+if (init_params.rmStatus != NV_OK) {
+    fprintf(stderr, "Init ioctl rm status is fail\n");
+    fprintf(stderr, "rm status is 0x%x\n", params.rmStatus);
+    return -EINVAL;
+  }*/
+
 ret = ioctl(g_uvm_fd, IOCTL_SET_PROCESS_CONTIG_INFO, &params);
 if (ret < 0) {
     fprintf(stderr, "Set process contig ioctl failed\n");
+    perror(NULL);
     return ret;
 }
 
+
 if (params.rmStatus != NV_OK) {
   fprintf(stderr, "FGPU:Couldn't set process color property\n");
+  fprintf(stderr, "rm status is 0x%x\n", params.rmStatus);
   return -EINVAL;
 }
-fprintf(stdout, "about to alloc contig range\n");
 ret = gpuErrCheck(cudaMallocManaged(&g_memory_ctx.base_addr, actual_length));
 if (ret < 0)
   return ret;

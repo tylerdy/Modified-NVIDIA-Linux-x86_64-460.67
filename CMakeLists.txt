@@ -73,3 +73,15 @@ add_persistent_target(linear_stress ./LinearStress
         gpu.cu
         ./LinearStress/stressLinear.cu
         )
+
+add_persistent_target(eviction ./Concurrent
+        gpu.cu
+        ./Concurrent/eviction.cu
+        )
+
+add_persistent_target(victim ./Concurrent
+        gpu.cu
+        ./Concurrent/victim.cu
+        )
+# set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xptxas -dlcm=cg")
+# target_compile_options(victim PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-Xptxas -dlcm=cg>) 

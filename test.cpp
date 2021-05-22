@@ -13,6 +13,8 @@ int main(int argc, char *argv[])
   if (ret < 0)
         fprintf(stderr, "Device init failed\n");
 
+  return 0;
+
   virt_start = device_allocate_contigous(CONTIG_SIZE, &phy_start);
 
   fprintf(stdout, "virt %p phys %p\n", virt_start, phy_start);

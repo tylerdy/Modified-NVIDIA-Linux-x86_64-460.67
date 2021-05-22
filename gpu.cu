@@ -7,6 +7,9 @@
 #include <hash_function.hpp>
 #include <userlib.hpp>
 
+#include <sys/stat.h>
+       #include <fcntl.h>
+
 
 /* Stream used for all operations. NULL stream is not used */
 cudaStream_t contig_stream;
@@ -114,8 +117,6 @@ int device_init(bool init_reverse_engineer)
       printf("  Peak Memory Bandwidth (GB/s): %f\n\n",
              2.0*prop.memoryClockRate*(prop.memoryBusWidth/8)/1.0e6);
     }
-
-    
 
     cudaDeviceProp deviceProp;
     size_t l2_size, resv_memory;

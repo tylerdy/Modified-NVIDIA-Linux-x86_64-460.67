@@ -1087,7 +1087,6 @@ static int uvm_init(void)
 
     if (uvm_enable_builtin_tests)
         pr_info("Built-in UVM tests are enabled. This is a security risk.\n");
-
     return 0;
 
 error:

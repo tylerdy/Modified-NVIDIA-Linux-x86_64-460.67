@@ -62,7 +62,6 @@
                                                                                     \
         return 0;                                                                   \
     }
-
 // We need to concatenate cmd##_PARAMS here to avoid the preprocessor's argument
 // prescan. Attempting concatenation in the lower-level macro will fail because
 // it will have been expanded to a literal by then.

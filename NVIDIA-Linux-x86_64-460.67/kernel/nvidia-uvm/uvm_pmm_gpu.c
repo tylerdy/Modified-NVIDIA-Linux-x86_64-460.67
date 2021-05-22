@@ -3115,9 +3115,6 @@ typedef struct
 // - NV_OK: allocated physical chunks may have been found. Check num_mappings
 static NV_STATUS get_chunk_mappings_in_range(uvm_pmm_gpu_t *pmm, uvm_gpu_chunk_t *chunk, void *data)
 {
-    if(!chunk) printk("no chunk\n");
-    if(!pmm) printk("no pmm\n");
-    printk("called with chunk %llu\n", chunk->va_block->start);
     get_chunk_mappings_data_t *get_chunk_mappings_data = (get_chunk_mappings_data_t *)data;
     NvU64 chunk_end = chunk->address + uvm_gpu_chunk_get_size(chunk) - 1;
 
@@ -3289,8 +3286,6 @@ static NV_STATUS reserve_contig_memory(uvm_gpu_t *gpu, uvm_pmm_gpu_t *pmm)
 
     pmm->contig_range = range;
 
-    if(list_empty(&range->free_chunks)) printk("3list empty\n");
-
 done:
     if (status != NV_OK)
         free_reserved_contig_memory(pmm);
@@ -3303,7 +3298,6 @@ static void free_reserved_contig_memory(uvm_pmm_gpu_t *pmm)
     uvm_gpu_contig_range_t *range;
     uvm_gpu_chunk_t *chunk;
     struct list_head *nc, *tc;
-    printk("free reserved contig memory\n");
     // Release all chunks
     range = pmm->contig_range;
     list_for_each_safe(nc, tc, &range->free_chunks) {
@@ -3325,7 +3319,6 @@ static void free_reserved_contig_memory(uvm_pmm_gpu_t *pmm)
 static NV_STATUS allocate_process_contig_memory_locked(uvm_pmm_gpu_t *pmm, NvU64 *start_phys_addr)
 {
     uvm_gpu_contig_range_t *range;
-
     range = pmm->contig_range;
     
     // TODO: Can be optimized
@@ -3338,9 +3331,7 @@ static NV_STATUS allocate_process_contig_memory_locked(uvm_pmm_gpu_t *pmm, NvU64
 
     if (start_phys_addr)
         *start_phys_addr = range->start_phys_addr;
-    printk("allocating to proc at %llx\n", *start_phys_addr);
 
-    if(list_empty(&range->free_chunks)) printk("2list empty\n");
     return NV_OK;
 }
 
@@ -3402,7 +3393,6 @@ static NV_STATUS try_alloc_chunk_from_contig(uvm_pmm_gpu_t *pmm,
     chunk->contig_range = range;
     *out_chunk = chunk;
 
-    printk("Allocated chunk from contig range at %llx\n",chunk->address);
 
     return NV_OK;
 }
@@ -3494,9 +3484,7 @@ NV_STATUS set_current_process_contig_info(uvm_pmm_gpu_t *pmm, NvU64 *start_phys_
     uvm_gpu_contig_range_t *contig_range;
 
     uvm_spin_lock(&pmm->list_lock);
-
      status = allocate_process_contig_memory_locked(pmm, start_phys_addr);
-    printk("in setcurrentprocesscontiginfo addr is %llx\n", *start_phys_addr);
     uvm_spin_unlock(&pmm->list_lock);
     
     contig_range = pmm->contig_range;
@@ -3716,6 +3704,7 @@ done:
 
 NV_STATUS uvm_api_set_process_contig_info(UVM_SET_PROCESS_CONTIG_INFO_PARAMS *params, struct file *filp)
 {
+    
     NV_STATUS status = NV_OK;
     uvm_va_space_t *va_space = uvm_va_space_get(filp);
     uvm_gpu_t *gpu = NULL;
@@ -3733,9 +3722,7 @@ NV_STATUS uvm_api_set_process_contig_info(UVM_SET_PROCESS_CONTIG_INFO_PARAMS *pa
             status = NV_ERR_INVALID_DEVICE;
             goto done;
         }
-
         status = set_current_process_contig_info(&gpu->pmm, &params->address);
-        printk("uvmapisetproc has addr of %llx\n", params->address);
         if (status != NV_OK)
             goto done;
     }
