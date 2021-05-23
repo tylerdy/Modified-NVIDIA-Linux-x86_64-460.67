@@ -51,7 +51,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/threads.dir/DependInfo.cmake"
+  "CMakeFiles/victim.dir/DependInfo.cmake"
   "CMakeFiles/stress.dir/DependInfo.cmake"
   "CMakeFiles/fractional_gpu.dir/DependInfo.cmake"
-  "CMakeFiles/myptx.dir/DependInfo.cmake"
   )

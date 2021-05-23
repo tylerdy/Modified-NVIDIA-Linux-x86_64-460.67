@@ -30,7 +30,7 @@
 #define NVIDIA_UVM_DEVICE_PATH  "/dev/nvidia-uvm" // tbd fix
 /* TODO: This path can be changed via environment variable */
 #define NVIDIA_MPS_CONTROL_PATH "/tmp/nvidia-mps/control"
-#define OFFSET 1 * (1<<21) + (1<<12) * 16
+#define OFFSET 0 // 1 * (1<<21) + (1<<12) * 16
 
 
 /* Ioctl codes */
@@ -217,6 +217,11 @@ int open(const char *pathname, int flags, int mode)
             strncmp(pathname, NVIDIA_UVM_DEVICE_PATH, strlen(NVIDIA_UVM_DEVICE_PATH)) == 0) {
         g_uvm_fd = ret;
     }
+
+    if (g_uvm_fd < 0 && 
+        strncmp(pathname, "/sys/devices/system/memory/block_size_bytes", strlen("/sys/devices/system/memory/block_size_bytes")) == 0) {
+       g_uvm_fd = ret;
+    }
     return ret;
 }
 
@@ -234,7 +239,7 @@ int connect(int sockfd, const struct sockaddr *addr,
 
     if (ret >= 0 && g_uvm_fd < 0 && addr && addr->sa_family == AF_LOCAL && 
             strncmp(addr->sa_data, NVIDIA_MPS_CONTROL_PATH, strlen(NVIDIA_MPS_CONTROL_PATH)) == 0) {
-        g_uvm_fd = sockfd;
+        // g_uvm_fd = sockfd;
     }
     return ret;
 }
@@ -271,7 +276,7 @@ if (ret < 0) {
 }
 
 if (params.rmStatus != NV_OK) {
-  fprintf(stderr, "FGPU:Couldn't set process color property\n");
+  fprintf(stderr, "FGPU:Couldn't set process color property (%d)\n", params.rmStatus);
   return -EINVAL;
 }
 //fprintf(stdout, "about to alloc contig range\n");
@@ -355,7 +360,7 @@ int fgpu_memory_allocate(void **p)
         fprintf(stderr, "FGPU:Initialization not done\n");
         return -EBADF;
     }
-    printf("phys addr: %016x\n", g_memory_ctx.base_phy_addr + OFFSET);
+    //printf("phys addr: %016x\n", g_memory_ctx.base_phy_addr + OFFSET);
     ret_addr = allocator_alloc(g_memory_ctx.allocator, (void*)(OFFSET));
     if (!ret_addr) {
         fprintf(stderr, "FGPU:Can't allocate device memory\n");

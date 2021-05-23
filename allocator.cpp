@@ -44,7 +44,7 @@ void *allocator_alloc(allocator_t *ctx, void* offset)
 {
     ctx->free = false;
     void* addr = ctx->start_address + (uint64_t)offset;
-    printf("addr: %016x\n", addr);
+    //printf("addr: %016x\n", addr);
     return addr;
 }
 

@@ -27,9 +27,6 @@
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -56,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67
+CMAKE_SOURCE_DIR = /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build
+CMAKE_BINARY_DIR = /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/myptx.dir/depend.make
@@ -75,8 +72,8 @@ include CMakeFiles/myptx.dir/flags.make
 CMakeFiles/myptx.dir/stress.ptx: CMakeFiles/myptx.dir/flags.make
 CMakeFiles/myptx.dir/stress.ptx: ../stress.cu
 CMakeFiles/myptx.dir/stress.ptx: CMakeFiles/myptx.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CUDA object CMakeFiles/myptx.dir/stress.ptx"
-	/usr/local/cuda-11.1/bin/nvcc -forward-unknown-to-host-compiler $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -MD -MT CMakeFiles/myptx.dir/stress.ptx -MF CMakeFiles/myptx.dir/stress.ptx.d -x cu -ptx /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/stress.cu -o CMakeFiles/myptx.dir/stress.ptx
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CUDA object CMakeFiles/myptx.dir/stress.ptx"
+	/usr/local/cuda-11.1/bin/nvcc -forward-unknown-to-host-compiler $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -MD -MT CMakeFiles/myptx.dir/stress.ptx -MF CMakeFiles/myptx.dir/stress.ptx.d -x cu -ptx /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/stress.cu -o CMakeFiles/myptx.dir/stress.ptx
 
 CMakeFiles/myptx.dir/stress.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/myptx.dir/stress.i"
@@ -99,6 +96,6 @@ CMakeFiles/myptx.dir/clean:
 .PHONY : CMakeFiles/myptx.dir/clean
 
 CMakeFiles/myptx.dir/depend:
-	cd /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67 /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67 /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles/myptx.dir/DependInfo.cmake --color=$(COLOR)
+	cd /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67 /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67 /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles/myptx.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/myptx.dir/depend
 

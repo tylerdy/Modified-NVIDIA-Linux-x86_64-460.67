@@ -8,13 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/gpu.cu" "CMakeFiles/stress.dir/gpu.cu.o" "gcc" "CMakeFiles/stress.dir/gpu.cu.o.d"
-  "/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/stress.cu" "CMakeFiles/stress.dir/stress.cu.o" "gcc" "CMakeFiles/stress.dir/stress.cu.o.d"
+  "/playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/gpu.cu" "CMakeFiles/stress.dir/gpu.cu.o" "gcc" "CMakeFiles/stress.dir/gpu.cu.o.d"
+  "/playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/stress.cu" "CMakeFiles/stress.dir/stress.cu.o" "gcc" "CMakeFiles/stress.dir/stress.cu.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles/fractional_gpu.dir/DependInfo.cmake"
+  "/playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles/fractional_gpu.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

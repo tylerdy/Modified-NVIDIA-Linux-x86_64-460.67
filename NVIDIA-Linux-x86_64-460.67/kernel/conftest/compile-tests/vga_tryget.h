@@ -1,0 +1,1 @@
+#define NV_VGA_TRYGET_PRESENT

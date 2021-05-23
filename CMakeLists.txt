@@ -2,12 +2,13 @@ set(TARGET sm_61)
 
 # TODO: Which version do we want?
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
-enable_language(CUDA)
-add_library(myptx OBJECT stress.cu stress_kernel.cuh)
-set_property(TARGET myptx PROPERTY CUDA_PTX_COMPILATION ON)
-
 SET(CMAKE_CUDA_COMPILER /usr/local/cuda-11.1/bin/nvcc)
-set( CMAKE_VERBOSE_MAKEFILE on )
+enable_language(CUDA)
+# add_library(myptx OBJECT stress.cu stress_kernel.cuh)
+# set_property(TARGET myptx PROPERTY CUDA_PTX_COMPILATION ON)
+
+
+# set( CMAKE_VERBOSE_MAKEFILE on )
 project(fractional_gpu VERSION 1.0.1 LANGUAGES CXX CUDA DESCRIPTION "Split GPU into Fractional GPUs")
 
 
@@ -69,6 +70,16 @@ target_link_libraries(fractional_gpu cuda cudart nvidia-ml)
 add_persistent_target(stress .
         gpu.cu
         stress.cu
+        )
+
+add_persistent_target(victim .
+        gpu.cu
+        victim.cu
+        )
+
+add_persistent_target(threads .
+        gpu.cu
+        threads.cu
         )
 
 #message("-----------------------------------------------\n

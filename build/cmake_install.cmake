@@ -1,4 +1,4 @@
-# Install script for directory: /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67
+# Install script for directory: /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

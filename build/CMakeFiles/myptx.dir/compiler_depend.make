@@ -3,19 +3,19 @@
 
 CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
   /usr/include/stdc-predef.h \
-  /usr/local/cuda-11.1/include/cuda_runtime.h \
-  /usr/local/cuda-11.1/include/crt/host_config.h \
+  /usr/local/cuda/include/cuda_runtime.h \
+  /usr/local/cuda/include/crt/host_config.h \
   /usr/include/features.h \
   /usr/include/x86_64-linux-gnu/sys/cdefs.h \
   /usr/include/x86_64-linux-gnu/bits/wordsize.h \
   /usr/include/x86_64-linux-gnu/bits/long-double.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
-  /usr/local/cuda-11.1/include/builtin_types.h \
-  /usr/local/cuda-11.1/include/device_types.h \
-  /usr/local/cuda-11.1/include/crt/host_defines.h \
-  /usr/local/cuda-11.1/include/driver_types.h \
-  /usr/local/cuda-11.1/include/vector_types.h \
+  /usr/local/cuda/include/builtin_types.h \
+  /usr/local/cuda/include/device_types.h \
+  /usr/local/cuda/include/crt/host_defines.h \
+  /usr/local/cuda/include/driver_types.h \
+  /usr/local/cuda/include/vector_types.h \
   /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h \
   /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h \
   /usr/include/limits.h \
@@ -27,16 +27,16 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
   /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
   /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
   /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
-  /usr/local/cuda-11.1/include/surface_types.h \
-  /usr/local/cuda-11.1/include/texture_types.h \
-  /usr/local/cuda-11.1/include/library_types.h \
-  /usr/local/cuda-11.1/include/channel_descriptor.h \
-  /usr/local/cuda-11.1/include/cuda_runtime_api.h \
-  /usr/local/cuda-11.1/include/cuda_device_runtime_api.h \
-  /usr/local/cuda-11.1/include/driver_functions.h \
-  /usr/local/cuda-11.1/include/vector_functions.h \
-  /usr/local/cuda-11.1/include/vector_functions.hpp \
-  /usr/local/cuda-11.1/include/crt/common_functions.h \
+  /usr/local/cuda/include/surface_types.h \
+  /usr/local/cuda/include/texture_types.h \
+  /usr/local/cuda/include/library_types.h \
+  /usr/local/cuda/include/channel_descriptor.h \
+  /usr/local/cuda/include/cuda_runtime_api.h \
+  /usr/local/cuda/include/cuda_device_runtime_api.h \
+  /usr/local/cuda/include/driver_functions.h \
+  /usr/local/cuda/include/vector_functions.h \
+  /usr/local/cuda/include/vector_functions.hpp \
+  /usr/local/cuda/include/crt/common_functions.h \
   /usr/include/string.h \
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
@@ -109,7 +109,7 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
   /usr/include/c++/9/bits/std_abs.h \
   /usr/include/assert.h \
-  /usr/local/cuda-11.1/include/crt/math_functions.h \
+  /usr/local/cuda/include/crt/math_functions.h \
   /usr/include/c++/9/math.h \
   /usr/include/c++/9/cmath \
   /usr/include/c++/9/bits/cpp_type_traits.h \
@@ -124,40 +124,40 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
   /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
   /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
   /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
-  /usr/local/cuda-11.1/include/crt/math_functions.hpp \
-  /usr/local/cuda-11.1/include/cuda_surface_types.h \
-  /usr/local/cuda-11.1/include/cuda_texture_types.h \
-  /usr/local/cuda-11.1/include/crt/device_functions.h \
-  /usr/local/cuda-11.1/include/crt/device_functions.hpp \
-  /usr/local/cuda-11.1/include/device_atomic_functions.h \
-  /usr/local/cuda-11.1/include/device_atomic_functions.hpp \
-  /usr/local/cuda-11.1/include/crt/device_double_functions.h \
-  /usr/local/cuda-11.1/include/crt/device_double_functions.hpp \
-  /usr/local/cuda-11.1/include/sm_20_atomic_functions.h \
-  /usr/local/cuda-11.1/include/sm_20_atomic_functions.hpp \
-  /usr/local/cuda-11.1/include/sm_32_atomic_functions.h \
-  /usr/local/cuda-11.1/include/sm_32_atomic_functions.hpp \
-  /usr/local/cuda-11.1/include/sm_35_atomic_functions.h \
-  /usr/local/cuda-11.1/include/sm_60_atomic_functions.h \
-  /usr/local/cuda-11.1/include/sm_60_atomic_functions.hpp \
-  /usr/local/cuda-11.1/include/sm_20_intrinsics.h \
-  /usr/local/cuda-11.1/include/sm_20_intrinsics.hpp \
-  /usr/local/cuda-11.1/include/sm_30_intrinsics.h \
-  /usr/local/cuda-11.1/include/sm_30_intrinsics.hpp \
-  /usr/local/cuda-11.1/include/sm_32_intrinsics.h \
-  /usr/local/cuda-11.1/include/sm_32_intrinsics.hpp \
-  /usr/local/cuda-11.1/include/sm_35_intrinsics.h \
-  /usr/local/cuda-11.1/include/sm_61_intrinsics.h \
-  /usr/local/cuda-11.1/include/sm_61_intrinsics.hpp \
-  /usr/local/cuda-11.1/include/crt/sm_70_rt.h \
-  /usr/local/cuda-11.1/include/crt/sm_70_rt.hpp \
-  /usr/local/cuda-11.1/include/crt/sm_80_rt.h \
-  /usr/local/cuda-11.1/include/crt/sm_80_rt.hpp \
-  /usr/local/cuda-11.1/include/surface_functions.h \
-  /usr/local/cuda-11.1/include/texture_fetch_functions.h \
-  /usr/local/cuda-11.1/include/texture_indirect_functions.h \
-  /usr/local/cuda-11.1/include/surface_indirect_functions.h \
-  /usr/local/cuda-11.1/include/device_launch_parameters.h \
+  /usr/local/cuda/include/crt/math_functions.hpp \
+  /usr/local/cuda/include/cuda_surface_types.h \
+  /usr/local/cuda/include/cuda_texture_types.h \
+  /usr/local/cuda/include/crt/device_functions.h \
+  /usr/local/cuda/include/crt/device_functions.hpp \
+  /usr/local/cuda/include/device_atomic_functions.h \
+  /usr/local/cuda/include/device_atomic_functions.hpp \
+  /usr/local/cuda/include/crt/device_double_functions.h \
+  /usr/local/cuda/include/crt/device_double_functions.hpp \
+  /usr/local/cuda/include/sm_20_atomic_functions.h \
+  /usr/local/cuda/include/sm_20_atomic_functions.hpp \
+  /usr/local/cuda/include/sm_32_atomic_functions.h \
+  /usr/local/cuda/include/sm_32_atomic_functions.hpp \
+  /usr/local/cuda/include/sm_35_atomic_functions.h \
+  /usr/local/cuda/include/sm_60_atomic_functions.h \
+  /usr/local/cuda/include/sm_60_atomic_functions.hpp \
+  /usr/local/cuda/include/sm_20_intrinsics.h \
+  /usr/local/cuda/include/sm_20_intrinsics.hpp \
+  /usr/local/cuda/include/sm_30_intrinsics.h \
+  /usr/local/cuda/include/sm_30_intrinsics.hpp \
+  /usr/local/cuda/include/sm_32_intrinsics.h \
+  /usr/local/cuda/include/sm_32_intrinsics.hpp \
+  /usr/local/cuda/include/sm_35_intrinsics.h \
+  /usr/local/cuda/include/sm_61_intrinsics.h \
+  /usr/local/cuda/include/sm_61_intrinsics.hpp \
+  /usr/local/cuda/include/crt/sm_70_rt.h \
+  /usr/local/cuda/include/crt/sm_70_rt.hpp \
+  /usr/local/cuda/include/crt/sm_80_rt.h \
+  /usr/local/cuda/include/crt/sm_80_rt.hpp \
+  /usr/local/cuda/include/surface_functions.h \
+  /usr/local/cuda/include/texture_fetch_functions.h \
+  /usr/local/cuda/include/texture_indirect_functions.h \
+  /usr/local/cuda/include/surface_indirect_functions.h \
+  /usr/local/cuda/include/device_launch_parameters.h \
   /usr/include/c++/9/cstdint \
   /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h \
   /usr/include/stdint.h \
@@ -300,17 +300,15 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
   ../stress_kernel.cuh
 
 
-../stress_kernel.cuh:
-
 /usr/include/c++/9/ctime:
 
 /usr/include/x86_64-linux-gnu/sys/time.h:
 
-/usr/local/cuda-11.1/samples/common/inc/helper_timer.h:
-
 /usr/local/cuda-11.1/samples/common/inc/helper_string.h:
 
 /usr/include/c++/9/bits/vector.tcc:
+
+/usr/include/c++/9/vector:
 
 /usr/include/c++/9/bits/fstream.tcc:
 
@@ -338,11 +336,11 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/c++/9/bits/locale_facets.tcc:
 
+/usr/include/c++/9/bits/streambuf_iterator.h:
+
 /usr/include/x86_64-linux-gnu/c++/9/bits/ctype_base.h:
 
 /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
-
-/usr/local/cuda-11.1/include/crt/device_functions.h:
 
 /usr/include/x86_64-linux-gnu/bits/iscanonical.h:
 
@@ -352,17 +350,11 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
 
-/usr/local/cuda-11.1/include/sm_60_atomic_functions.h:
-
-/usr/local/cuda-11.1/include/texture_indirect_functions.h:
-
-/usr/include/x86_64-linux-gnu/c++/9/bits/c++allocator.h:
+/usr/local/cuda/include/library_types.h:
 
 /usr/include/c++/9/bits/nested_exception.h:
 
 /usr/include/c++/9/ext/type_traits.h:
-
-/usr/include/c++/9/bits/std_abs.h:
 
 /usr/include/asm-generic/errno-base.h:
 
@@ -374,23 +366,27 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/alloca.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h:
+/usr/local/cuda/include/crt/device_functions.h:
 
-/usr/include/strings.h:
+/usr/local/cuda/include/crt/device_functions.hpp:
 
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/unistd.h:
 
-/usr/include/c++/9/iostream:
-
 /usr/include/x86_64-linux-gnu/bits/types.h:
 
 /usr/include/x86_64-linux-gnu/bits/mman-linux.h:
 
+/usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
+
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
+
+/usr/include/x86_64-linux-gnu/c++/9/bits/ctype_inline.h:
+
+/usr/include/c++/9/bits/locale_facets.h:
 
 /usr/include/c++/9/bits/stl_bvector.h:
 
@@ -406,6 +402,10 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/local_lim.h:
 
+/usr/include/c++/9/iostream:
+
+/usr/local/cuda/include/sm_32_atomic_functions.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/wchar.h:
 
 /usr/include/c++/9/math.h:
@@ -420,15 +420,25 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/c++/9/bits/concept_check.h:
 
-/usr/local/cuda-11.1/include/sm_32_intrinsics.h:
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
+
+/usr/local/cuda/include/cuda_device_runtime_api.h:
+
+/usr/include/c++/9/bits/move.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/c++/9/bits/stl_construct.h:
+
+/usr/include/c++/9/bits/cxxabi_init_exception.h:
+
+/usr/include/c++/9/cstdio:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
 
-/usr/local/cuda-11.1/include/vector_types.h:
-
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
-
-/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
 
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
 
@@ -440,57 +450,37 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
 
-/usr/include/x86_64-linux-gnu/c++/9/bits/cpu_defines.h:
-
 /usr/include/x86_64-linux-gnu/c++/9/bits/os_defines.h:
+
+/usr/include/c++/9/cmath:
 
 /usr/include/x86_64-linux-gnu/bits/posix2_lim.h:
 
 /usr/include/linux/limits.h:
 
-/usr/include/c++/9/bits/exception_defines.h:
+/usr/include/endian.h:
 
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
+/usr/include/stdint.h:
+
+/usr/local/cuda/include/sm_32_intrinsics.hpp:
 
 /usr/include/c++/9/ext/new_allocator.h:
 
-/usr/include/c++/9/ext/numeric_traits.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
+/usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
 
 /usr/include/x86_64-linux-gnu/bits/posix1_lim.h:
 
-/usr/local/cuda-11.1/include/cuda_device_runtime_api.h:
+/usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h:
 
-/usr/include/c++/9/vector:
+/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 
-/usr/local/cuda-11.1/include/crt/device_double_functions.hpp:
+/usr/local/cuda/include/vector_functions.hpp:
 
-/usr/include/x86_64-linux-gnu/sys/types.h:
+/usr/include/strings.h:
 
-/usr/include/x86_64-linux-gnu/bits/select.h:
+/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
 
-/usr/include/x86_64-linux-gnu/bits/time.h:
-
-/usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h:
-
-/usr/include/c++/9/bits/basic_ios.h:
-
-/usr/include/x86_64-linux-gnu/bits/math-vector.h:
-
-/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
-
-/usr/include/c++/9/bits/move.h:
-
-/usr/local/cuda-11.1/include/driver_types.h:
-
-/usr/include/x86_64-linux-gnu/gnu/stubs.h:
-
-/usr/local/cuda-11.1/include/vector_functions.h:
-
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+/usr/local/cuda/include/driver_types.h:
 
 ../stress.cu:
 
@@ -500,69 +490,83 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/c++/9/cstdint:
 
+/usr/local/cuda/include/crt/math_functions.h:
+
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
 
 /usr/include/c++/9/iosfwd:
 
-/usr/include/c++/9/new:
+/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 
-/usr/local/cuda-11.1/include/cuda_surface_types.h:
+/usr/include/x86_64-linux-gnu/c++/9/bits/cpu_defines.h:
 
-/usr/local/cuda-11.1/include/surface_types.h:
-
-/usr/include/x86_64-linux-gnu/bits/mman-map-flags-generic.h:
+/usr/local/cuda/include/sm_35_intrinsics.h:
 
 /usr/include/math.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
 
-/usr/local/cuda-11.1/include/texture_fetch_functions.h:
+/usr/local/cuda/include/cuda_runtime_api.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
+/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
 
-/usr/include/c++/9/bits/stl_algobase.h:
+/usr/local/cuda/include/cuda_runtime.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
+/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
+/usr/include/x86_64-linux-gnu/bits/mman-map-flags-generic.h:
 
-/usr/local/cuda-11.1/include/crt/host_config.h:
+/usr/local/cuda/include/surface_types.h:
 
-/usr/local/cuda-11.1/include/vector_functions.hpp:
+/usr/include/x86_64-linux-gnu/sys/syscall.h:
+
+/usr/include/c++/9/bits/localefwd.h:
+
+/usr/local/cuda-11.1/samples/common/inc/helper_timer.h:
+
+/usr/local/cuda/include/builtin_types.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
+
+/usr/local/cuda/include/surface_functions.h:
+
+/usr/include/x86_64-linux-gnu/bits/byteswap.h:
+
+/usr/include/x86_64-linux-gnu/bits/long-double.h:
+
+/usr/local/cuda/include/crt/math_functions.hpp:
+
+/usr/local/cuda/include/device_types.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
 
 /usr/include/c++/9/bits/exception_ptr.h:
 
-/usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
-
-/usr/local/cuda-11.1/include/sm_61_intrinsics.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+/usr/local/cuda/include/crt/sm_70_rt.h:
 
 /usr/include/c++/9/bits/istream.tcc:
 
-/usr/local/cuda-11.1/include/library_types.h:
-
 /usr/include/x86_64-linux-gnu/asm/errno.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
+/usr/local/cuda/include/vector_functions.h:
 
-/usr/local/cuda-11.1/include/builtin_types.h:
+/usr/include/errno.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
+/usr/include/c++/9/limits:
 
-/usr/include/x86_64-linux-gnu/bits/byteswap.h:
+/usr/include/limits.h:
 
-/usr/local/cuda-11.1/include/cuda_texture_types.h:
-
-/usr/local/cuda-11.1/include/device_types.h:
-
-/usr/include/x86_64-linux-gnu/bits/long-double.h:
+/usr/include/c++/9/bits/cxxabi_forced.h:
 
 /usr/include/c++/9/bits/locale_classes.h:
+
+/usr/local/cuda/include/vector_types.h:
+
+/usr/local/cuda/include/driver_functions.h:
 
 /usr/include/c++/9/bits/codecvt.h:
 
@@ -570,41 +574,41 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
-/usr/include/c++/9/bits/stl_construct.h:
+/usr/local/cuda/include/channel_descriptor.h:
 
-/usr/include/c++/9/bits/cxxabi_init_exception.h:
+/usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 
-/usr/include/c++/9/cstdio:
+/usr/local/cuda/include/sm_61_intrinsics.hpp:
 
-/usr/local/cuda-11.1/include/crt/host_defines.h:
+/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
+/usr/include/x86_64-linux-gnu/sys/types.h:
 
-/usr/local/cuda-11.1/include/crt/math_functions.h:
+/usr/local/cuda/include/texture_indirect_functions.h:
 
-/usr/local/cuda-11.1/include/channel_descriptor.h:
+/usr/local/cuda/include/crt/host_defines.h:
 
-/usr/include/c++/9/debug/assertions.h:
+/usr/include/c++/9/new:
 
-/usr/include/x86_64-linux-gnu/bits/locale.h:
+/usr/local/cuda/include/crt/common_functions.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h:
+/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
 
-/usr/include/c++/9/string:
+/usr/local/cuda/include/crt/device_double_functions.hpp:
 
-/usr/include/x86_64-linux-gnu/c++/9/bits/ctype_inline.h:
+/usr/include/c++/9/bits/stl_algobase.h:
 
-/usr/include/c++/9/bits/locale_facets.h:
+/usr/local/cuda/include/texture_types.h:
 
-/usr/local/cuda-11.1/include/cuda_runtime_api.h:
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
 
-/usr/include/string.h:
+/usr/include/time.h:
 
-/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
-/usr/local/cuda-11.1/samples/common/inc/exception.h:
+/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
 
-/usr/local/cuda-11.1/include/driver_functions.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
 
 /usr/include/stdio.h:
 
@@ -612,15 +616,17 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
-
-/usr/local/cuda-11.1/include/sm_35_atomic_functions.h:
-
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
-/usr/local/cuda-11.1/include/crt/math_functions.hpp:
-
 /usr/include/c++/9/bits/functional_hash.h:
+
+/usr/include/x86_64-linux-gnu/bits/select.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h:
+
+/usr/include/c++/9/bits/basic_ios.h:
 
 /usr/include/c++/9/sstream:
 
@@ -636,8 +642,6 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
 
-/usr/local/cuda-11.1/include/sm_35_intrinsics.h:
-
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h:
 
 /usr/include/x86_64-linux-gnu/bits/mman.h:
@@ -648,93 +652,107 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/timex.h:
 
+/usr/local/cuda/include/cuda_surface_types.h:
+
+/usr/include/string.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+
+/usr/local/cuda-11.1/samples/common/inc/exception.h:
+
+/usr/include/x86_64-linux-gnu/bits/uio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
+
+/usr/include/c++/9/bits/exception_defines.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
+
+/usr/local/cuda/include/device_atomic_functions.h:
+
+/usr/include/c++/9/stdlib.h:
+
+/usr/local/cuda/include/device_atomic_functions.hpp:
+
+/usr/local/cuda-11.1/samples/common/inc/helper_image.h:
+
+/usr/include/c++/9/bits/predefined_ops.h:
+
+/usr/include/c++/9/cctype:
+
+/usr/include/c++/9/cwctype:
+
+/usr/local/cuda/include/sm_20_atomic_functions.h:
+
+/usr/local/cuda/include/sm_20_atomic_functions.hpp:
+
 /usr/include/c++/9/bits/stl_iterator_base_funcs.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/time_t.h:
 
-/usr/include/stdint.h:
+/usr/local/cuda/include/sm_32_atomic_functions.h:
 
-/usr/include/endian.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
-/usr/local/cuda-11.1/include/device_atomic_functions.hpp:
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
+/usr/include/c++/9/bits/locale_classes.tcc:
 
-/usr/include/c++/9/bits/streambuf_iterator.h:
+../stress_kernel.cuh:
 
-/usr/local/cuda-11.1/include/crt/sm_70_rt.h:
+/usr/local/cuda/include/sm_35_atomic_functions.h:
 
-/usr/local/cuda-11.1/include/sm_30_intrinsics.hpp:
+/usr/include/c++/9/bits/std_abs.h:
 
-/usr/local/cuda-11.1/include/crt/device_functions.hpp:
+/usr/local/cuda/include/sm_60_atomic_functions.h:
 
-/usr/local/cuda-11.1/include/device_atomic_functions.h:
+/usr/local/cuda/include/sm_60_atomic_functions.hpp:
 
-/usr/local/cuda-11.1/include/sm_20_atomic_functions.h:
+/usr/local/cuda/include/sm_20_intrinsics.hpp:
 
-/usr/local/cuda-11.1/samples/common/inc/helper_functions.h:
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
+
+/usr/local/cuda/include/sm_30_intrinsics.h:
+
+/usr/local/cuda/include/sm_30_intrinsics.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+
+/usr/local/cuda/include/sm_32_intrinsics.h:
+
+/usr/local/cuda/include/sm_61_intrinsics.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/c++/9/bits/stl_iterator_base_types.h:
+
+/usr/include/c++/9/bits/stl_tempbuf.h:
+
+/usr/include/c++/9/cstdlib:
+
+/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
+
+/usr/local/cuda/include/crt/sm_70_rt.hpp:
+
+/usr/local/cuda/include/crt/sm_80_rt.h:
+
+/usr/local/cuda/include/texture_fetch_functions.h:
+
+/usr/local/cuda/include/surface_indirect_functions.h:
+
+/usr/include/c++/9/stdexcept:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
-
-/usr/local/cuda-11.1/include/sm_32_atomic_functions.h:
-
-/usr/include/x86_64-linux-gnu/bits/uio_lim.h:
-
-/usr/local/cuda-11.1/include/sm_32_atomic_functions.hpp:
-
-/usr/local/cuda-11.1/include/sm_60_atomic_functions.hpp:
-
-/usr/local/cuda-11.1/include/sm_20_intrinsics.h:
-
-/usr/include/linux/errno.h:
-
-/usr/local/cuda-11.1/include/sm_20_intrinsics.hpp:
-
-/usr/include/x86_64-linux-gnu/asm/unistd_64.h:
-
-/usr/include/c++/9/cmath:
-
-/usr/local/cuda-11.1/include/sm_30_intrinsics.h:
-
-/usr/local/cuda-11.1/include/sm_32_intrinsics.hpp:
-
-/usr/local/cuda-11.1/include/sm_61_intrinsics.hpp:
-
-/usr/include/c++/9/bits/basic_string.tcc:
-
-/usr/include/c++/9/stdlib.h:
-
-/usr/local/cuda-11.1/include/crt/sm_70_rt.hpp:
-
-/usr/local/cuda-11.1/include/crt/sm_80_rt.h:
-
-/usr/local/cuda-11.1/include/crt/sm_80_rt.hpp:
-
-/usr/local/cuda-11.1/include/surface_indirect_functions.h:
-
-/usr/include/c++/9/bits/ptr_traits.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
-
-/usr/local/cuda-11.1/include/device_launch_parameters.h:
-
 /usr/include/x86_64-linux-gnu/bits/mman-shared.h:
+
+/usr/local/cuda/include/device_launch_parameters.h:
 
 ../test.hpp:
 
 /usr/include/x86_64-linux-gnu/c++/9/bits/gthr.h:
 
-/usr/local/cuda-11.1/include/crt/device_double_functions.h:
-
 /usr/include/x86_64-linux-gnu/sys/mman.h:
-
-/usr/local/cuda-11.1/include/cuda_runtime.h:
-
-/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
-
-/usr/local/cuda-11.1/include/crt/common_functions.h:
 
 /usr/include/x86_64-linux-gnu/bits/environments.h:
 
@@ -744,39 +762,21 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/c++/9/bits/alloc_traits.h:
 
+/usr/local/cuda/include/crt/sm_80_rt.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/confname.h:
-
-/usr/include/x86_64-linux-gnu/bits/setjmp.h:
-
-/usr/include/time.h:
-
-/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
 
 /usr/include/x86_64-linux-gnu/bits/getopt_core.h:
 
 /usr/include/c++/9/debug/debug.h:
 
-/usr/include/c++/9/bits/stl_tempbuf.h:
-
-/usr/include/c++/9/cstdlib:
-
-/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
-
 /usr/include/wctype.h:
 
 /usr/include/sched.h:
 
-/usr/local/cuda-11.1/include/texture_types.h:
-
-/usr/include/errno.h:
-
-/usr/include/c++/9/limits:
-
-/usr/include/limits.h:
-
-/usr/include/c++/9/bits/cxxabi_forced.h:
-
 /usr/include/x86_64-linux-gnu/bits/errno.h:
+
+/usr/include/linux/errno.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
@@ -786,11 +786,17 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/asm/unistd.h:
 
+/usr/local/cuda/include/cuda_texture_types.h:
+
+/usr/include/x86_64-linux-gnu/asm/unistd_64.h:
+
 /usr/include/c++/9/bits/sstream.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/syscall.h:
 
 /usr/include/c++/9/bits/stringfwd.h:
+
+/usr/local/cuda-11.1/samples/common/inc/helper_functions.h:
 
 /usr/include/c++/9/ostream:
 
@@ -803,8 +809,6 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 /usr/include/c++/9/bits/postypes.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/error_t.h:
-
-/usr/local/cuda-11.1/include/sm_20_atomic_functions.hpp:
 
 /usr/include/c++/9/bits/basic_string.h:
 
@@ -824,25 +828,23 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/c++/9/bits/stl_iterator.h:
 
+/usr/include/c++/9/ext/numeric_traits.h:
+
+/usr/local/cuda/include/sm_20_intrinsics.h:
+
 /usr/include/c++/9/bits/stl_pair.h:
 
-/usr/include/stdc-predef.h:
+/usr/include/c++/9/debug/assertions.h:
 
-/usr/include/c++/9/bits/stl_iterator_base_types.h:
+/usr/include/x86_64-linux-gnu/bits/locale.h:
 
-/usr/include/x86_64-linux-gnu/sys/syscall.h:
+/usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h:
 
-/usr/include/c++/9/bits/localefwd.h:
+/usr/include/c++/9/string:
+
+/usr/include/c++/9/bits/ptr_traits.h:
 
 /usr/include/c++/9/clocale:
-
-/usr/local/cuda-11.1/samples/common/inc/helper_image.h:
-
-/usr/include/c++/9/bits/predefined_ops.h:
-
-/usr/include/c++/9/cctype:
-
-/usr/include/c++/9/cwctype:
 
 /usr/include/c++/9/bits/exception.h:
 
@@ -856,11 +858,15 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/pthread.h:
 
+/usr/local/cuda/include/crt/host_config.h:
+
 /usr/include/x86_64-linux-gnu/c++/9/bits/atomic_word.h:
 
 /usr/include/c++/9/bits/allocator.h:
 
-/usr/local/cuda-11.1/include/surface_functions.h:
+/usr/include/x86_64-linux-gnu/c++/9/bits/c++allocator.h:
+
+/usr/local/cuda/include/crt/device_double_functions.h:
 
 /usr/include/c++/9/bits/ostream_insert.h:
 
@@ -876,17 +882,11 @@ CMakeFiles/myptx.dir/stress.ptx: ../stress.cu \
 
 /usr/include/c++/9/cerrno:
 
-/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
-
-/usr/include/c++/9/bits/locale_classes.tcc:
+/usr/include/c++/9/bits/basic_string.tcc:
 
 /usr/include/c++/9/system_error:
 
 /usr/include/x86_64-linux-gnu/c++/9/bits/error_constants.h:
-
-/usr/include/c++/9/stdexcept:
 
 /usr/include/x86_64-linux-gnu/bits/sched.h:
 
