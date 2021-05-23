@@ -19,6 +19,16 @@ stress_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
     lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
     lcl_wrp = lcl_thd / 32;
 
+    if(lcl_thd==0 && gbl_blk==0) {
+      #ifdef COMPUTE_ONLY
+      char compute_only_string[] = "ON";
+      #else
+      char compute_only_string[] = "OFF";
+      #endif
+
+      printf("STRESS KERNEL. %d passes. %d/%d blocks/warps. Compute-Only is %s.\n", NUM_PASSES, NUM_BLOCKS, NUM_WARPS, compute_only_string);
+  }
+
     int i,j, k;
 
     int wrp_count;
@@ -81,20 +91,20 @@ stress_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
               // the local warp loops while chasing the pointers in its partition
 	      // uncomment the lines inside the loop to record read access times in shared memory
          //wrp_count = 0;
-#pragma unroll 1
+//#pragma unroll 1
         for (wrp_count = 0; wrp_count < wrp_max; wrp_count++) {
                 #ifdef COMPUTE_ONLY
                 r_sum += ptr;
                 #else // COMPUTE_ONLY
-                // cycles_before = clock64();
+                //cycles_before = clock64();
                 //  ptr = __ldcv(&(k_data[ptr]));
                 ptr = k_data[ptr];
                 // r_sum += ptr;
-                 //cycles_after = clock64();
-                 //blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
+                // cycles_after = clock64();
+                // blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
                 #endif // COMPUTE_ONLY
          }
-               __syncthreads();
+               // __syncthreads();
                //if(i==1 && gbl_blk==0 && lcl_thd==0) after_pass = clock64();
 /*
  * For access time logging, comment the ifdef/endif statements to copy times
@@ -102,18 +112,18 @@ stress_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
  */
 //#ifdef DO_LOG	       
           }
-               __syncthreads();
-               int log_idx;
-               log_idx = k * MAX_WARP_LOG;
-             // for (j = 0; j < wrp_max; j++)
-              //    k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
-                //   k_result[log_idx + wrp_log + j] = (unsigned short)cycles_add;
 //#endif		  
 	//   } //end loop for passes through a device space
        } // end loop over all spaces	  
-       __syncthreads();
+        __syncthreads();
        clock_now = gclock64();
    } //end outer loop for run time
+   __syncthreads();
+    int log_idx;
+    log_idx = 0 * MAX_WARP_LOG;
+    for (j = 0; j < wrp_max; j++)
+      k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
+     //   k_result[log_idx + wrp_log + j] = (unsigned short)cycles_add;
 
     //__syncthreads();
     ptr = ptr + r_sum;    

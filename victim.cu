@@ -29,10 +29,10 @@
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
 #define NUM_BLOCKS  2      // fixed number of blocks
-#define NUM_WARPS   4       // fixed number of warps per block
-#include "victim_kernel.cuh" 
+#define NUM_WARPS   2       // fixed number of warps per block
 
-// #define CACHE_OP
+#define CACHE_OP
+#include "victim_kernel.cuh" 
  
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
@@ -244,7 +244,7 @@ int main(int argc, char *argv[])
       if(tmp < 350) cnt++;
     }	
   }
-  // printf("%d out of %d\n", cnt, element_count);
+   printf("%d out of %d\n", cnt, element_count);
   //printf("min: %d\n", min);
    // cudaDeviceReset();
 }
