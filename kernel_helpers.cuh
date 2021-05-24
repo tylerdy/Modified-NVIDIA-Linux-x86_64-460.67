@@ -27,6 +27,16 @@ static __device__ __inline__ unsigned long long int cycles64() {
 
 }
 
+__global__ void
+flushKernel(unsigned short *k_result,int bytesize, unsigned int *c_flush) {
+   int flush_max = bytesize / sizeof(unsigned int);
+   unsigned int r_sum; 
+   for (int i = 0; i < flush_max; i++)
+        r_sum = r_sum + c_flush[i];
+   k_result[0] = r_sum;
+   
+}
+
 /* The kernel for sequential pointer chasing in device memory arrays.
 * The kernel expects to be launched with two blocks and 128 threads
 * (4 warps) per block. Each warp performs pointer chasing on a

@@ -28,11 +28,11 @@
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
-#define NUM_BLOCKS  3      // fixed number of blocks
-#define NUM_WARPS   3       // fixed number of warps per block
+#define NUM_BLOCKS  2      // fixed number of blocks
+#define NUM_WARPS   4       // fixed number of warps per block
 
-#define COMPUTE_ONLY // for stress kernel
-#define CACHE_OP // for victim kernel
+//#define COMPUTE_ONLY // for stress kernel
+//#define CACHE_OP // for victim kernel
 #include "victim_kernel.cuh" 
 #include "stress_kernel.cuh" 
  
@@ -151,17 +151,15 @@ int main(int argc, char *argv[])
   pthread_create(&strm_mgr, 0, stress_strm_mgr, NULL);
   sleep(1); //give the stress thread time to start
 
-
-
-  ret = device_init(true);
-  if (ret < 0)
-        fprintf(stderr, "Device init failed\n");
+  //ret = device_init(true); // printf("Warning: using contiguous victim mem.\n");
+  //if (ret < 0)
+  //      fprintf(stderr, "Device init failed\n");
   cudaStreamCreate(&my_stream);
   // allocate list of device memory spaces 
   checkCudaErrors(cudaMalloc((void **) &d_ptrs, sizeof(h_ptrs))); 
-  d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
+  //d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
   //printf("%016x\n", device_p);
-  //checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
+  checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
   //printf("%016x\n", d_data);
   checkCudaErrors(cudaStreamSynchronize(my_stream));
 
@@ -251,13 +249,14 @@ int main(int argc, char *argv[])
     for (j = 0; j < element_count; j++) {
       int tmp = h_result[log_idx + j];
       log_idx = (i * element_count);
-       // printf("%hu\n", tmp); 
+      // printf("%hu\n", tmp); 
       //if(min > tmp && tmp >0) min = tmp;
       if(tmp < 350) cnt++;
     }	
   }
-   printf("%d out of %d\n", cnt, element_count);
+  // printf("%d out of %d\n", cnt, element_count);
   //printf("min: %d\n", min);
+   // cudaDeviceReset();
 
 
   //block main program until stress thread completes    
@@ -272,7 +271,7 @@ stress_strm_mgr(void *targs)
   int ret;
   void *virt_start;
   void *phy_start;
-  cudaStream_t my_stream;
+  cudaStream_t stress_stream;
 
   // Device memory pointers
   unsigned int *d_data, *device_p;   //cache-size device space to hold pointer-chasing array
@@ -323,17 +322,17 @@ stress_strm_mgr(void *targs)
   initstate_r((unsigned int)my_pid, r_state, sizeof(r_state), &buf);
   
   cudaSetDevice(0); //only one on TX2
-  //ret = device_init(true);
-  //if (ret < 0)
-  //      fprintf(stderr, "Device init failed\n");
-  cudaStreamCreate(&my_stream);
+  ret = device_init(true);
+  if (ret < 0)
+        fprintf(stderr, "Device init failed\n");
+  cudaStreamCreate(&stress_stream);
   // allocate list of device memory spaces 
   checkCudaErrors(cudaMalloc((void **) &d_ptrs, sizeof(h_ptrs))); 
-  // d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
+  d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
   //printf("%016x\n", device_p);
-   checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
+  // checkCudaErrors(cudaMalloc((void **) &d_data, bytesize)); printf("Warning: using non-contiguous stress memory.\n");
   //printf("%016x\n", d_data);
-  //checkCudaErrors(cudaStreamSynchronize(my_stream));
+  //checkCudaErrors(cudaStreamSynchronize(stress_stream));
 
   h_ptrs[0] = d_data; 
   
@@ -390,26 +389,26 @@ stress_strm_mgr(void *targs)
 
   // copy pointer-chasing array in host memory to device memory spaces
   for (i = 0; i < NUM_SPACES; i++) {
-     checkCudaErrors(cudaMemcpyAsync(h_ptrs[i],  h_data, bytesize, cudaMemcpyHostToDevice, my_stream)); 
-     checkCudaErrors(cudaStreamSynchronize(my_stream));
+     checkCudaErrors(cudaMemcpyAsync(h_ptrs[i],  h_data, bytesize, cudaMemcpyHostToDevice, stress_stream)); 
+     checkCudaErrors(cudaStreamSynchronize(stress_stream));
   }
   run_time = run_seconds * 1000000000ULL;  //seconds to nanoseconds
   shared_space = MAX_WARP_LOG * sizeof(unsigned short) + (1<<10); //32KB per block/SM
 
 
-  //memoryKernel<<<Blocks, Threads, shared_space, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
-  stress_memoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
-  //testKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result);
-  checkCudaErrors(cudaStreamSynchronize(my_stream));
+  //memoryKernel<<<Blocks, Threads, shared_space, stress_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
+  stress_memoryKernel<<<Blocks, Threads, 0, stress_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
+  //testKernel<<<Blocks, Threads, 0, stress_stream>>>(d_ptrs, d_result);
+  checkCudaErrors(cudaStreamSynchronize(stress_stream));
 
   // return 0;
   // copy any logged data back to host memory
-  checkCudaErrors(cudaMemcpyAsync(h_result, d_result, wrp_log, cudaMemcpyDeviceToHost, my_stream));
-  checkCudaErrors(cudaStreamSynchronize(my_stream));
+  checkCudaErrors(cudaMemcpyAsync(h_result, d_result, wrp_log, cudaMemcpyDeviceToHost, stress_stream));
+  checkCudaErrors(cudaStreamSynchronize(stress_stream));
   
   // copy any side information stored in device space zero back to host memory
-  checkCudaErrors(cudaMemcpyAsync(h_data, h_ptrs[0], bytesize, cudaMemcpyDeviceToHost, my_stream));
-  checkCudaErrors(cudaStreamSynchronize(my_stream));
+  checkCudaErrors(cudaMemcpyAsync(h_data, h_ptrs[0], bytesize, cudaMemcpyDeviceToHost, stress_stream));
+  checkCudaErrors(cudaStreamSynchronize(stress_stream));
 
   int freq = 1;
   checkCudaErrors(cudaDeviceGetAttribute(&freq, cudaDevAttrClockRate, 0));
@@ -421,12 +420,12 @@ stress_strm_mgr(void *targs)
     for (j = 0; j < element_count; j++) {
       int tmp = h_result[log_idx + j];
       log_idx = (i * element_count);
-      // printf("%hu\n", tmp); 
+       //printf("%hu\n", tmp); 
       //if(min > tmp && tmp >0) min = tmp;
       if(tmp < 350) cnt++;
     }	
   }
-  // printf("%d out of %d\n", cnt, element_count);
+  // printf("[stress] %d out of %d\n", cnt, element_count);
   //printf("min: %d\n", min);
    // cudaDeviceReset();
 

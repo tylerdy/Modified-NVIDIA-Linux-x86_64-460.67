@@ -24,14 +24,14 @@
 
 #define MAX_SPACES 20           // max number of cache-size spaces with pointer chasing
 #define NUM_SPACES 1            // number of spaces for this instance
-#define NUM_PASSES 2 		// number of read passes over each space
+#define NUM_PASSES 1024 		// number of read passes over each space
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
 #define NUM_BLOCKS  2      // fixed number of blocks
-#define NUM_WARPS   2       // fixed number of warps per block
+#define NUM_WARPS   4       // fixed number of warps per block
 
-#define CACHE_OP
+//#define CACHE_OP
 #include "victim_kernel.cuh" 
  
 #define min(a,b) ((a) <= (b) ? (a) : (b))
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
   initstate_r((unsigned int)my_pid, r_state, sizeof(r_state), &buf);
   
   cudaSetDevice(0); //only one on TX2
-  //ret = device_init(true);
+  //ret = device_init(true); // printf("Warning: using contiguous victim mem.\n");
   //if (ret < 0)
   //      fprintf(stderr, "Device init failed\n");
   cudaStreamCreate(&my_stream);
@@ -215,6 +215,8 @@ int main(int argc, char *argv[])
   shared_space = MAX_WARP_LOG * sizeof(unsigned short) + (1<<10); //32KB per block/SM
 
 
+  flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush);  
+  checkCudaErrors(cudaStreamSynchronize(my_stream));
   //memoryKernel<<<Blocks, Threads, shared_space, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
   victim_memoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
   //testKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result);
@@ -244,7 +246,7 @@ int main(int argc, char *argv[])
       if(tmp < 350) cnt++;
     }	
   }
-   printf("%d out of %d\n", cnt, element_count);
+  // printf("%d out of %d\n", cnt, element_count);
   //printf("min: %d\n", min);
    // cudaDeviceReset();
 }

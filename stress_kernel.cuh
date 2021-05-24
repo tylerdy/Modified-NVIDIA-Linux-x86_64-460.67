@@ -19,14 +19,14 @@ stress_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
     lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
     lcl_wrp = lcl_thd / 32;
 
-    if(lcl_thd==0 && gbl_blk==0) {
-      #ifdef COMPUTE_ONLY
-      char compute_only_string[] = "ON";
-      #else
-      char compute_only_string[] = "OFF";
-      #endif
+    int compute_only=0;
+    
 
-      printf("STRESS KERNEL. %d passes. %d/%d blocks/warps. Compute-Only is %s.\n", NUM_PASSES, NUM_BLOCKS, NUM_WARPS, compute_only_string);
+    if(lcl_thd==0 && gbl_blk==0) {
+      //printf("STRESS KERNEL. %d passes. Runtime is %d. %d/%d blocks/warps. Compute-Only is %s.\n", NUM_PASSES, run_time, NUM_BLOCKS, NUM_WARPS, "OFF");
+      if(NUM_PASSES>2 || run_time<5) {
+        printf("Warning: possible bad parameter.\n");
+      }
   }
 
     int i,j, k;
@@ -104,7 +104,7 @@ stress_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
                 // blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
                 #endif // COMPUTE_ONLY
          }
-               // __syncthreads();
+                __syncthreads();
                //if(i==1 && gbl_blk==0 && lcl_thd==0) after_pass = clock64();
 /*
  * For access time logging, comment the ifdef/endif statements to copy times
@@ -119,10 +119,10 @@ stress_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
        clock_now = gclock64();
    } //end outer loop for run time
    __syncthreads();
-    int log_idx;
-    log_idx = 0 * MAX_WARP_LOG;
-    for (j = 0; j < wrp_max; j++)
-      k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
+    //int log_idx;
+    //log_idx = 0 * MAX_WARP_LOG;
+    //for (j = 0; j < wrp_max; j++)
+    //  k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
      //   k_result[log_idx + wrp_log + j] = (unsigned short)cycles_add;
 
     //__syncthreads();

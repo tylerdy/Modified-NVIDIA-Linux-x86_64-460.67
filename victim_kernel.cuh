@@ -2,9 +2,9 @@
 
 __global__ void
 victim_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int bytesize, unsigned long long run_time, int myZero, unsigned int *c_flush)  //c_flush is size of k_data (bytesize) and used to flush cache initially
+//WARNING: All data arrays and numbers of blocks/warps powers of 2
 {
-    //WARNING: All data arrays and numbers of blocks/warps powers of 2
-
+    
     // uncomment next statement to allocate a shared memory array for logging read times
     __shared__ unsigned short blk_log[MAX_WARP_LOG + 1];
     
@@ -18,15 +18,13 @@ victim_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
     gbl_blk = (blockIdx.y * gridDim.x) + blockIdx.x;
     lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
     lcl_wrp = lcl_thd / 32;
-
+    
     if(lcl_thd==0 && gbl_blk==0) {
-        #ifdef CACHE_OP
-        char cache_operator_string[] = "ON";
-        #else
-        char cache_operator_string[] = "OFF";
-        #endif
+        //printf("VICTIM KERNEL. %d passes. Runtime is %d. %d/%d blocks/warps. Cache Operator Victim is %s.\n", NUM_PASSES, run_time, NUM_BLOCKS, NUM_WARPS, "");
 
-        printf("VICTIM KERNEL. %d passes. %d/%d blocks/warps. Cache Operator Victim is %s.\n", NUM_PASSES, NUM_BLOCKS, NUM_WARPS, cache_operator_string);
+        if(NUM_PASSES<2 || run_time>0) {
+            printf("Warning: possibly bad parameter.\n");
+        }
     }
 
     int i,j, k;
@@ -59,11 +57,7 @@ victim_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
     cycles_after = clock64();
     cycles_add = (unsigned short) (cycles_after - cycles_before);
     //cycles_add = 0;
-    int flush_max = bytesize / sizeof(unsigned int);
-    //flush existing data from the cache by references to c_flush
-    for (i = 0; i < flush_max; i++)
-        r_sum = r_sum + c_flush[i];
-        // r_sum = r_sum + __ldcg(&(c_flush[i]));
+
     
     //record the kernel start and current times in nanoseconds
     cycles_after = clock64();
@@ -90,20 +84,20 @@ victim_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
               // the local warp loops while chasing the pointers in its partition
 	      // uncomment the lines inside the loop to record read access times in shared memory
          //wrp_count = 0;
-#pragma unroll 1
+// #pragma unroll 1
         for (wrp_count = 0; wrp_count < wrp_max; wrp_count++) {
-                 cycles_before = clock64();
+                //cycles_before = clock64();
                 #ifdef CACHE_OP
                 ptr = __ldcv(&(k_data[ptr]));
                 #else // CACHE_OP
                 ptr = k_data[ptr];
                 #endif // CACHE_OP
                 r_sum += ptr;
-                cycles_after = clock64();
-                blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
+                //cycles_after = clock64();
+                //blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
          }
                __syncthreads();
-               if(i==1 && gbl_blk==0 && lcl_thd==0) after_pass = clock64();
+               if(i==NUM_PASSES-1 && gbl_blk==0 && lcl_thd==0) after_pass = clock64();
 /*
  * For access time logging, comment the ifdef/endif statements to copy times
  * from shared memory to device memory log
@@ -119,10 +113,10 @@ victim_memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, 
        //clock_now = gclock64();
    } //end outer loop for run time
 
-   int log_idx;
-    log_idx = 0 * MAX_WARP_LOG;
-    for (j = 0; j < wrp_max; j++)
-        k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
+   //int log_idx;
+    //log_idx = 0 * MAX_WARP_LOG;
+    //for (j = 0; j < wrp_max; j++)
+    //    k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
     //    k_result[log_idx + wrp_log + j] = (unsigned short)cycles_add;
 
     //__syncthreads();
