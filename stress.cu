@@ -1,3 +1,11 @@
+#define MAX_SPACES 20           // max number of cache-size spaces with pointer chasing
+#define NUM_SPACES 1            // number of spaces for this instance
+#define NUM_PASSES 2 		// number of read passes over each space
+#define MAX_WARP_LOG 16384 
+#define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
+#define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
+#define NUM_BLOCKS  16     // fixed number of blocks
+#define NUM_WARPS   32       // fixed number of warps per block
 #include <stdio.h>
 #include <cstdint>
 
@@ -21,16 +29,9 @@
 #include <helper_functions.h>  // helper for shared that are common to CUDA Samples
 #include <helper_cuda.h>       // helper for checking cuda initialization and error checking
 #include <helper_string.h>     // helper functions for string parsing
-
-#define MAX_SPACES 20           // max number of cache-size spaces with pointer chasing
-#define NUM_SPACES 1            // number of spaces for this instance
-#define NUM_PASSES 2 		// number of read passes over each space
-#define MAX_WARP_LOG 16384 
-#define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
-#define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
-#define NUM_BLOCKS  1        // fixed number of blocks
-#define NUM_WARPS   2         // fixed number of warps per block
 #include "stress_kernel.cuh" 
+
+
  
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
@@ -79,7 +80,7 @@ int main(int argc, char *argv[])
 
   // Device memory pointers
   unsigned int *d_data, *device_p;   //cache-size device space to hold pointer-chasing array
-  //unsigned int *d_skip;   //device space skipped to create non-continuous areas
+  unsigned int *d_skip;   //device space skipped to create non-continuous areas
   unsigned int **d_ptrs;  //list of device spaces passed to kernel
   
   unsigned int *d_flush;  //cache-size device space for inital cache flush
@@ -96,7 +97,7 @@ int main(int argc, char *argv[])
 
   // parameters for program
   //default run time
-  int run_seconds = 1;
+  int run_seconds = 10;
 
   //number of bytes in TX2 L2 cache
   int bytesize = TX2_CACHE_SIZE;
@@ -138,7 +139,7 @@ int main(int argc, char *argv[])
   // initialize for generating random numbers
   initstate_r((unsigned int)my_pid, r_state, sizeof(r_state), &buf);
   
-  // cudaSetDevice(0); //only one on TX2
+  cudaSetDevice(0); //only one on TX2
   ret = device_init(true);
   if (ret < 0)
         fprintf(stderr, "Device init failed\n");
@@ -155,11 +156,29 @@ int main(int argc, char *argv[])
   
 
   // fprintf(stdout, "virt %p phys %p\n", h_ptrs[0], phy_start);
+  // for (i = 0; i < NUM_SPACES; i++) {
+  //    //make random size holes in device memory to encourage non-contiguous allocations
+  //    skip_space1 = 4096 * get_pages(&buf);  //hole will be this size
+  //    skip_space2 = 4096 * get_pages(&buf);  //next unavailable pages         
+  //    checkCudaErrors(cudaMalloc((void **) &d_skip, skip_space1));
+  //    checkCudaErrors(cudaMalloc((void **) &d_data, skip_space2));
+  //    checkCudaErrors(cudaFree(d_skip));   //hole goes here
+     
+  //    //allocate device memory space equal to L2 cache size
+  //    //aligned on page boundary 
+  //    checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
+  //    checkAlign = (unsigned long long)d_data & 0x000000000000007f;
+  //    if (checkAlign != (unsigned long long)0) {
+  //       printf("Failed Aligned Page, Size %d Ptr %p Check %llu\n", bytesize, d_data, checkAlign);
+  //       exit(-1);
+  //    }
+  //    h_ptrs[i] = d_data;  //save pointer to allocated device space in host list
+  // }
 
   checkCudaErrors(cudaMemcpy(d_ptrs, h_ptrs, sizeof(h_ptrs), cudaMemcpyHostToDevice));
   
   // allocate another 512 KB space for initial cache flush by kernel
-  checkCudaErrors(cudaMalloc((void **) &d_flush, bytesize*16));  
+  checkCudaErrors(cudaMalloc((void **) &d_flush, bytesize));  
 
   // space needed to log times for reading each element in each device space
   wrp_log = NUM_SPACES * element_count * sizeof(unsigned short);
@@ -178,11 +197,11 @@ int main(int argc, char *argv[])
      // index values separated by number of elements per line (32)
      nextptr = i * line_elements;
      h_data[ptr] = nextptr;
-     //printf("[%d] = %d\n", ptr, nextptr);
+    //  printf("[%d] = %d\n", ptr, nextptr);
      ptr = nextptr;
    }
    h_data[ptr] = 0;  //last points to first
-
+// return 0;
   Threads = dim3(32, NUM_WARPS, 1);
   Blocks = dim3(NUM_BLOCKS, 1, 1);
 
@@ -198,7 +217,7 @@ int main(int argc, char *argv[])
   memoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
   //testKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result);
   checkCudaErrors(cudaStreamSynchronize(my_stream));
-
+  // return 0;
   // copy any logged data back to host memory
   checkCudaErrors(cudaMemcpyAsync(h_result, d_result, wrp_log, cudaMemcpyDeviceToHost, my_stream));
   checkCudaErrors(cudaStreamSynchronize(my_stream));
@@ -208,16 +227,17 @@ int main(int argc, char *argv[])
   checkCudaErrors(cudaStreamSynchronize(my_stream));
   int min =  10000;
   int cnt  = 0;
-  for (i = 0; i < NUM_SPACES; i++) {
-    for (j = 0; j < element_count; j++) {
-      int tmp = h_result[log_idx + j];
-      log_idx = (i * element_count);
-      printf("%hu\n", tmp); 
-      //if(min > tmp && tmp >0) min = tmp;
-      if(tmp < 300) cnt++;
-    }	
-  }
-  printf("%d out of %d\n", cnt, element_count);
+  // for (i = 0; i < NUM_SPACES; i++) {
+  //   for (j = 0; j < element_count; j++) {
+  //     int tmp = h_result[log_idx + j];
+  //     log_idx = (i * element_count);
+  //     // printf("%hu\n", tmp); 
+  //     //if(min > tmp && tmp >0) min = tmp;
+  //     if(tmp < 350) cnt++;
+  //   }	
+  // }
+  // printf("%d out of %d\n", cnt, element_count);
+  printf("%llu\n", h_result[3]);
   //printf("min: %d\n", min);
-    cudaDeviceReset();
+   // cudaDeviceReset();
 }

@@ -182,7 +182,7 @@ __used __section(__versions) = {
 	{ 0x2ea2c95c, "__x86_indirect_thunk_rax" },
 	{ 0xbfdcb43a, "__x86_indirect_thunk_r11" },
 	{ 0xce96a1a4, "nvUvmInterfaceP2pObjectDestroy" },
-	{ 0x3129b92e, "wake_up_process" },
+	{ 0x77b1976d, "wake_up_process" },
 	{ 0xc51ebf8e, "nvUvmInterfaceRegisterGpu" },
 	{ 0xbdfb6dbb, "__fentry__" },
 	{ 0xcbd4898c, "fortify_panic" },
@@ -250,4 +250,4 @@ __used __section(__versions) = {
 MODULE_INFO(depends, "nvidia");
 
 
-MODULE_INFO(srcversion, "35C9DAA9FC221F131642A36");
+MODULE_INFO(srcversion, "A6C4E09D2FEA8E306E8EF53");

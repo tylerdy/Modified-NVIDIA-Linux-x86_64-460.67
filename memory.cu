@@ -28,8 +28,11 @@
 #include <uvm_ioctl.h>
 
 #define NVIDIA_UVM_DEVICE_PATH  "/dev/nvidia-uvm" // tbd fix
+#define NVIDIA_UVM_DEVICE_PATH2 "/sys/devices/system/memory/block_size_bytes"
 /* TODO: This path can be changed via environment variable */
 #define NVIDIA_MPS_CONTROL_PATH "/tmp/nvidia-mps/control"
+#define OFFSET 0//2 * (1<<21) + (1<<12) * 16
+
 
 /* Ioctl codes */
 #define IOCTL_SET_PROCESS_CONTIG_INFO    _IOC(0, 0, UVM_SET_PROCESS_CONTIG_INFO, 0)
@@ -211,8 +214,11 @@ int open(const char *pathname, int flags, int mode)
     
     ret = g_orig_open(pathname,flags, mode);
 
+    // if (g_uvm_fd < 0 && 
+    //         strncmp(pathname, NVIDIA_UVM_DEVICE_PATH, strlen(NVIDIA_UVM_DEVICE_PATH)) == 0) {
+    
     if (g_uvm_fd < 0 && 
-            strncmp(pathname, NVIDIA_UVM_DEVICE_PATH, strlen(NVIDIA_UVM_DEVICE_PATH)) == 0) {
+            strncmp(pathname, NVIDIA_UVM_DEVICE_PATH2, strlen(NVIDIA_UVM_DEVICE_PATH2)) == 0) {
         g_uvm_fd = ret;
     }
     return ret;
@@ -232,7 +238,7 @@ int connect(int sockfd, const struct sockaddr *addr,
 
     if (ret >= 0 && g_uvm_fd < 0 && addr && addr->sa_family == AF_LOCAL && 
             strncmp(addr->sa_data, NVIDIA_MPS_CONTROL_PATH, strlen(NVIDIA_MPS_CONTROL_PATH)) == 0) {
-        g_uvm_fd = sockfd;
+        // g_uvm_fd = sockfd;
     }
     return ret;
 }
@@ -253,6 +259,7 @@ if (g_memory_ctx.is_initialized) {
 }
 
 ret = get_device_UUID(device, &params.destinationUuid);
+// printf("%d\n", params.destinationUuid);
 if (ret < 0) {
     fprintf(stderr, "Failed to get device UUID\n");
     return ret;
@@ -262,6 +269,7 @@ params.length = actual_length;
 
 ret = ioctl(g_uvm_fd, IOCTL_SET_PROCESS_CONTIG_INFO, &params);
 if (ret < 0) {
+    // perror("err:");  
     fprintf(stderr, "Set process contig ioctl failed\n");
     return ret;
 }
@@ -351,9 +359,8 @@ int fgpu_memory_allocate(void **p)
         fprintf(stderr, "FGPU:Initialization not done\n");
         return -EBADF;
     }
-
-
-    ret_addr = allocator_alloc(g_memory_ctx.allocator);
+    printf("phys addr: %016x\n", g_memory_ctx.base_phy_addr + OFFSET);
+    ret_addr = allocator_alloc(g_memory_ctx.allocator, (void*)(OFFSET));
     if (!ret_addr) {
         fprintf(stderr, "FGPU:Can't allocate device memory\n");
         return -ENOMEM;

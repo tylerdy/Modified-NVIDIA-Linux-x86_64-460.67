@@ -9,7 +9,6 @@
 
 #include <userlib.hpp>
 
-
 /* Represents the context saved for an allocator */
 typedef struct allocator {
     void *start_address;
@@ -41,10 +40,12 @@ allocator_t *allocator_init(void *buf, size_t size)
 }
 
 /* Allocated a buffer and returns it */
-void *allocator_alloc(allocator_t *ctx)
+void *allocator_alloc(allocator_t *ctx, void* offset)
 {
     ctx->free = false;
-    return ctx->start_address;
+    void* addr = ctx->start_address + (uint64_t)offset;
+    printf("addr: %016x\n", addr);
+    return addr;
 }
 
 /* Frees up a buffer */

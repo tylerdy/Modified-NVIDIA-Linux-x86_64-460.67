@@ -84,7 +84,7 @@ __used __section(__versions) = {
 	{ 0x6b2dc060, "dump_stack" },
 	{ 0x2ea2c95c, "__x86_indirect_thunk_rax" },
 	{ 0xbfdcb43a, "__x86_indirect_thunk_r11" },
-	{ 0x3129b92e, "wake_up_process" },
+	{ 0x77b1976d, "wake_up_process" },
 	{ 0xbdfb6dbb, "__fentry__" },
 	{ 0xc3ff38c2, "down_read_trylock" },
 	{ 0x26c2e0b5, "kmem_cache_alloc_trace" },

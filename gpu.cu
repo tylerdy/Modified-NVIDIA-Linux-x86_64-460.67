@@ -7,7 +7,6 @@
 #include <hash_function.hpp>
 #include <userlib.hpp>
 
-
 /* Stream used for all operations. NULL stream is not used */
 cudaStream_t contig_stream;
 

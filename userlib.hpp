@@ -28,6 +28,6 @@ typedef struct allocator allocator_t;
 
 /* Function declarations */
 allocator_t *allocator_init(void *buf, size_t size);
-void *allocator_alloc(allocator_t *ctx);
+void *allocator_alloc(allocator_t *ctx, void* offset);
 void allocator_free(allocator_t *ctx);
 void allocator_deinit(allocator_t *ctx);

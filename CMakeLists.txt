@@ -3,7 +3,7 @@ set(TARGET sm_61)
 # TODO: Which version do we want?
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 enable_language(CUDA)
-add_library(myptx OBJECT stress.cu stress_kernel.cuh)
+add_library(myptx OBJECT stress.cu stress_kernel.cuh app.cu app_kernel.cuh)
 set_property(TARGET myptx PROPERTY CUDA_PTX_COMPILATION ON)
 
 SET(CMAKE_CUDA_COMPILER /usr/local/cuda-11.1/bin/nvcc)
@@ -22,9 +22,9 @@ include_directories(./)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm/)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/common/inc/)
 include_directories(/usr/local/cuda-11.1/samples/common/inc)
-#set(CUDA_NVCC_FLAGS "${CMAKE_NVCC_FLAGS} -O0")
-string(APPEND CMAKE_CUDA_FLAGS "-m 64 -arch=${TARGET}")
-string(REPLACE "O3" "O0" CMAKE_CUDA_FLAGS_RELEASE "${CMAKE_CUDA_FLAGS_RELEASE}")
+# string(APPEND CUDA_NVCC_FLAGS "-Xptxas -dlcm=cg")
+string(APPEND CMAKE_CUDA_FLAGS "-m 64 -arch=${TARGET} -Xptxas")
+# string(REPLACE "O3" "O0" CMAKE_CUDA_FLAGS_RELEASE "${CMAKE_CUDA_FLAGS_RELEASE}")
 #string(APPEND CUDA_NVCC_FLAGS "-O0")
 # Add programs to be built using persistent threads model
 # First arg is target name
@@ -70,6 +70,9 @@ add_persistent_target(stress .
         gpu.cu
         stress.cu
         )
-
+add_persistent_target(app .
+        gpu.cu
+        app.cu
+        )
 #message("-----------------------------------------------\n
 #        ${CMAKE_CUDA_FLAGS_RELEASE}\n-----------------------------------------------")
