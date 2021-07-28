@@ -74,5 +74,13 @@ add_persistent_target(app .
         gpu.cu
         app.cu
         )
+add_persistent_target(stress_page .
+        gpu.cu
+        stress_page.cu
+        )
+# add_persistent_target(stress_thread .
+#         gpu.cu
+#         stress_thread.cu
+#         )
 #message("-----------------------------------------------\n
 #        ${CMAKE_CUDA_FLAGS_RELEASE}\n-----------------------------------------------")

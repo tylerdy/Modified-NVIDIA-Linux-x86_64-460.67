@@ -1,12 +1,12 @@
 #define MAX_SPACES 20           // max number of cache-size spaces with pointer chasing
 #define NUM_SPACES 1            // number of spaces for this instance
-#define NUM_PASSES 2 		// number of read passes over each space
+#define NUM_PASSES 1 		// number of read passes over each space
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
 #define NUM_BLOCKS  4      // fixed number of blocks
-#define NUM_WARPS   32        // fixed number of warps per block
-#define SAMPLES 2
+#define NUM_WARPS   2       // fixed number of warps per block
+#define SAMPLES 2048
 #include <stdio.h>
 #include <cstdint>
 
@@ -194,16 +194,17 @@ int main(int argc, char *argv[])
 
   // allocate host memory to create pointer-chasing list (copied to device memory)
   checkCudaErrors(cudaMallocHost(&h_data, bytesize));
-
-  // int wrpcnts = NUM_BLOCKS * NUM_WARPS;
-  // int stride = array_count / wrpcnts;
-  // for(i = 0; i < array_count; i++){
-  //   h_data[i] = 0;
-  // }
-  // for (i = 0; i < wrpcnts; i++){
-  //   h_data[i * stride] = i * stride;
-  //   // printf("%d\n", i*stride);
-  // }
+  int mult = 2;
+  int wrpcnts = NUM_BLOCKS * NUM_WARPS;
+  int stride = array_count / wrpcnts / mult;
+  
+  for(i = 0; i < array_count; i++){
+    h_data[i] = 0;
+  }
+  for (i = 0; i < wrpcnts * mult; i++){
+    h_data[i * stride] = i * stride;
+    // printf("%d\n", i*stride);
+  }
 
 
   //  ptr = 0;
@@ -218,16 +219,16 @@ int main(int argc, char *argv[])
   //  return 0;
 
 
-  ptr = 0;
-   for (int i = 0; i < element_count; i++) {
-    //  index values separated by number of elements per line (32)
-     nextptr = i * line_elements;
-     h_data[ptr] = nextptr;
-    //  h_data[ptr] = 0;
-    //  printf("[%d] = %d\n", ptr, nextptr);
-     ptr = nextptr;
-   }
-   h_data[nextptr] = 0;  //last points to first
+  // ptr = 0;
+  //  for (int i = 0; i < element_count; i++) {
+  //   //  index values separated by number of elements per line (32)
+  //    nextptr = i * line_elements;
+  //    h_data[ptr] = nextptr;
+  //   //  h_data[ptr] = 0;
+  //   //  printf("[%d] = %d\n", ptr, nextptr);
+  //    ptr = nextptr;
+  //  }
+  //  h_data[nextptr] = 0;  //last points to first
 // return 0;
   Threads = dim3(32, NUM_WARPS, 1);
   Blocks = dim3(NUM_BLOCKS, 1, 1);
@@ -245,9 +246,10 @@ int main(int argc, char *argv[])
   int   num_visits = (bytesize / 128) / (NUM_BLOCKS * NUM_WARPS);
   flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush, 0);  
   checkCudaErrors(cudaStreamSynchronize(my_stream));
-  appMemoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, SAMPLES, 0, d_flush, num_visits);  
-  //testKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result);
-  checkCudaErrors(cudaStreamSynchronize(my_stream));
+  for(int samp = 0; samp < SAMPLES; samp++){
+    appMemoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, 1, 0, d_flush, num_visits);  
+    checkCudaErrors(cudaStreamSynchronize(my_stream));
+  }
   // return 0;
   // copy any logged data back to host memory
   checkCudaErrors(cudaMemcpyAsync(h_result, d_result, wrp_log, cudaMemcpyDeviceToHost, my_stream));
@@ -256,17 +258,17 @@ int main(int argc, char *argv[])
   // copy any side information stored in device space zero back to host memory
   checkCudaErrors(cudaMemcpyAsync(h_data, h_ptrs[0], bytesize, cudaMemcpyDeviceToHost, my_stream));
   checkCudaErrors(cudaStreamSynchronize(my_stream));
-  printf("elapsed time: %d\n", h_result[3]);
+  // printf("elapsed time: %d\n", h_result[3]);
   // int min =  10000;
   // int cnt  = 0;
   // for (i = 0; i < NUM_SPACES; i++) {
-    // for (j = 0; j < 16384; j++) {
-    //   int tmp = h_result[j];
-    //   // log_idx = (i * element_count);
-    //   printf("%d\n", tmp); 
-    //   //if(min > tmp && tmp >0) min = tmp;
-    //   // if(tmp < 350) cnt++;
-    // }	  
+  //   for (j = 0; j < 16384; j++) {
+  //     int tmp = h_result[j];
+  // //   //   // log_idx = (i * element_count);
+  //     printf("%d\n", tmp); 
+  // //   //   //if(min > tmp && tmp >0) min = tmp;
+  // //     if(tmp < 350) cnt++;
+  //   }	  
   // }
   // printf("%d out of %d\n", cnt, element_count);
   //printf("min: %d\n", min);

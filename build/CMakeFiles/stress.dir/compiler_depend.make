@@ -357,6 +357,11 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
   /usr/include/stdint.h \
   /usr/include/x86_64-linux-gnu/bits/wchar.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+  /usr/include/c++/9/chrono \
+  /usr/include/c++/9/ratio \
+  /usr/include/c++/9/limits \
+  /usr/include/c++/9/ctime \
+  /usr/include/c++/9/bits/parse_numbers.h \
   ../test.hpp \
   /usr/include/x86_64-linux-gnu/sys/mman.h \
   /usr/include/x86_64-linux-gnu/bits/mman.h \
@@ -474,7 +479,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
   /usr/include/c++/9/bits/stl_tempbuf.h \
   /usr/include/c++/9/bits/stl_construct.h \
   /usr/include/c++/9/bits/uniform_int_dist.h \
-  /usr/include/c++/9/limits \
   /usr/include/c++/9/fstream \
   /usr/include/c++/9/bits/codecvt.h \
   /usr/include/x86_64-linux-gnu/c++/9/bits/basic_file.h \
@@ -489,14 +493,11 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
   /usr/local/cuda-11.1/samples/common/inc/helper_string.h \
   /usr/local/cuda-11.1/samples/common/inc/helper_timer.h \
   /usr/include/x86_64-linux-gnu/sys/time.h \
-  /usr/include/c++/9/ctime \
   /usr/local/cuda-11.1/samples/common/inc/helper_cuda.h \
   ../stress_kernel.cuh
 
 
 ../stress_kernel.cuh:
-
-/usr/include/c++/9/ctime:
 
 /usr/include/x86_64-linux-gnu/sys/time.h:
 
@@ -522,8 +523,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/c++/9/utility:
 
-/usr/include/c++/9/algorithm:
-
 /usr/include/c++/9/istream:
 
 /usr/include/c++/9/bits/ostream.tcc:
@@ -547,6 +546,14 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/include/c++/9/bits/basic_string.tcc:
 
 /usr/include/c++/9/cerrno:
+
+/usr/include/c++/9/cstdio:
+
+/usr/include/c++/9/ext/string_conversions.h:
+
+/usr/include/c++/9/backward/binders.h:
+
+/usr/include/c++/9/bits/stl_function.h:
 
 /usr/local/cuda-11.1/include/crt/device_functions.h:
 
@@ -587,8 +594,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/unistd.h:
-
-/usr/include/c++/9/iostream:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
 
@@ -716,6 +721,8 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/local/cuda-11.1/include/cuda_surface_types.h:
 
+/usr/include/c++/9/ratio:
+
 /usr/local/cuda-11.1/include/surface_types.h:
 
 /usr/include/x86_64-linux-gnu/bits/mman-map-flags-generic.h:
@@ -783,8 +790,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
-
-/usr/include/c++/9/cstdio:
 
 /usr/local/cuda-11.1/include/crt/host_defines.h:
 
@@ -884,6 +889,12 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/local/cuda-11.1/samples/common/inc/helper_functions.h:
 
+/usr/include/c++/9/bits/basic_string.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/error_t.h:
+
+/usr/local/cuda-11.1/include/sm_20_atomic_functions.hpp:
+
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
@@ -923,6 +934,8 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/local/cuda-11.1/include/surface_indirect_functions.h:
 
 /usr/include/c++/9/bits/ptr_traits.h:
+
+/usr/include/c++/9/ctime:
 
 /usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
@@ -1002,6 +1015,20 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/local/cuda-11.1/include/cuda.h:
 
+/usr/include/c++/9/algorithm:
+
+/usr/include/c++/9/chrono:
+
+/usr/include/c++/9/iostream:
+
+/usr/include/c++/9/bits/parse_numbers.h:
+
+/usr/include/c++/9/bits/stl_tempbuf.h:
+
+/usr/include/c++/9/cstdlib:
+
+/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
+
 /usr/local/cuda-11.1/include/crt/device_double_functions.h:
 
 /usr/include/x86_64-linux-gnu/sys/mman.h:
@@ -1011,12 +1038,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/include/x86_64-linux-gnu/bits/posix_opt.h:
 
 /usr/include/x86_64-linux-gnu/bits/confname.h:
-
-/usr/include/c++/9/bits/stl_tempbuf.h:
-
-/usr/include/c++/9/cstdlib:
-
-/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
 
 /usr/include/wctype.h:
 
@@ -1052,12 +1073,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/c++/9/bits/postypes.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/error_t.h:
-
-/usr/local/cuda-11.1/include/sm_20_atomic_functions.hpp:
-
-/usr/include/c++/9/bits/basic_string.h:
-
 /usr/include/wchar.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
@@ -1089,9 +1104,3 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/local/cuda-11.1/include/surface_functions.h:
 
 /usr/include/c++/9/bits/ostream_insert.h:
-
-/usr/include/c++/9/bits/stl_function.h:
-
-/usr/include/c++/9/backward/binders.h:
-
-/usr/include/c++/9/ext/string_conversions.h:

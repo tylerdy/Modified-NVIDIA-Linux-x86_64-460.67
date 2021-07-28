@@ -79,15 +79,18 @@ nv_uvm_interface.o: \
  include/linux/bug.h arch/x86/include/asm/bug.h include/asm-generic/bug.h \
  include/linux/restart_block.h include/linux/time64.h \
  include/linux/math64.h include/uapi/linux/time.h \
- include/uapi/linux/time_types.h arch/x86/include/asm/current.h \
- arch/x86/include/asm/thread_info.h arch/x86/include/asm/page.h \
- arch/x86/include/asm/page_types.h include/linux/mem_encrypt.h \
- arch/x86/include/asm/mem_encrypt.h arch/x86/include/uapi/asm/bootparam.h \
- include/linux/screen_info.h include/uapi/linux/screen_info.h \
- include/linux/apm_bios.h include/uapi/linux/apm_bios.h \
- include/uapi/linux/ioctl.h arch/x86/include/generated/uapi/asm/ioctl.h \
- include/asm-generic/ioctl.h include/uapi/asm-generic/ioctl.h \
- include/linux/edd.h include/uapi/linux/edd.h arch/x86/include/asm/ist.h \
+ include/uapi/linux/time_types.h include/linux/errno.h \
+ include/uapi/linux/errno.h arch/x86/include/generated/uapi/asm/errno.h \
+ include/uapi/asm-generic/errno.h include/uapi/asm-generic/errno-base.h \
+ arch/x86/include/asm/current.h arch/x86/include/asm/thread_info.h \
+ arch/x86/include/asm/page.h arch/x86/include/asm/page_types.h \
+ include/linux/mem_encrypt.h arch/x86/include/asm/mem_encrypt.h \
+ arch/x86/include/uapi/asm/bootparam.h include/linux/screen_info.h \
+ include/uapi/linux/screen_info.h include/linux/apm_bios.h \
+ include/uapi/linux/apm_bios.h include/uapi/linux/ioctl.h \
+ arch/x86/include/generated/uapi/asm/ioctl.h include/asm-generic/ioctl.h \
+ include/uapi/asm-generic/ioctl.h include/linux/edd.h \
+ include/uapi/linux/edd.h arch/x86/include/asm/ist.h \
  arch/x86/include/uapi/asm/ist.h include/video/edid.h \
  include/uapi/video/edid.h arch/x86/include/asm/page_64_types.h \
  arch/x86/include/asm/kaslr.h arch/x86/include/asm/page_64.h \
@@ -109,11 +112,8 @@ nv_uvm_interface.o: \
  include/asm-generic/qspinlock_types.h \
  include/asm-generic/qrwlock_types.h \
  arch/x86/include/uapi/asm/sigcontext.h arch/x86/include/asm/msr.h \
- arch/x86/include/asm/msr-index.h \
- arch/x86/include/generated/uapi/asm/errno.h \
- include/uapi/asm-generic/errno.h include/uapi/asm-generic/errno-base.h \
- arch/x86/include/asm/cpumask.h include/linux/cpumask.h \
- include/linux/bitmap.h include/linux/string.h \
+ arch/x86/include/asm/msr-index.h arch/x86/include/asm/cpumask.h \
+ include/linux/cpumask.h include/linux/bitmap.h include/linux/string.h \
  include/uapi/linux/string.h arch/x86/include/asm/string.h \
  arch/x86/include/asm/string_64.h include/linux/atomic.h \
  arch/x86/include/asm/atomic.h arch/x86/include/asm/cmpxchg.h \
@@ -136,10 +136,9 @@ nv_uvm_interface.o: \
  include/linux/rwlock_api_smp.h include/linux/rwsem.h \
  include/linux/osq_lock.h include/linux/semaphore.h \
  /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nv-pgprot.h \
- include/linux/mm.h include/linux/errno.h include/uapi/linux/errno.h \
- include/linux/mmdebug.h include/linux/gfp.h include/linux/mmzone.h \
- include/linux/wait.h include/uapi/linux/wait.h include/linux/numa.h \
- include/linux/seqlock.h include/linux/nodemask.h \
+ include/linux/mm.h include/linux/mmdebug.h include/linux/gfp.h \
+ include/linux/mmzone.h include/linux/wait.h include/uapi/linux/wait.h \
+ include/linux/numa.h include/linux/seqlock.h include/linux/nodemask.h \
  include/linux/pageblock-flags.h include/linux/page-flags-layout.h \
  include/generated/bounds.h include/linux/mm_types.h \
  include/linux/mm_types_task.h arch/x86/include/asm/tlbbatch.h \

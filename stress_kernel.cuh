@@ -116,7 +116,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
     int flush_max = bytesize / sizeof(unsigned int);
     //flush existing data from the cache by references to c_flush
     // for (i = 0; i < flush_max; i++)
-        // r_sum = r_sum + c_flush[i];
+    //     r_sum = r_sum + c_flush[i];
         // r_sum = r_sum + __ldcg(&(c_flush[i]));
     
     //record the kernel start and current times in nanoseconds
@@ -137,12 +137,12 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
           //get pointer to next device space
          
           // loop over each space for the number of passes specified
-        //   for (i = 0; i < NUM_PASSES; i++) {
+        //   for (i  = 0; i < NUM_PASSES; i++) {
 	      // compute the local warp number and the start index in its array partition
               ptr = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
               //ptr = ptr_start;
             //   __syncthreads();
-              before = clock64();
+            //   before = clock64();
               // the local warp loops while chasing the pointers in its partition
 	      // uncomment the lines inside the loop to record read access times in shared memory
          //wrp_count = 0;
@@ -150,15 +150,15 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
         for (wrp_count = 0; wrp_count < wrp_max; wrp_count++) {
                 //  cycles_before = clock64();
                 //  ptr = __ldcv(&(k_data[ptr]));
-                ptr = k_data[ptr];
-                // ptr = wrp_count;
+                // ptr = k_data[ptr];
+                ptr = wrp_count;
                  r_sum += ptr;
                 //  cycles_after = clock64();
                 //  blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
          }
-         
+        //   }
             //    __syncthreads();
-               after = clock64();
+            //    after = clock64();
                clock_now=gclock64();
    }
 /*
@@ -167,10 +167,10 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
  */
 //#ifdef DO_LOG	       
         
-               __syncthreads();
+            //    __syncthreads();
                
-               int log_idx;
-               log_idx = k * MAX_WARP_LOG;
+            //    int log_idx;
+            //    log_idx = 0 * MAX_WARP_LOG;
             //   for (j = 0; j < wrp_max; j++)
                 //   k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
                 //   k_result[log_idx + wrp_log + j] = (unsigned short)cycles_add;
@@ -181,12 +181,17 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
        //clock_now = gclock64();
 //    } //end outer loop for run time
     // }
-    //__syncthreads();
+    __syncthreads();
     ptr = ptr + r_sum;    
-
+    // k_data[0] = wrp_count;    
     k_result[0] = wrp_count;
     k_result[1] = ptr; // Make sure the compiler believes ptr is a result
                      // and does not eliminate references as optimization
     k_result[2] = r_sum;
     k_result[3] = after-before;
+    // k_data[0] = wrp_count;
+    // k_data[1] = ptr; // Make sure the compiler believes ptr is a result
+    //                  // and does not eliminate references as optimization
+    // k_data[2] = r_sum;
+    // k_data[3] = after-before;
 }

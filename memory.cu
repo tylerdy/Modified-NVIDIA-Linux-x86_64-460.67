@@ -31,7 +31,7 @@
 #define NVIDIA_UVM_DEVICE_PATH2 "/sys/devices/system/memory/block_size_bytes"
 /* TODO: This path can be changed via environment variable */
 #define NVIDIA_MPS_CONTROL_PATH "/tmp/nvidia-mps/control"
-#define OFFSET 0//2 * (1<<21) + (1<<12) * 16
+#define OFFSET 0// 2 * (1<<21)  + (1<<12) * 16
 
 
 /* Ioctl codes */

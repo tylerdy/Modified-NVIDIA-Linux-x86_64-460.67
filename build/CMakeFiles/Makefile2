@@ -66,6 +66,7 @@ CMAKE_BINARY_DIR = /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: CMakeFiles/stress_page.dir/all
 all: CMakeFiles/stress.dir/all
 all: CMakeFiles/app.dir/all
 all: CMakeFiles/fractional_gpu.dir/all
@@ -77,11 +78,38 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: CMakeFiles/stress_page.dir/clean
 clean: CMakeFiles/stress.dir/clean
 clean: CMakeFiles/app.dir/clean
 clean: CMakeFiles/fractional_gpu.dir/clean
 clean: CMakeFiles/myptx.dir/clean
 .PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/stress_page.dir
+
+# All Build rule for target.
+CMakeFiles/stress_page.dir/all: CMakeFiles/fractional_gpu.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles --progress-num=12,13,14 "Built target stress_page"
+.PHONY : CMakeFiles/stress_page.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/stress_page.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/stress_page.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles 0
+.PHONY : CMakeFiles/stress_page.dir/rule
+
+# Convenience name for target.
+stress_page: CMakeFiles/stress_page.dir/rule
+.PHONY : stress_page
+
+# clean rule for target.
+CMakeFiles/stress_page.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/clean
+.PHONY : CMakeFiles/stress_page.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/stress.dir

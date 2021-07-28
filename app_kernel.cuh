@@ -23,7 +23,7 @@ appMemoryKernel(unsigned int **k_ptrs, unsigned int *k_result, int bytesize, int
       //WARNING: All data arrays and numbers of blocks/warps powers of 2
 
     // uncomment next statement to allocate a shared memory array for logging read times
-   //  __shared__ unsigned short blk_log[MAX_WARP_LOG + 1];
+    __shared__ unsigned short blk_log[MAX_WARP_LOG + 1];
     
     unsigned int *k_data;  //pointer to current array
     // Use built-in variables to compute block, thread, and warp numbers
@@ -68,29 +68,31 @@ appMemoryKernel(unsigned int **k_ptrs, unsigned int *k_result, int bytesize, int
           // loop over each space for the number of passes specified
           for (i = 0; i < samples; i++) {
 	      // compute the local warp number and the start index in its array partition
-              // ptr = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
-              ptr = ((gbl_blk * NUM_WARPS) + lcl_wrp) * num_visits + (ptr * myZero * wrp_count);
-              int base = ptr;
+              ptr = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
+              // ptr = ((gbl_blk * NUM_WARPS) + lcl_wrp) * num_visits + (ptr * myZero * wrp_count);
+              // int base = ptr;
               //ptr = ptr_start;
-              __syncthreads();
-              before = clock64();
+              // __syncthreads();
+              // before = clock64();
               // the local warp loops while chasing the pointers in its partition
 	      // uncomment the lines inside the loop to record read access times in shared memory
          //wrp_count = 0;
 // #pragma unroll 1
-        for (wrp_count = 0; wrp_count < num_visits; wrp_count++) {
-                //  cycles_before = clock64();
-                //  ptr = __ldcv(&(k_data[ptr]));
-                ptr = k_data[ptr];
-                // k_result[base + wrp_count] = ptr;
-               //  k_result[base + wrp_count] = ptr;
-                 r_sum += ptr;
-                //  cycles_after = clock64();
-                //  blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
-         }
-         
-               __syncthreads();
-               after = clock64();
+        // for (wrp_count = 0; wrp_count < num_visits; wrp_count++) {
+              for (wrp_count = 0; wrp_count < wrp_max; wrp_count++) {
+                    //  cycles_before = clock64();
+                     ptr = __ldcv(&(k_data[ptr]));
+                    // ptr = k_data[ptr];
+                    // ptr = wrp_count;
+                    // k_result[base/32 + wrp_count] = ptr;
+                  //  k_result[base + wrp_count] = ptr;
+                    r_sum += ptr;
+                    //  cycles_after = clock64();
+                    //  blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
+            }
+          }
+              //  __syncthreads();
+              //  after = clock64();
 /*
  * For access time logging, comment the ifdef/endif statements to copy times
  * from shared memory to device memory log
@@ -99,24 +101,24 @@ appMemoryKernel(unsigned int **k_ptrs, unsigned int *k_result, int bytesize, int
          //  }
             //    __syncthreads();
                
-            //    int log_idx;
-            //    log_idx = k * MAX_WARP_LOG;
-            //   for (j = 0; j < wrp_max; j++)
-                //   k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
+              //  int log_idx;
+              //  log_idx = 0 * MAX_WARP_LOG;
+              // for (j = 0; j < wrp_max; j++)
+              //     k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
                 //   k_result[log_idx + wrp_log + j] = (unsigned short)cycles_add;
 //#endif		  
-	  } //end loop for passes through a device space
+	   //end loop for passes through a device space
     //   } // end loop over all spaces	  
     //    __syncthreads();
        //clock_now = gclock64();
    // } //end outer loop for run time
 
-    // __syncthreads();
+    __syncthreads();
     ptr = ptr + r_sum;    
 
     // k_data[0] = wrp_count;
-    k_result[1] = ptr; // Make sure the compiler believes ptr is a result
+    k_data[1] = ptr; // Make sure the compiler believes ptr is a result
                      // and does not eliminate references as optimization
-    k_result[2] = r_sum;
-    k_result[3] = after-before;
+    k_data[2] = r_sum;
+    k_data[3] = after-before;
 }

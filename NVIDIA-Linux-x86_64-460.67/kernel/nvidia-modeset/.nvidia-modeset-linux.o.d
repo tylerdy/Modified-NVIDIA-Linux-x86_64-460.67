@@ -52,15 +52,18 @@ nvidia-modeset-linux.o: \
  arch/x86/include/asm/bug.h include/asm-generic/bug.h \
  include/linux/restart_block.h include/linux/time64.h \
  include/linux/math64.h include/uapi/linux/time.h \
- include/uapi/linux/time_types.h arch/x86/include/asm/current.h \
- arch/x86/include/asm/thread_info.h arch/x86/include/asm/page.h \
- arch/x86/include/asm/page_types.h include/linux/mem_encrypt.h \
- arch/x86/include/asm/mem_encrypt.h arch/x86/include/uapi/asm/bootparam.h \
- include/linux/screen_info.h include/uapi/linux/screen_info.h \
- include/linux/apm_bios.h include/uapi/linux/apm_bios.h \
- include/uapi/linux/ioctl.h arch/x86/include/generated/uapi/asm/ioctl.h \
- include/asm-generic/ioctl.h include/uapi/asm-generic/ioctl.h \
- include/linux/edd.h include/uapi/linux/edd.h arch/x86/include/asm/ist.h \
+ include/uapi/linux/time_types.h include/linux/errno.h \
+ include/uapi/linux/errno.h arch/x86/include/generated/uapi/asm/errno.h \
+ include/uapi/asm-generic/errno.h include/uapi/asm-generic/errno-base.h \
+ arch/x86/include/asm/current.h arch/x86/include/asm/thread_info.h \
+ arch/x86/include/asm/page.h arch/x86/include/asm/page_types.h \
+ include/linux/mem_encrypt.h arch/x86/include/asm/mem_encrypt.h \
+ arch/x86/include/uapi/asm/bootparam.h include/linux/screen_info.h \
+ include/uapi/linux/screen_info.h include/linux/apm_bios.h \
+ include/uapi/linux/apm_bios.h include/uapi/linux/ioctl.h \
+ arch/x86/include/generated/uapi/asm/ioctl.h include/asm-generic/ioctl.h \
+ include/uapi/asm-generic/ioctl.h include/linux/edd.h \
+ include/uapi/linux/edd.h arch/x86/include/asm/ist.h \
  arch/x86/include/uapi/asm/ist.h include/video/edid.h \
  include/uapi/video/edid.h arch/x86/include/asm/page_64_types.h \
  arch/x86/include/asm/kaslr.h arch/x86/include/asm/page_64.h \
@@ -82,11 +85,8 @@ nvidia-modeset-linux.o: \
  include/asm-generic/qspinlock_types.h \
  include/asm-generic/qrwlock_types.h \
  arch/x86/include/uapi/asm/sigcontext.h arch/x86/include/asm/msr.h \
- arch/x86/include/asm/msr-index.h \
- arch/x86/include/generated/uapi/asm/errno.h \
- include/uapi/asm-generic/errno.h include/uapi/asm-generic/errno-base.h \
- arch/x86/include/asm/cpumask.h include/linux/cpumask.h \
- include/linux/bitmap.h include/linux/string.h \
+ arch/x86/include/asm/msr-index.h arch/x86/include/asm/cpumask.h \
+ include/linux/cpumask.h include/linux/bitmap.h include/linux/string.h \
  include/uapi/linux/string.h arch/x86/include/asm/string.h \
  arch/x86/include/asm/string_64.h include/linux/atomic.h \
  arch/x86/include/asm/atomic.h arch/x86/include/asm/cmpxchg.h \
@@ -122,9 +122,9 @@ nvidia-modeset-linux.o: \
  arch/x86/include/uapi/asm/auxvec.h include/linux/rbtree.h \
  include/linux/rcupdate.h include/linux/rcutree.h include/linux/rwsem.h \
  include/linux/osq_lock.h include/linux/completion.h \
- include/linux/uprobes.h include/linux/errno.h include/uapi/linux/errno.h \
- arch/x86/include/asm/uprobes.h include/linux/notifier.h \
- include/linux/mutex.h include/linux/debug_locks.h include/linux/srcu.h \
+ include/linux/uprobes.h arch/x86/include/asm/uprobes.h \
+ include/linux/notifier.h include/linux/mutex.h \
+ include/linux/debug_locks.h include/linux/srcu.h \
  include/linux/workqueue.h include/linux/timer.h include/linux/ktime.h \
  include/linux/jiffies.h include/generated/timeconst.h \
  include/linux/timekeeping.h include/linux/timekeeping32.h \
