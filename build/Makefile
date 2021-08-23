@@ -60,10 +60,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67
+CMAKE_SOURCE_DIR = /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build
+CMAKE_BINARY_DIR = /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -90,9 +90,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -118,6 +118,19 @@ preinstall/fast:
 depend:
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+#=============================================================================
+# Target rules for targets named threads
+
+# Build rule for target.
+threads: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 threads
+.PHONY : threads
+
+# fast build rule for target.
+threads/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/threads.dir/build.make CMakeFiles/threads.dir/build
+.PHONY : threads/fast
 
 #=============================================================================
 # Target rules for targets named stress
@@ -158,19 +171,6 @@ fractional_gpu/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fractional_gpu.dir/build.make CMakeFiles/fractional_gpu.dir/build
 .PHONY : fractional_gpu/fast
 
-#=============================================================================
-# Target rules for targets named myptx
-
-# Build rule for target.
-myptx: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 myptx
-.PHONY : myptx
-
-# fast build rule for target.
-myptx/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/build
-.PHONY : myptx/fast
-
 allocator.o: allocator.cpp.o
 .PHONY : allocator.o
 
@@ -201,7 +201,6 @@ app.o: app.cu.o
 # target to build an object file
 app.cu.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/app.cu.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/app.cu.o
 .PHONY : app.cu.o
 
 app.i: app.cu.i
@@ -210,7 +209,6 @@ app.i: app.cu.i
 # target to preprocess a source file
 app.cu.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/app.cu.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/app.cu.i
 .PHONY : app.cu.i
 
 app.s: app.cu.s
@@ -219,7 +217,6 @@ app.s: app.cu.s
 # target to generate assembly for a file
 app.cu.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/app.cu.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/app.cu.s
 .PHONY : app.cu.s
 
 gpu.o: gpu.cu.o
@@ -227,6 +224,7 @@ gpu.o: gpu.cu.o
 
 # target to build an object file
 gpu.cu.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/threads.dir/build.make CMakeFiles/threads.dir/gpu.cu.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/gpu.cu.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/gpu.cu.o
 .PHONY : gpu.cu.o
@@ -236,6 +234,7 @@ gpu.i: gpu.cu.i
 
 # target to preprocess a source file
 gpu.cu.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/threads.dir/build.make CMakeFiles/threads.dir/gpu.cu.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/gpu.cu.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/gpu.cu.i
 .PHONY : gpu.cu.i
@@ -245,6 +244,7 @@ gpu.s: gpu.cu.s
 
 # target to generate assembly for a file
 gpu.cu.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/threads.dir/build.make CMakeFiles/threads.dir/gpu.cu.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/gpu.cu.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/gpu.cu.s
 .PHONY : gpu.cu.s
@@ -279,7 +279,6 @@ stress.o: stress.cu.o
 # target to build an object file
 stress.cu.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/stress.cu.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/stress.cu.o
 .PHONY : stress.cu.o
 
 stress.i: stress.cu.i
@@ -288,7 +287,6 @@ stress.i: stress.cu.i
 # target to preprocess a source file
 stress.cu.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/stress.cu.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/stress.cu.i
 .PHONY : stress.cu.i
 
 stress.s: stress.cu.s
@@ -297,8 +295,31 @@ stress.s: stress.cu.s
 # target to generate assembly for a file
 stress.cu.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/stress.cu.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/stress.cu.s
 .PHONY : stress.cu.s
+
+threads.o: threads.cu.o
+.PHONY : threads.o
+
+# target to build an object file
+threads.cu.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/threads.dir/build.make CMakeFiles/threads.dir/threads.cu.o
+.PHONY : threads.cu.o
+
+threads.i: threads.cu.i
+.PHONY : threads.i
+
+# target to preprocess a source file
+threads.cu.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/threads.dir/build.make CMakeFiles/threads.dir/threads.cu.i
+.PHONY : threads.cu.i
+
+threads.s: threads.cu.s
+.PHONY : threads.s
+
+# target to generate assembly for a file
+threads.cu.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/threads.dir/build.make CMakeFiles/threads.dir/threads.cu.s
+.PHONY : threads.cu.s
 
 # Help Target
 help:
@@ -310,8 +331,8 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... app"
 	@echo "... fractional_gpu"
-	@echo "... myptx"
 	@echo "... stress"
+	@echo "... threads"
 	@echo "... allocator.o"
 	@echo "... allocator.i"
 	@echo "... allocator.s"
@@ -327,6 +348,9 @@ help:
 	@echo "... stress.o"
 	@echo "... stress.i"
 	@echo "... stress.s"
+	@echo "... threads.o"
+	@echo "... threads.i"
+	@echo "... threads.s"
 .PHONY : help
 
 

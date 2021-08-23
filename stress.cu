@@ -1,11 +1,11 @@
 #define MAX_SPACES 20           // max number of cache-size spaces with pointer chasing
 #define NUM_SPACES 1            // number of spaces for this instance
-#define NUM_PASSES 2 		// number of read passes over each space
+//#define NUM_PASSES 2 		// number of read passes over each space
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
-#define NUM_BLOCKS  16     // fixed number of blocks
-#define NUM_WARPS   32       // fixed number of warps per block
+#define NUM_BLOCKS_STRESS  2     // fixed number of blocks
+#define NUM_WARPS_STRESS   4       // fixed number of warps per block
 #include <stdio.h>
 #include <cstdint>
 
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
   void *virt_start;
   void *phy_start;
   cudaStream_t my_stream;
-
+  
   // Device memory pointers
   unsigned int *d_data, *device_p;   //cache-size device space to hold pointer-chasing array
   unsigned int *d_skip;   //device space skipped to create non-continuous areas
@@ -85,46 +85,46 @@ int main(int argc, char *argv[])
   
   unsigned int *d_flush;  //cache-size device space for inital cache flush
   unsigned short *d_result;  //device memory array to hold logged values
-
+  
   unsigned int *h_data;   //cache-size host memory to initialize pointer chasing
   unsigned int *h_ptrs[MAX_SPACES];  //list of allocated device memory spaces
   unsigned short *h_result;  //host memory array to hold logged values
   
-    
+  
   // Kernel execution parameters
   dim3 Threads;
   dim3 Blocks;
-
+  
   // parameters for program
   //default run time
-  int run_seconds = 10;
-
+  int run_seconds = 5;
+  
   //number of bytes in TX2 L2 cache
   int bytesize = TX2_CACHE_SIZE;
-
+  
   //number of words in a cache line = array elements per line
   int line_elements = TX2_CACHE_LINE / sizeof(unsigned int);
-
+  
   //number of lines in TX2 cache = number of array elements
   int element_count = bytesize / TX2_CACHE_LINE;
-
+  
   //size to hold logged values
   int wrp_log;
-
+  
   int skip_space1, skip_space2;
   unsigned long long checkAlign;
-
+  
   unsigned long long run_time;   //time in nanoseconds to run kernel
-
+  
   int ptr, nextptr;
-
+  
   int i;
   int log_idx, shared_space, j;   //UNCOMMENT FOR LOGGING 
   
   pid_t my_pid = getpid();  
-
-// Parse the command line 
-// only parameter is -t for run time in seconds
+  
+  // Parse the command line 
+  // only parameter is -t for run time in seconds
   i = 1;
   while (i < argc) {
     if (strcmp (argv[i], "-t") == 0) {
@@ -132,14 +132,15 @@ int main(int argc, char *argv[])
       run_seconds = atoi(argv[i]);
     }
     else 
-      Usage (argv[0]);
+    Usage (argv[0]);
     i++;
   }
 
+  
   // initialize for generating random numbers
   initstate_r((unsigned int)my_pid, r_state, sizeof(r_state), &buf);
-  
   cudaSetDevice(0); //only one on TX2
+  fprintf(stdout, "HERE\n"); 
   ret = device_init(true);
   if (ret < 0)
         fprintf(stderr, "Device init failed\n");
@@ -202,8 +203,8 @@ int main(int argc, char *argv[])
    }
    h_data[ptr] = 0;  //last points to first
 // return 0;
-  Threads = dim3(32, NUM_WARPS, 1);
-  Blocks = dim3(NUM_BLOCKS, 1, 1);
+  Threads = dim3(32, NUM_WARPS_STRESS, 1);
+  Blocks = dim3(NUM_BLOCKS_STRESS, 1, 1);
 
   // copy pointer-chasing array in host memory to device memory spaces
   for (i = 0; i < NUM_SPACES; i++) {

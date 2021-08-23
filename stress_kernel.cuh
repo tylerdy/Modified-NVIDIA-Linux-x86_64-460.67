@@ -1,68 +1,4 @@
-
-/* Wrapper function for reading the global nanosecond-precision timer
- */
-
-static __device__ __inline__ unsigned long long int gclock64() {
-
-    unsigned long long int rv;
-
-    asm volatile ( "mov.u64 %0, %%globaltimer;" : "=l"(rv) );
-
-    return rv;
-
-}
-/* Wrapper function for reading the local SM cycle counter
- */
-
-static __device__ __inline__ unsigned long long int cycles64() {
-
-    unsigned long long int rv;
-
-    asm volatile ( "mov.u64 %0, %%clock64;" : "=l"(rv) );
-
-    return rv;
-
-}
-
-/* The kernel for sequential pointer chasing in device memory arrays.
- * The kernel expects to be launched with two blocks and 128 threads
- * (4 warps) per block. Each warp performs pointer chasing on a
- * non-overlapping portion of an array which was initialzed in the
- * launching CUDA program.
- *
- * The parameters of the kernel are:
- *   k_ptrs, an array of pointers to initialized arrays in device memory
- *   K_result, an array of device memory locations for the kernel to
- *       store logged read access times
- *   bytesize, the size in bytes of the pointer-chasing arrays
- *   run_time, the time in nanoseconds the kernel will run
- *   myZero, always set to 0 by the launch code -- used to avoid
- *       compiler optimizations that eliminate statements
- *   c_flush, an array allocated in device memory and used by the kernel
- *       to perform an initial flush of the cache content
- *
- * The kernel (and the launching CUDA program) can be customized to
- * log read access times for elements of the arrays.  Logging must be
- * coordinated between the kernel and the CUDA program.
- */
-__global__ void
-testKernel(unsigned int *k_ptr[MAX_SPACES], unsigned short *k_result){
-    int gbl_blk,lcl_thd,lcl_wrp;
-    gbl_blk = (blockIdx.y * gridDim.x) + blockIdx.x;
-    lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
-    lcl_wrp = lcl_thd / 32;
-
-    int wrp_count;
-
-    int wrp_max;
-    wrp_max =(TX2_CACHE_SIZE / TX2_CACHE_LINE) /(NUM_BLOCKS * NUM_WARPS);
-
-    int wrp_log;
-    wrp_log =  ((gbl_blk * NUM_WARPS) + lcl_wrp) * wrp_max;
-    unsigned int *k_data = k_ptr[0];
-    for (int j = 0; j < wrp_max; j++)
-        k_result[wrp_log + j] = k_data[wrp_log + j];
-}
+#include <helper_kernels.cuh>
 
 __global__ void
 memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int bytesize, unsigned long long run_time, int myZero, unsigned int *c_flush)  //c_flush is size of k_data (bytesize) and used to flush cache initially
@@ -83,6 +19,8 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
     lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
     lcl_wrp = lcl_thd / 32;
 
+    if(lcl_thd==0 && gbl_blk==0) printf("starting stress.\n");
+
     int i,j, k;
     k = 0;
     int wrp_count;
@@ -90,7 +28,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
     // the number of array elements in each warp's non-overlapping
     // partition of the array
     int wrp_max;
-    wrp_max = (bytesize / TX2_CACHE_LINE) / (NUM_BLOCKS * NUM_WARPS);
+    wrp_max = (bytesize / TX2_CACHE_LINE) / (NUM_BLOCKS_STRESS * NUM_WARPS_STRESS);
 
     /* Uncomment the following for logging read access times
      * Logging must be coordinated with the launching CUDA program
@@ -98,11 +36,11 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
     unsigned long long cycles_before, cycles_after, before, after;
     unsigned short cycles_add;
     int wrp_log;
-    wrp_log =  ((gbl_blk * NUM_WARPS) + lcl_wrp) * wrp_max;
+    wrp_log =  ((gbl_blk * NUM_WARPS_STRESS) + lcl_wrp) * wrp_max;
 
     int ptr = 0;  // holds the index of the next array element to be read
     //unsigned int ptr_start;
-    //ptr_start = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + ((ptr) * myZero * wrp_count);
+    //ptr_start = ((gbl_blk * NUM_WARPS_STRESS) + lcl_wrp) * (wrp_max * 32) + ((ptr) * myZero * wrp_count);
     unsigned int r_sum;  //a nonsense variable used to help defeat optimization
     r_sum = 0;
     extern __shared__ unsigned long long clock_begin;   //clock value kernel marks as its start time
@@ -139,7 +77,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
           // loop over each space for the number of passes specified
         //   for (i = 0; i < NUM_PASSES; i++) {
 	      // compute the local warp number and the start index in its array partition
-              ptr = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
+              ptr = ((gbl_blk * NUM_WARPS_STRESS) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
               //ptr = ptr_start;
             //   __syncthreads();
               before = clock64();
@@ -150,7 +88,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
         for (wrp_count = 0; wrp_count < wrp_max; wrp_count++) {
                 //  cycles_before = clock64();
                 //  ptr = __ldcv(&(k_data[ptr]));
-                ptr = k_data[ptr];
+                 ptr = k_data[ptr];
                 // ptr = wrp_count;
                  r_sum += ptr;
                 //  cycles_after = clock64();
@@ -189,4 +127,6 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], unsigned short *k_result, int byt
                      // and does not eliminate references as optimization
     k_result[2] = r_sum;
     k_result[3] = after-before;
+
+    if(lcl_thd==0 && gbl_blk==0) printf("finishing stress.\n");
 }

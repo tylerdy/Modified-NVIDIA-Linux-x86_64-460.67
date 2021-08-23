@@ -1,18 +1,18 @@
-CMakeFiles/fractional_gpu.dir/memory.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/memory.cu \
+CMakeFiles/fractional_gpu.dir/memory.cu.o : /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/memory.cu \
     /usr/include/stdc-predef.h \
-    /usr/local/cuda-11.1/include/cuda_runtime.h \
-    /usr/local/cuda-11.1/include/crt/host_config.h \
+    /usr/local/cuda/include/cuda_runtime.h \
+    /usr/local/cuda/include/crt/host_config.h \
     /usr/include/features.h \
     /usr/include/x86_64-linux-gnu/sys/cdefs.h \
     /usr/include/x86_64-linux-gnu/bits/wordsize.h \
     /usr/include/x86_64-linux-gnu/bits/long-double.h \
     /usr/include/x86_64-linux-gnu/gnu/stubs.h \
     /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
-    /usr/local/cuda-11.1/include/builtin_types.h \
-    /usr/local/cuda-11.1/include/device_types.h \
-    /usr/local/cuda-11.1/include/crt/host_defines.h \
-    /usr/local/cuda-11.1/include/driver_types.h \
-    /usr/local/cuda-11.1/include/vector_types.h \
+    /usr/local/cuda/include/builtin_types.h \
+    /usr/local/cuda/include/device_types.h \
+    /usr/local/cuda/include/crt/host_defines.h \
+    /usr/local/cuda/include/driver_types.h \
+    /usr/local/cuda/include/vector_types.h \
     /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h \
     /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h \
     /usr/include/limits.h \
@@ -24,16 +24,16 @@ CMakeFiles/fractional_gpu.dir/memory.cu.o : /playpen/leochanj/fgpure/Modified-NV
     /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
     /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
     /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
-    /usr/local/cuda-11.1/include/surface_types.h \
-    /usr/local/cuda-11.1/include/texture_types.h \
-    /usr/local/cuda-11.1/include/library_types.h \
-    /usr/local/cuda-11.1/include/channel_descriptor.h \
-    /usr/local/cuda-11.1/include/cuda_runtime_api.h \
-    /usr/local/cuda-11.1/include/cuda_device_runtime_api.h \
-    /usr/local/cuda-11.1/include/driver_functions.h \
-    /usr/local/cuda-11.1/include/vector_functions.h \
-    /usr/local/cuda-11.1/include/vector_functions.hpp \
-    /usr/local/cuda-11.1/include/crt/common_functions.h \
+    /usr/local/cuda/include/surface_types.h \
+    /usr/local/cuda/include/texture_types.h \
+    /usr/local/cuda/include/library_types.h \
+    /usr/local/cuda/include/channel_descriptor.h \
+    /usr/local/cuda/include/cuda_runtime_api.h \
+    /usr/local/cuda/include/cuda_device_runtime_api.h \
+    /usr/local/cuda/include/driver_functions.h \
+    /usr/local/cuda/include/vector_functions.h \
+    /usr/local/cuda/include/vector_functions.hpp \
+    /usr/local/cuda/include/crt/common_functions.h \
     /usr/include/string.h \
     /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
     /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
@@ -106,7 +106,7 @@ CMakeFiles/fractional_gpu.dir/memory.cu.o : /playpen/leochanj/fgpure/Modified-NV
     /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
     /usr/include/c++/9/bits/std_abs.h \
     /usr/include/assert.h \
-    /usr/local/cuda-11.1/include/crt/math_functions.h \
+    /usr/local/cuda/include/crt/math_functions.h \
     /usr/include/c++/9/math.h \
     /usr/include/c++/9/cmath \
     /usr/include/c++/9/bits/cpp_type_traits.h \
@@ -121,40 +121,40 @@ CMakeFiles/fractional_gpu.dir/memory.cu.o : /playpen/leochanj/fgpure/Modified-NV
     /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
     /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
     /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
-    /usr/local/cuda-11.1/include/crt/math_functions.hpp \
-    /usr/local/cuda-11.1/include/cuda_surface_types.h \
-    /usr/local/cuda-11.1/include/cuda_texture_types.h \
-    /usr/local/cuda-11.1/include/crt/device_functions.h \
-    /usr/local/cuda-11.1/include/crt/device_functions.hpp \
-    /usr/local/cuda-11.1/include/device_atomic_functions.h \
-    /usr/local/cuda-11.1/include/device_atomic_functions.hpp \
-    /usr/local/cuda-11.1/include/crt/device_double_functions.h \
-    /usr/local/cuda-11.1/include/crt/device_double_functions.hpp \
-    /usr/local/cuda-11.1/include/sm_20_atomic_functions.h \
-    /usr/local/cuda-11.1/include/sm_20_atomic_functions.hpp \
-    /usr/local/cuda-11.1/include/sm_32_atomic_functions.h \
-    /usr/local/cuda-11.1/include/sm_32_atomic_functions.hpp \
-    /usr/local/cuda-11.1/include/sm_35_atomic_functions.h \
-    /usr/local/cuda-11.1/include/sm_60_atomic_functions.h \
-    /usr/local/cuda-11.1/include/sm_60_atomic_functions.hpp \
-    /usr/local/cuda-11.1/include/sm_20_intrinsics.h \
-    /usr/local/cuda-11.1/include/sm_20_intrinsics.hpp \
-    /usr/local/cuda-11.1/include/sm_30_intrinsics.h \
-    /usr/local/cuda-11.1/include/sm_30_intrinsics.hpp \
-    /usr/local/cuda-11.1/include/sm_32_intrinsics.h \
-    /usr/local/cuda-11.1/include/sm_32_intrinsics.hpp \
-    /usr/local/cuda-11.1/include/sm_35_intrinsics.h \
-    /usr/local/cuda-11.1/include/sm_61_intrinsics.h \
-    /usr/local/cuda-11.1/include/sm_61_intrinsics.hpp \
-    /usr/local/cuda-11.1/include/crt/sm_70_rt.h \
-    /usr/local/cuda-11.1/include/crt/sm_70_rt.hpp \
-    /usr/local/cuda-11.1/include/crt/sm_80_rt.h \
-    /usr/local/cuda-11.1/include/crt/sm_80_rt.hpp \
-    /usr/local/cuda-11.1/include/surface_functions.h \
-    /usr/local/cuda-11.1/include/texture_fetch_functions.h \
-    /usr/local/cuda-11.1/include/texture_indirect_functions.h \
-    /usr/local/cuda-11.1/include/surface_indirect_functions.h \
-    /usr/local/cuda-11.1/include/device_launch_parameters.h \
+    /usr/local/cuda/include/crt/math_functions.hpp \
+    /usr/local/cuda/include/cuda_surface_types.h \
+    /usr/local/cuda/include/cuda_texture_types.h \
+    /usr/local/cuda/include/crt/device_functions.h \
+    /usr/local/cuda/include/crt/device_functions.hpp \
+    /usr/local/cuda/include/device_atomic_functions.h \
+    /usr/local/cuda/include/device_atomic_functions.hpp \
+    /usr/local/cuda/include/crt/device_double_functions.h \
+    /usr/local/cuda/include/crt/device_double_functions.hpp \
+    /usr/local/cuda/include/sm_20_atomic_functions.h \
+    /usr/local/cuda/include/sm_20_atomic_functions.hpp \
+    /usr/local/cuda/include/sm_32_atomic_functions.h \
+    /usr/local/cuda/include/sm_32_atomic_functions.hpp \
+    /usr/local/cuda/include/sm_35_atomic_functions.h \
+    /usr/local/cuda/include/sm_60_atomic_functions.h \
+    /usr/local/cuda/include/sm_60_atomic_functions.hpp \
+    /usr/local/cuda/include/sm_20_intrinsics.h \
+    /usr/local/cuda/include/sm_20_intrinsics.hpp \
+    /usr/local/cuda/include/sm_30_intrinsics.h \
+    /usr/local/cuda/include/sm_30_intrinsics.hpp \
+    /usr/local/cuda/include/sm_32_intrinsics.h \
+    /usr/local/cuda/include/sm_32_intrinsics.hpp \
+    /usr/local/cuda/include/sm_35_intrinsics.h \
+    /usr/local/cuda/include/sm_61_intrinsics.h \
+    /usr/local/cuda/include/sm_61_intrinsics.hpp \
+    /usr/local/cuda/include/crt/sm_70_rt.h \
+    /usr/local/cuda/include/crt/sm_70_rt.hpp \
+    /usr/local/cuda/include/crt/sm_80_rt.h \
+    /usr/local/cuda/include/crt/sm_80_rt.hpp \
+    /usr/local/cuda/include/surface_functions.h \
+    /usr/local/cuda/include/texture_fetch_functions.h \
+    /usr/local/cuda/include/texture_indirect_functions.h \
+    /usr/local/cuda/include/surface_indirect_functions.h \
+    /usr/local/cuda/include/device_launch_parameters.h \
     /usr/include/dlfcn.h \
     /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
     /usr/include/errno.h \
@@ -282,15 +282,15 @@ CMakeFiles/fractional_gpu.dir/memory.cu.o : /playpen/leochanj/fgpure/Modified-NV
     /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
     /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
     /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
-    /usr/local/cuda-11.1/include/cuda.h \
-    /usr/local/cuda-11.1/include/nvml.h \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/./userlib.hpp \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm/uvm_ioctl.h \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm/uvm_types.h \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvlimits.h \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvtypes.h \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/cpuopsys.h \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/xapi-sdk.h \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvstatus.h \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvstatuscodes.h \
-    /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvCpuUuid.h
+    /usr/local/cuda/include/cuda.h \
+    /usr/local/cuda/include/nvml.h \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/./userlib.hpp \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm/uvm_ioctl.h \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm/uvm_types.h \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvlimits.h \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvtypes.h \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/cpuopsys.h \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/xapi-sdk.h \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvstatus.h \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvstatuscodes.h \
+    /playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvCpuUuid.h

@@ -1,12 +1,12 @@
 #define MAX_SPACES 20           // max number of cache-size spaces with pointer chasing
 #define NUM_SPACES 1            // number of spaces for this instance
-#define NUM_PASSES 2 		// number of read passes over each space
+//#define NUM_PASSES 2 		// number of read passes over each space
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
-#define NUM_BLOCKS  4      // fixed number of blocks
-#define NUM_WARPS   32        // fixed number of warps per block
-#define SAMPLES 2
+#define NUM_BLOCKS_APP  2      // fixed number of blocks
+#define NUM_WARPS_APP   4        // fixed number of warps per block
+#define SAMPLES 2024
 #include <stdio.h>
 #include <cstdint>
 
@@ -143,6 +143,7 @@ int main(int argc, char *argv[])
   initstate_r((unsigned int)my_pid, r_state, sizeof(r_state), &buf);
   
   cudaSetDevice(0); //only one on TX2
+  fprintf(stdout, "here\n");
   // ret = device_init(true);
   // if (ret < 0)
         // fprintf(stderr, "Device init failed\n");
@@ -195,7 +196,7 @@ int main(int argc, char *argv[])
   // allocate host memory to create pointer-chasing list (copied to device memory)
   checkCudaErrors(cudaMallocHost(&h_data, bytesize));
 
-  // int wrpcnts = NUM_BLOCKS * NUM_WARPS;
+  // int wrpcnts = NUM_BLOCKS_APP * NUM_WARPS_APP;
   // int stride = array_count / wrpcnts;
   // for(i = 0; i < array_count; i++){
   //   h_data[i] = 0;
@@ -229,8 +230,8 @@ int main(int argc, char *argv[])
    }
    h_data[nextptr] = 0;  //last points to first
 // return 0;
-  Threads = dim3(32, NUM_WARPS, 1);
-  Blocks = dim3(NUM_BLOCKS, 1, 1);
+  Threads = dim3(32, NUM_WARPS_APP, 1);
+  Blocks = dim3(NUM_BLOCKS_APP, 1, 1);
 
   // copy pointer-chasing array in host memory to device memory spaces
   for (i = 0; i < NUM_SPACES; i++) {
@@ -241,8 +242,8 @@ int main(int argc, char *argv[])
   // shared_space = MAX_WARP_LOG * sizeof(unsigned short) + (1<<10); //32KB per block/SM
 
   //memoryKernel<<<Blocks, Threads, shared_space, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
-  // int   num_visits = (bytesize / sizeof(unsigned int)) / (NUM_BLOCKS * NUM_WARPS);
-  int   num_visits = (bytesize / 128) / (NUM_BLOCKS * NUM_WARPS);
+  // int   num_visits = (bytesize / sizeof(unsigned int)) / (NUM_BLOCKS_APP * NUM_WARPS_APP);
+  int   num_visits = (bytesize / 128) / (NUM_BLOCKS_APP * NUM_WARPS_APP);
   flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush, 0);  
   checkCudaErrors(cudaStreamSynchronize(my_stream));
   appMemoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, SAMPLES, 0, d_flush, num_visits);  

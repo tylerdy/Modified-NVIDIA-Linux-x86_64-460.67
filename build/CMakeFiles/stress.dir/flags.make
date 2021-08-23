@@ -4,7 +4,7 @@
 # compile CUDA with /usr/local/cuda-11.1/bin/nvcc
 CUDA_DEFINES = 
 
-CUDA_INCLUDES = -I/usr/local/cuda-11.1/include -I/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/. -I/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm -I/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc -I/usr/local/cuda-11.1/samples/common/inc
+CUDA_INCLUDES = -I/usr/local/cuda/include -I/playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/. -I/playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm -I/playpen/tylerdy/Modified-NVIDIA-Linux-x86_64-460.67/NVIDIA-Linux-x86_64-460.67/kernel/common/inc -I/usr/local/cuda-11.1/samples/common/inc
 
-CUDA_FLAGS = -m 64 -arch=sm_61 -Xptxas -O3 -DNDEBUG -std=c++14
+CUDA_FLAGS = -m 64 -arch=sm_61 -std=c++14
 
