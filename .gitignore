@@ -1,0 +1,6 @@
+**/conftest/**
+**/conftest*.c
+**/**so.460.67
+**/*.cmd
+**/NVIDIA-Linux-x86_64-460.67/kernel/**/**.o
+./build/*

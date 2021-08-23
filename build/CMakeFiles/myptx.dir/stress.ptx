@@ -10,15 +10,246 @@
 .target sm_61
 .address_size 64
 
-	// .globl	_Z10testKernelPPjPt
-// clock_begin has been demoted
+	// .globl	_Z8launchSMPii
+// _ZZ8launchSMPiiE7blk_log has been demoted
+.shared .align 8 .u64 clock_begin;
+.shared .align 8 .u64 clock_now;
 
+.visible .entry _Z8launchSMPii(
+	.param .u64 _Z8launchSMPii_param_0,
+	.param .u32 _Z8launchSMPii_param_1
+)
+{
+	.reg .pred 	%p<4>;
+	.reg .b32 	%r<56>;
+	.reg .b64 	%rd<60>;
+	// demoted variable
+	.shared .align 2 .b8 _ZZ8launchSMPiiE7blk_log[32768];
+
+	ld.param.u64 	%rd5, [_Z8launchSMPii_param_0];
+	ld.param.u32 	%r15, [_Z8launchSMPii_param_1];
+	cvta.to.global.u64 	%rd1, %rd5;
+	// inline asm
+	mov.u32 %r16, %smid;
+	// inline asm
+	setp.ne.s32	%p1, %r16, 0;
+	@%p1 bra 	BB0_6;
+
+	mov.u32 	%r18, %tid.y;
+	mov.u32 	%r19, %ntid.x;
+	mov.u32 	%r20, %tid.x;
+	mad.lo.s32 	%r21, %r19, %r18, %r20;
+	shr.s32 	%r22, %r21, 31;
+	shr.u32 	%r23, %r22, 27;
+	add.s32 	%r24, %r21, %r23;
+	shr.s32 	%r1, %r24, 5;
+	mov.u32 	%r2, %ctaid.x;
+	mul.wide.u32 	%rd6, %r2, -858993459;
+	shr.u64 	%rd7, %rd6, 36;
+	cvt.u32.u64	%r25, %rd7;
+	mul.lo.s32 	%r3, %r15, 32640;
+	shl.b32 	%r26, %r1, 8;
+	mad.lo.s32 	%r27, %r25, 8192, %r26;
+	shl.b32 	%r28, %r27, 1;
+	mov.u32 	%r29, _ZZ8launchSMPiiE7blk_log;
+	add.s32 	%r52, %r29, %r28;
+	mov.u32 	%r53, -256;
+
+BB0_2:
+	// inline asm
+	mov.u64 	%rd8, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd9, %clock64;
+	// inline asm
+	sub.s64 	%rd40, %rd9, %rd8;
+	st.shared.u16 	[%r52], %rd40;
+	// inline asm
+	mov.u64 	%rd10, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd11, %clock64;
+	// inline asm
+	sub.s64 	%rd41, %rd11, %rd10;
+	st.shared.u16 	[%r52+2], %rd41;
+	// inline asm
+	mov.u64 	%rd12, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd13, %clock64;
+	// inline asm
+	sub.s64 	%rd42, %rd13, %rd12;
+	st.shared.u16 	[%r52+4], %rd42;
+	// inline asm
+	mov.u64 	%rd14, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd15, %clock64;
+	// inline asm
+	sub.s64 	%rd43, %rd15, %rd14;
+	st.shared.u16 	[%r52+6], %rd43;
+	// inline asm
+	mov.u64 	%rd16, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd17, %clock64;
+	// inline asm
+	sub.s64 	%rd44, %rd17, %rd16;
+	st.shared.u16 	[%r52+8], %rd44;
+	// inline asm
+	mov.u64 	%rd18, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd19, %clock64;
+	// inline asm
+	sub.s64 	%rd45, %rd19, %rd18;
+	st.shared.u16 	[%r52+10], %rd45;
+	// inline asm
+	mov.u64 	%rd20, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd21, %clock64;
+	// inline asm
+	sub.s64 	%rd46, %rd21, %rd20;
+	st.shared.u16 	[%r52+12], %rd46;
+	// inline asm
+	mov.u64 	%rd22, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd23, %clock64;
+	// inline asm
+	sub.s64 	%rd47, %rd23, %rd22;
+	st.shared.u16 	[%r52+14], %rd47;
+	// inline asm
+	mov.u64 	%rd24, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd25, %clock64;
+	// inline asm
+	sub.s64 	%rd48, %rd25, %rd24;
+	st.shared.u16 	[%r52+16], %rd48;
+	// inline asm
+	mov.u64 	%rd26, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd27, %clock64;
+	// inline asm
+	sub.s64 	%rd49, %rd27, %rd26;
+	st.shared.u16 	[%r52+18], %rd49;
+	// inline asm
+	mov.u64 	%rd28, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd29, %clock64;
+	// inline asm
+	sub.s64 	%rd50, %rd29, %rd28;
+	st.shared.u16 	[%r52+20], %rd50;
+	// inline asm
+	mov.u64 	%rd30, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd31, %clock64;
+	// inline asm
+	sub.s64 	%rd51, %rd31, %rd30;
+	st.shared.u16 	[%r52+22], %rd51;
+	// inline asm
+	mov.u64 	%rd32, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd33, %clock64;
+	// inline asm
+	sub.s64 	%rd52, %rd33, %rd32;
+	st.shared.u16 	[%r52+24], %rd52;
+	// inline asm
+	mov.u64 	%rd34, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd35, %clock64;
+	// inline asm
+	sub.s64 	%rd53, %rd35, %rd34;
+	st.shared.u16 	[%r52+26], %rd53;
+	// inline asm
+	mov.u64 	%rd36, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd37, %clock64;
+	// inline asm
+	sub.s64 	%rd54, %rd37, %rd36;
+	st.shared.u16 	[%r52+28], %rd54;
+	// inline asm
+	mov.u64 	%rd38, %clock64;
+	// inline asm
+	// inline asm
+	mov.u64 	%rd39, %clock64;
+	// inline asm
+	sub.s64 	%rd55, %rd39, %rd38;
+	st.shared.u16 	[%r52+30], %rd55;
+	add.s32 	%r52, %r52, 32;
+	add.s32 	%r53, %r53, 16;
+	setp.ne.s32	%p2, %r53, 0;
+	@%p2 bra 	BB0_2;
+
+	mul.lo.s32 	%r9, %r15, 255;
+	bar.sync 	0;
+	add.s32 	%r54, %r29, %r28;
+	mul.wide.s32 	%rd2, %r27, 4;
+	mov.u32 	%r55, -256;
+	mov.u64 	%rd59, %rd1;
+
+BB0_4:
+	ld.shared.u16 	%r36, [%r54];
+	add.s64 	%rd58, %rd59, %rd2;
+	st.global.u32 	[%rd58], %r36;
+	ld.shared.u16 	%r37, [%r54+2];
+	st.global.u32 	[%rd58+4], %r37;
+	ld.shared.u16 	%r38, [%r54+4];
+	st.global.u32 	[%rd58+8], %r38;
+	ld.shared.u16 	%r39, [%r54+6];
+	st.global.u32 	[%rd58+12], %r39;
+	ld.shared.u16 	%r40, [%r54+8];
+	st.global.u32 	[%rd58+16], %r40;
+	ld.shared.u16 	%r41, [%r54+10];
+	st.global.u32 	[%rd58+20], %r41;
+	ld.shared.u16 	%r42, [%r54+12];
+	st.global.u32 	[%rd58+24], %r42;
+	ld.shared.u16 	%r43, [%r54+14];
+	st.global.u32 	[%rd58+28], %r43;
+	ld.shared.u16 	%r44, [%r54+16];
+	st.global.u32 	[%rd58+32], %r44;
+	ld.shared.u16 	%r45, [%r54+18];
+	st.global.u32 	[%rd58+36], %r45;
+	ld.shared.u16 	%r46, [%r54+20];
+	st.global.u32 	[%rd58+40], %r46;
+	ld.shared.u16 	%r47, [%r54+22];
+	st.global.u32 	[%rd58+44], %r47;
+	ld.shared.u16 	%r48, [%r54+24];
+	st.global.u32 	[%rd58+48], %r48;
+	ld.shared.u16 	%r49, [%r54+26];
+	st.global.u32 	[%rd58+52], %r49;
+	ld.shared.u16 	%r50, [%r54+28];
+	st.global.u32 	[%rd58+56], %r50;
+	ld.shared.u16 	%r51, [%r54+30];
+	st.global.u32 	[%rd58+60], %r51;
+	add.s64 	%rd59, %rd59, 64;
+	add.s32 	%r54, %r54, 32;
+	add.s32 	%r55, %r55, 16;
+	setp.ne.s32	%p3, %r55, 0;
+	@%p3 bra 	BB0_4;
+
+	st.global.u32 	[%rd1], %r3;
+	st.global.u32 	[%rd1+4], %r9;
+
+BB0_6:
+	ret;
+}
+
+	// .globl	_Z10testKernelPPjPt
 .visible .entry _Z10testKernelPPjPt(
 	.param .u64 _Z10testKernelPPjPt_param_0,
 	.param .u64 _Z10testKernelPPjPt_param_1
 )
 {
-	.reg .b32 	%r<49>;
+	.reg .b32 	%r<29>;
 	.reg .b64 	%rd<15>;
 
 
@@ -37,10 +268,10 @@
 	shr.s32 	%r9, %r8, 31;
 	shr.u32 	%r10, %r9, 27;
 	add.s32 	%r11, %r8, %r10;
-	shr.u32 	%r12, %r11, 5;
+	shr.s32 	%r12, %r11, 5;
 	shl.b32 	%r13, %r4, 5;
 	add.s32 	%r14, %r12, %r13;
-	shl.b32 	%r15, %r14, 5;
+	mul.lo.s32 	%r15, %r14, 12;
 	ld.global.u64 	%rd5, [%rd4];
 	cvta.to.global.u64 	%rd6, %rd5;
 	mul.wide.s32 	%rd7, %r15, 4;
@@ -76,177 +307,308 @@
 	st.global.u16 	[%rd14+18], %r27;
 	ld.global.u32 	%r28, [%rd12+40];
 	st.global.u16 	[%rd14+20], %r28;
-	ld.global.u32 	%r29, [%rd12+44];
-	st.global.u16 	[%rd14+22], %r29;
-	ld.global.u32 	%r30, [%rd12+48];
-	st.global.u16 	[%rd14+24], %r30;
-	ld.global.u32 	%r31, [%rd12+52];
-	st.global.u16 	[%rd14+26], %r31;
-	ld.global.u32 	%r32, [%rd12+56];
-	st.global.u16 	[%rd14+28], %r32;
-	ld.global.u32 	%r33, [%rd12+60];
-	st.global.u16 	[%rd14+30], %r33;
-	ld.global.u32 	%r34, [%rd12+64];
-	st.global.u16 	[%rd14+32], %r34;
-	ld.global.u32 	%r35, [%rd12+68];
-	st.global.u16 	[%rd14+34], %r35;
-	ld.global.u32 	%r36, [%rd12+72];
-	st.global.u16 	[%rd14+36], %r36;
-	ld.global.u32 	%r37, [%rd12+76];
-	st.global.u16 	[%rd14+38], %r37;
-	ld.global.u32 	%r38, [%rd12+80];
-	st.global.u16 	[%rd14+40], %r38;
-	ld.global.u32 	%r39, [%rd12+84];
-	st.global.u16 	[%rd14+42], %r39;
-	ld.global.u32 	%r40, [%rd12+88];
-	st.global.u16 	[%rd14+44], %r40;
-	ld.global.u32 	%r41, [%rd12+92];
-	st.global.u16 	[%rd14+46], %r41;
-	ld.global.u32 	%r42, [%rd12+96];
-	st.global.u16 	[%rd14+48], %r42;
-	ld.global.u32 	%r43, [%rd12+100];
-	st.global.u16 	[%rd14+50], %r43;
-	ld.global.u32 	%r44, [%rd12+104];
-	st.global.u16 	[%rd14+52], %r44;
-	ld.global.u32 	%r45, [%rd12+108];
-	st.global.u16 	[%rd14+54], %r45;
-	ld.global.u32 	%r46, [%rd12+112];
-	st.global.u16 	[%rd14+56], %r46;
-	ld.global.u32 	%r47, [%rd12+116];
-	st.global.u16 	[%rd14+58], %r47;
-	ld.global.u32 	%r48, [%rd12+120];
-	st.global.u16 	[%rd14+60], %r48;
 	ret;
 }
 
-	// .globl	_Z12memoryKernelPPjPtiyiS_
-.visible .entry _Z12memoryKernelPPjPtiyiS_(
-	.param .u64 _Z12memoryKernelPPjPtiyiS__param_0,
-	.param .u64 _Z12memoryKernelPPjPtiyiS__param_1,
-	.param .u32 _Z12memoryKernelPPjPtiyiS__param_2,
-	.param .u64 _Z12memoryKernelPPjPtiyiS__param_3,
-	.param .u32 _Z12memoryKernelPPjPtiyiS__param_4,
-	.param .u64 _Z12memoryKernelPPjPtiyiS__param_5
+	// .globl	_Z20memoryKernelSingleSMPPjPiiyiS_
+.visible .entry _Z20memoryKernelSingleSMPPjPiiyiS_(
+	.param .u64 _Z20memoryKernelSingleSMPPjPiiyiS__param_0,
+	.param .u64 _Z20memoryKernelSingleSMPPjPiiyiS__param_1,
+	.param .u32 _Z20memoryKernelSingleSMPPjPiiyiS__param_2,
+	.param .u64 _Z20memoryKernelSingleSMPPjPiiyiS__param_3,
+	.param .u32 _Z20memoryKernelSingleSMPPjPiiyiS__param_4,
+	.param .u64 _Z20memoryKernelSingleSMPPjPiiyiS__param_5
 )
 {
-	.reg .pred 	%p<9>;
+	.reg .pred 	%p<11>;
 	.reg .b32 	%r<89>;
 	.reg .b64 	%rd<9>;
-	// demoted variable
-	.shared .align 8 .u64 clock_begin;
 
-	ld.param.u64 	%rd1, [_Z12memoryKernelPPjPtiyiS__param_1];
-	ld.param.u32 	%r30, [_Z12memoryKernelPPjPtiyiS__param_2];
-	ld.param.u64 	%rd2, [_Z12memoryKernelPPjPtiyiS__param_3];
-	ld.param.u32 	%r31, [_Z12memoryKernelPPjPtiyiS__param_4];
-	shr.s32 	%r32, %r30, 31;
-	shr.u32 	%r33, %r32, 16;
-	add.s32 	%r34, %r30, %r33;
-	shr.s32 	%r1, %r34, 16;
+
+	ld.param.u64 	%rd1, [_Z20memoryKernelSingleSMPPjPiiyiS__param_1];
+	ld.param.u32 	%r30, [_Z20memoryKernelSingleSMPPjPiiyiS__param_2];
+	ld.param.u64 	%rd2, [_Z20memoryKernelSingleSMPPjPiiyiS__param_3];
+	ld.param.u32 	%r31, [_Z20memoryKernelSingleSMPPjPiiyiS__param_4];
+	// inline asm
+	mov.u32 %r32, %smid;
+	// inline asm
+	setp.gt.s32	%p1, %r32, 15;
+	@%p1 bra 	BB2_17;
+
+	shr.s32 	%r33, %r30, 31;
+	shr.u32 	%r34, %r33, 15;
+	add.s32 	%r35, %r30, %r34;
+	shr.s32 	%r1, %r35, 17;
 	bar.sync 	0;
 	// inline asm
 	mov.u64 %rd3, %globaltimer;
 	// inline asm
 	st.shared.u64 	[clock_begin], %rd3;
-	setp.eq.s64	%p1, %rd2, -100;
+	st.shared.u64 	[clock_now], %rd3;
+	setp.eq.s64	%p2, %rd2, -100;
 	mov.u32 	%r83, 0;
 	mov.u32 	%r84, %r83;
-	@%p1 bra 	BB1_15;
+	@%p2 bra 	BB2_16;
 
-	mov.u32 	%r41, %tid.x;
-	mov.u32 	%r42, %tid.y;
-	mov.u32 	%r43, %ntid.x;
-	mad.lo.s32 	%r44, %r43, %r42, %r41;
-	shr.s32 	%r45, %r44, 31;
-	shr.u32 	%r46, %r45, 27;
-	add.s32 	%r47, %r44, %r46;
-	shr.u32 	%r48, %r47, 5;
-	mov.u32 	%r49, %ctaid.x;
-	mov.u32 	%r50, %nctaid.x;
-	mov.u32 	%r51, %ctaid.y;
-	mad.lo.s32 	%r52, %r50, %r51, %r49;
+	mov.u32 	%r42, %ctaid.x;
+	mov.u32 	%r43, %tid.x;
+	mov.u32 	%r44, %ntid.x;
+	mov.u32 	%r45, %tid.y;
+	mad.lo.s32 	%r46, %r44, %r45, %r43;
+	shr.s32 	%r47, %r46, 31;
+	shr.u32 	%r48, %r47, 27;
+	add.s32 	%r49, %r46, %r48;
+	shr.u32 	%r50, %r49, 5;
+	add.s32 	%r51, %r42, -4;
+	setp.gt.s32	%p3, %r42, 19;
+	selp.b32	%r52, %r51, %r42, %p3;
 	shl.b32 	%r53, %r52, 5;
-	add.s32 	%r54, %r48, %r53;
+	add.s32 	%r54, %r53, %r50;
 	mul.lo.s32 	%r55, %r1, %r54;
 	shl.b32 	%r2, %r55, 5;
 	mov.u32 	%r56, 1;
 	max.s32 	%r3, %r1, %r56;
-	mov.u32 	%r39, 0;
-	mov.u32 	%r83, %r39;
-	mov.u32 	%r84, %r39;
+	mov.u32 	%r40, 0;
+	mov.u32 	%r83, %r40;
+	mov.u32 	%r84, %r40;
 
-BB1_2:
+BB2_3:
 	mul.lo.s32 	%r58, %r85, %r31;
 	mad.lo.s32 	%r84, %r58, %r84, %r2;
-	setp.lt.s32	%p2, %r30, 65536;
-	@%p2 bra 	BB1_3;
+	setp.lt.s32	%p4, %r30, 131072;
+	@%p4 bra 	BB2_4;
 
 	and.b32  	%r64, %r3, 3;
 	mov.u32 	%r84, 0;
-	setp.eq.s32	%p3, %r64, 0;
-	@%p3 bra 	BB1_5;
+	setp.eq.s32	%p5, %r64, 0;
+	@%p5 bra 	BB2_6;
 
-	setp.eq.s32	%p4, %r64, 1;
-	@%p4 bra 	BB1_10;
+	setp.eq.s32	%p6, %r64, 1;
+	@%p6 bra 	BB2_11;
 
-	setp.eq.s32	%p5, %r64, 2;
-	@%p5 bra 	BB1_9;
+	setp.eq.s32	%p7, %r64, 2;
+	@%p7 bra 	BB2_10;
 
 	mov.u32 	%r84, %r56;
 
-BB1_9:
+BB2_10:
 	add.s32 	%r83, %r83, %r84;
 	add.s32 	%r84, %r84, 1;
 
-BB1_10:
+BB2_11:
 	add.s32 	%r81, %r83, %r84;
 	add.s32 	%r85, %r84, 1;
 	mov.u32 	%r83, %r81;
-	bra.uni 	BB1_11;
+	bra.uni 	BB2_12;
 
-BB1_3:
-	mov.u32 	%r85, %r39;
-	bra.uni 	BB1_14;
+BB2_4:
+	mov.u32 	%r85, %r40;
+	bra.uni 	BB2_15;
 
-BB1_5:
+BB2_6:
 	mov.u32 	%r81, %r83;
 	mov.u32 	%r85, %r84;
 	mov.u32 	%r83, %r84;
 
-BB1_11:
-	setp.lt.u32	%p6, %r3, 4;
-	@%p6 bra 	BB1_14;
+BB2_12:
+	setp.lt.u32	%p8, %r3, 4;
+	@%p8 bra 	BB2_15;
 
-BB1_12:
+BB2_13:
 	add.s32 	%r66, %r81, %r85;
 	add.s32 	%r67, %r85, %r66;
 	add.s32 	%r68, %r67, %r85;
 	add.s32 	%r69, %r68, %r85;
 	add.s32 	%r81, %r69, 6;
 	add.s32 	%r85, %r85, 4;
-	setp.lt.s32	%p7, %r85, %r1;
-	@%p7 bra 	BB1_12;
+	setp.lt.s32	%p9, %r85, %r1;
+	@%p9 bra 	BB2_13;
 
 	add.s32 	%r84, %r85, -1;
 	mov.u32 	%r83, %r81;
 
-BB1_14:
+BB2_15:
 	// inline asm
 	mov.u64 %rd4, %globaltimer;
 	// inline asm
+	st.shared.u64 	[clock_now], %rd4;
 	ld.shared.u64 	%rd5, [clock_begin];
 	sub.s64 	%rd6, %rd4, %rd5;
 	add.s64 	%rd7, %rd2, 100;
-	setp.lt.u64	%p8, %rd6, %rd7;
-	@%p8 bra 	BB1_2;
+	setp.lt.u64	%p10, %rd6, %rd7;
+	@%p10 bra 	BB2_3;
 
-BB1_15:
+BB2_16:
 	bar.sync 	0;
 	cvta.to.global.u64 	%rd8, %rd1;
-	st.global.u16 	[%rd8], %r85;
+	st.global.u32 	[%rd8+4], %r85;
 	add.s32 	%r70, %r83, %r84;
-	st.global.u16 	[%rd8+2], %r70;
-	st.global.u16 	[%rd8+4], %r83;
+	st.global.u32 	[%rd8+8], %r70;
+	st.global.u32 	[%rd8+12], %r83;
+
+BB2_17:
+	ret;
+}
+
+	// .globl	_Z12memoryKernelPPjPiiyiS_
+.visible .entry _Z12memoryKernelPPjPiiyiS_(
+	.param .u64 _Z12memoryKernelPPjPiiyiS__param_0,
+	.param .u64 _Z12memoryKernelPPjPiiyiS__param_1,
+	.param .u32 _Z12memoryKernelPPjPiiyiS__param_2,
+	.param .u64 _Z12memoryKernelPPjPiiyiS__param_3,
+	.param .u32 _Z12memoryKernelPPjPiiyiS__param_4,
+	.param .u64 _Z12memoryKernelPPjPiiyiS__param_5
+)
+{
+	.reg .pred 	%p<9>;
+	.reg .b32 	%r<104>;
+	.reg .b64 	%rd<26>;
+
+
+	ld.param.u64 	%rd4, [_Z12memoryKernelPPjPiiyiS__param_0];
+	ld.param.u64 	%rd5, [_Z12memoryKernelPPjPiiyiS__param_1];
+	ld.param.u32 	%r39, [_Z12memoryKernelPPjPiiyiS__param_2];
+	ld.param.u64 	%rd6, [_Z12memoryKernelPPjPiiyiS__param_3];
+	ld.param.u32 	%r40, [_Z12memoryKernelPPjPiiyiS__param_4];
+	mul.hi.s32 	%r41, %r39, 1717986919;
+	shr.u32 	%r42, %r41, 31;
+	shr.s32 	%r43, %r41, 16;
+	add.s32 	%r1, %r43, %r42;
+	bar.sync 	0;
+	// inline asm
+	mov.u64 %rd7, %globaltimer;
+	// inline asm
+	st.shared.u64 	[clock_begin], %rd7;
+	st.shared.u64 	[clock_now], %rd7;
+	cvta.to.global.u64 	%rd8, %rd4;
+	ld.global.u64 	%rd1, [%rd8];
+	add.s64 	%rd2, %rd6, 100;
+	setp.eq.s64	%p1, %rd2, 0;
+	mov.u32 	%r98, 0;
+	mov.u32 	%r99, %r98;
+	@%p1 bra 	BB3_15;
+
+	mov.u32 	%r50, %tid.x;
+	mov.u32 	%r51, %tid.y;
+	mov.u32 	%r52, %ntid.x;
+	mad.lo.s32 	%r53, %r52, %r51, %r50;
+	shr.s32 	%r54, %r53, 31;
+	shr.u32 	%r55, %r54, 27;
+	add.s32 	%r56, %r53, %r55;
+	shr.u32 	%r57, %r56, 5;
+	mov.u32 	%r58, %ctaid.x;
+	mov.u32 	%r59, %ctaid.y;
+	mov.u32 	%r60, %nctaid.x;
+	mad.lo.s32 	%r61, %r60, %r59, %r58;
+	shl.b32 	%r62, %r61, 5;
+	add.s32 	%r63, %r57, %r62;
+	mul.lo.s32 	%r64, %r1, %r63;
+	shl.b32 	%r2, %r64, 5;
+	mov.u32 	%r65, 1;
+	max.s32 	%r3, %r1, %r65;
+	and.b32  	%r4, %r3, 3;
+	mov.u32 	%r48, 0;
+	mov.u32 	%r98, %r48;
+	mov.u32 	%r99, %r48;
+
+BB3_2:
+	mul.lo.s32 	%r67, %r100, %r40;
+	mad.lo.s32 	%r8, %r67, %r99, %r2;
+	setp.lt.s32	%p2, %r39, 163840;
+	@%p2 bra 	BB3_3;
+
+	mov.u32 	%r100, 0;
+	setp.eq.s32	%p3, %r4, 0;
+	@%p3 bra 	BB3_5;
+
+	setp.eq.s32	%p4, %r4, 1;
+	@%p4 bra 	BB3_11;
+
+	setp.eq.s32	%p5, %r4, 2;
+	@%p5 bra 	BB3_8;
+	bra.uni 	BB3_9;
+
+BB3_8:
+	mov.u32 	%r100, %r65;
+	bra.uni 	BB3_10;
+
+BB3_3:
+	mov.u32 	%r99, %r8;
+	mov.u32 	%r100, %r48;
+	bra.uni 	BB3_14;
+
+BB3_5:
+	mov.u32 	%r95, %r98;
+	mov.u32 	%r98, %r100;
+	mov.u32 	%r99, %r100;
+	bra.uni 	BB3_12;
+
+BB3_9:
+	mul.wide.s32 	%rd9, %r8, 4;
+	add.s64 	%rd10, %rd1, %rd9;
+	ld.u32 	%r8, [%rd10];
+	add.s32 	%r98, %r8, %r98;
+	mov.u32 	%r100, 2;
+
+BB3_10:
+	mul.wide.s32 	%rd11, %r8, 4;
+	add.s64 	%rd12, %rd1, %rd11;
+	ld.u32 	%r8, [%rd12];
+	add.s32 	%r98, %r8, %r98;
+
+BB3_11:
+	mul.wide.s32 	%rd13, %r8, 4;
+	add.s64 	%rd14, %rd1, %rd13;
+	ld.u32 	%r8, [%rd14];
+	add.s32 	%r95, %r8, %r98;
+	add.s32 	%r100, %r100, 1;
+	mov.u32 	%r98, %r95;
+	mov.u32 	%r99, %r8;
+
+BB3_12:
+	setp.lt.u32	%p6, %r3, 4;
+	@%p6 bra 	BB3_14;
+
+BB3_13:
+	mul.wide.s32 	%rd15, %r8, 4;
+	add.s64 	%rd16, %rd1, %rd15;
+	ld.u32 	%r74, [%rd16];
+	add.s32 	%r75, %r74, %r95;
+	mul.wide.s32 	%rd17, %r74, 4;
+	add.s64 	%rd18, %rd1, %rd17;
+	ld.u32 	%r76, [%rd18];
+	add.s32 	%r77, %r76, %r75;
+	mul.wide.s32 	%rd19, %r76, 4;
+	add.s64 	%rd20, %rd1, %rd19;
+	ld.u32 	%r78, [%rd20];
+	add.s32 	%r79, %r78, %r77;
+	mul.wide.s32 	%rd21, %r78, 4;
+	add.s64 	%rd22, %rd1, %rd21;
+	ld.u32 	%r8, [%rd22];
+	add.s32 	%r95, %r8, %r79;
+	add.s32 	%r100, %r100, 4;
+	setp.lt.s32	%p7, %r100, %r1;
+	mov.u32 	%r98, %r95;
+	mov.u32 	%r99, %r8;
+	@%p7 bra 	BB3_13;
+
+BB3_14:
+	// inline asm
+	mov.u64 %rd23, %globaltimer;
+	// inline asm
+	st.shared.u64 	[clock_now], %rd23;
+	ld.shared.u64 	%rd24, [clock_begin];
+	sub.s64 	%rd25, %rd23, %rd24;
+	setp.lt.u64	%p8, %rd25, %rd2;
+	@%p8 bra 	BB3_2;
+
+BB3_15:
+	cvta.to.global.u64 	%rd3, %rd5;
+	bar.sync 	0;
+	st.global.u32 	[%rd3], %r100;
+	add.s32 	%r80, %r98, %r99;
+	st.global.u32 	[%rd3+4], %r80;
+	st.global.u32 	[%rd3+8], %r98;
 	ret;
 }
 

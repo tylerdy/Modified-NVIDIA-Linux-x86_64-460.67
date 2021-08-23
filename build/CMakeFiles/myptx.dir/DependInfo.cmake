@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/app.cu" "CMakeFiles/myptx.dir/app.ptx" "gcc" "CMakeFiles/myptx.dir/app.ptx.d"
   "/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/stress.cu" "CMakeFiles/myptx.dir/stress.ptx" "gcc" "CMakeFiles/myptx.dir/stress.ptx.d"
+  "/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/tester.cu" "CMakeFiles/myptx.dir/tester.ptx" "gcc" "CMakeFiles/myptx.dir/tester.ptx.d"
   )
 
 # Targets to which this target links.

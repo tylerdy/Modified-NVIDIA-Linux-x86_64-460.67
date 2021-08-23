@@ -41,6 +41,8 @@ CMakeFiles/stress.dir/gpu.cu.o: ../gpu.cu \
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
   /usr/include/strings.h \
+  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
   /usr/include/time.h \
   /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/types.h \
@@ -84,6 +86,8 @@ CMakeFiles/stress.dir/gpu.cu.o: ../gpu.cu \
   /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h \
   /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
   /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
+  /usr/include/x86_64-linux-gnu/bits/stdio.h \
+  /usr/include/x86_64-linux-gnu/bits/stdio2.h \
   /usr/include/c++/9/stdlib.h \
   /usr/include/c++/9/cstdlib \
   /usr/include/stdlib.h \
@@ -100,13 +104,16 @@ CMakeFiles/stress.dir/gpu.cu.o: ../gpu.cu \
   /usr/include/x86_64-linux-gnu/bits/select.h \
   /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h \
+  /usr/include/x86_64-linux-gnu/bits/select2.h \
   /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
   /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
   /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
   /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
   /usr/include/alloca.h \
+  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+  /usr/include/x86_64-linux-gnu/bits/stdlib.h \
   /usr/include/c++/9/bits/std_abs.h \
   /usr/include/assert.h \
   /usr/local/cuda-11.1/include/crt/math_functions.h \
@@ -124,6 +131,7 @@ CMakeFiles/stress.dir/gpu.cu.o: ../gpu.cu \
   /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
   /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
   /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+  /usr/include/x86_64-linux-gnu/bits/mathinline.h \
   /usr/local/cuda-11.1/include/crt/math_functions.hpp \
   /usr/local/cuda-11.1/include/cuda_surface_types.h \
   /usr/local/cuda-11.1/include/cuda_texture_types.h \
@@ -235,6 +243,8 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
   /usr/include/strings.h \
+  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
   /usr/include/time.h \
   /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/types.h \
@@ -278,6 +288,8 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
   /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h \
   /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
   /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
+  /usr/include/x86_64-linux-gnu/bits/stdio.h \
+  /usr/include/x86_64-linux-gnu/bits/stdio2.h \
   /usr/include/c++/9/stdlib.h \
   /usr/include/c++/9/cstdlib \
   /usr/include/stdlib.h \
@@ -294,13 +306,16 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
   /usr/include/x86_64-linux-gnu/bits/select.h \
   /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h \
+  /usr/include/x86_64-linux-gnu/bits/select2.h \
   /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
   /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
   /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
   /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
   /usr/include/alloca.h \
+  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+  /usr/include/x86_64-linux-gnu/bits/stdlib.h \
   /usr/include/c++/9/bits/std_abs.h \
   /usr/include/assert.h \
   /usr/local/cuda-11.1/include/crt/math_functions.h \
@@ -318,6 +333,7 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
   /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
   /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
   /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+  /usr/include/x86_64-linux-gnu/bits/mathinline.h \
   /usr/local/cuda-11.1/include/crt/math_functions.hpp \
   /usr/local/cuda-11.1/include/cuda_surface_types.h \
   /usr/local/cuda-11.1/include/cuda_texture_types.h \
@@ -374,6 +390,7 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
   /usr/include/x86_64-linux-gnu/bits/confname.h \
   /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
   /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+  /usr/include/x86_64-linux-gnu/bits/unistd.h \
   /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
   /usr/include/sched.h \
   /usr/include/x86_64-linux-gnu/bits/sched.h \
@@ -404,6 +421,7 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
   /usr/include/wchar.h \
   /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
+  /usr/include/x86_64-linux-gnu/bits/wchar2.h \
   /usr/include/c++/9/bits/char_traits.h \
   /usr/include/c++/9/bits/stl_algobase.h \
   /usr/include/c++/9/bits/functexcept.h \
@@ -555,21 +573,19 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/c++/9/bits/stl_function.h:
 
-/usr/local/cuda-11.1/include/crt/device_functions.h:
+/usr/include/x86_64-linux-gnu/c++/9/bits/atomic_word.h:
 
-/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+/usr/include/pthread.h:
 
-/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+/usr/include/x86_64-linux-gnu/c++/9/bits/gthr-default.h:
+
+/usr/include/x86_64-linux-gnu/c++/9/bits/gthr.h:
+
+/usr/include/c++/9/ext/atomicity.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
 
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
-
-/usr/local/cuda-11.1/include/sm_60_atomic_functions.h:
-
-/usr/local/cuda-11.1/include/texture_indirect_functions.h:
-
-/usr/include/x86_64-linux-gnu/c++/9/bits/c++allocator.h:
 
 /usr/include/c++/9/bits/nested_exception.h:
 
@@ -603,17 +619,7 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
-/usr/include/c++/9/bits/stl_bvector.h:
-
-/usr/include/stdlib.h:
-
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/local_lim.h:
-
-/usr/include/x86_64-linux-gnu/bits/wchar.h:
 
 /usr/include/c++/9/math.h:
 
@@ -629,17 +635,7 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/local/cuda-11.1/include/sm_32_intrinsics.h:
 
-/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/local/cuda-11.1/include/vector_types.h:
-
-/usr/include/c++/9/bits/basic_ios.h:
-
-/usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h:
-
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
-
-/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
 
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
 
@@ -661,6 +657,8 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/sched.h:
 
+/usr/include/c++/9/new:
+
 /usr/include/x86_64-linux-gnu/bits/posix2_lim.h:
 
 /usr/include/linux/limits.h:
@@ -669,15 +667,33 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:
+
+/usr/include/c++/9/bits/cxxabi_forced.h:
+
+/usr/include/c++/9/limits:
+
+/usr/include/limits.h:
+
 /usr/include/c++/9/ext/new_allocator.h:
 
 /usr/include/c++/9/ext/numeric_traits.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 
+/usr/include/x86_64-linux-gnu/bits/local_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/wchar.h:
+
 /usr/include/x86_64-linux-gnu/bits/posix1_lim.h:
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
+
+/usr/include/c++/9/string:
+
+/usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h:
 
 /usr/include/x86_64-linux-gnu/bits/select.h:
 
@@ -697,11 +713,21 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
 
+/usr/include/x86_64-linux-gnu/bits/stdio.h:
+
+/usr/include/string.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+
+/usr/local/cuda-11.1/samples/common/inc/exception.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
 
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/select2.h:
 
 ../userlib.hpp:
 
@@ -717,9 +743,7 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
 
-/usr/include/c++/9/new:
-
-/usr/local/cuda-11.1/include/cuda_surface_types.h:
+/usr/include/c++/9/bits/allocator.h:
 
 /usr/include/c++/9/ratio:
 
@@ -730,6 +754,8 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
 ../stress.cu:
+
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:
 
 /usr/include/math.h:
 
@@ -745,11 +771,21 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/c++/9/bits/exception_ptr.h:
 
+/usr/local/cuda-11.1/include/vector_types.h:
+
+/usr/include/c++/9/bits/basic_ios.h:
+
+/usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
+
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
 
 /usr/local/cuda-11.1/include/sm_61_intrinsics.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:
 
 /usr/include/c++/9/bits/istream.tcc:
 
@@ -771,13 +807,7 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
-/usr/local/cuda-11.1/include/cuda_texture_types.h:
-
-/usr/local/cuda-11.1/include/device_types.h:
-
 /usr/include/x86_64-linux-gnu/bits/long-double.h:
-
-/usr/include/c++/9/bits/locale_classes.h:
 
 /usr/include/c++/9/bits/codecvt.h:
 
@@ -803,21 +833,11 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h:
-
-/usr/include/c++/9/string:
-
 /usr/include/x86_64-linux-gnu/c++/9/bits/ctype_inline.h:
 
 /usr/include/c++/9/bits/locale_facets.h:
 
 /usr/local/cuda-11.1/include/cuda_runtime_api.h:
-
-/usr/include/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/waitflags.h:
-
-/usr/local/cuda-11.1/samples/common/inc/exception.h:
 
 /usr/local/cuda-11.1/include/driver_functions.h:
 
@@ -826,6 +846,8 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/local/cuda-11.1/samples/common/inc/helper_cuda.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
 
@@ -836,6 +858,14 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/local/cuda-11.1/include/crt/math_functions.hpp:
 
 /usr/include/c++/9/bits/functional_hash.h:
+
+/usr/include/c++/9/bits/locale_classes.h:
+
+/usr/include/x86_64-linux-gnu/bits/strings_fortified.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
+
+/usr/include/c++/9/bits/char_traits.h:
 
 /usr/include/c++/9/sstream:
 
@@ -880,6 +910,30 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/local/cuda-11.1/include/crt/sm_70_rt.h:
 
 /usr/local/cuda-11.1/include/sm_30_intrinsics.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+
+/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathinline.h:
+
+/usr/local/cuda-11.1/include/cuda_surface_types.h:
+
+/usr/local/cuda-11.1/include/device_types.h:
+
+/usr/local/cuda-11.1/include/cuda_texture_types.h:
+
+/usr/local/cuda-11.1/include/sm_60_atomic_functions.h:
+
+/usr/local/cuda-11.1/include/texture_indirect_functions.h:
+
+/usr/include/x86_64-linux-gnu/c++/9/bits/c++allocator.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/c++/9/bits/stl_bvector.h:
+
+/usr/local/cuda-11.1/include/crt/device_functions.h:
 
 /usr/local/cuda-11.1/include/crt/device_functions.hpp:
 
@@ -931,6 +985,10 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/local/cuda-11.1/include/crt/sm_80_rt.hpp:
 
+/usr/include/c++/9/bits/ostream_insert.h:
+
+/usr/local/cuda-11.1/include/surface_functions.h:
+
 /usr/local/cuda-11.1/include/surface_indirect_functions.h:
 
 /usr/include/c++/9/bits/ptr_traits.h:
@@ -944,8 +1002,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/include/x86_64-linux-gnu/bits/mman-shared.h:
 
 ../test.hpp:
-
-/usr/include/x86_64-linux-gnu/c++/9/bits/gthr.h:
 
 /usr/local/cuda-11.1/include/crt/device_double_functions.hpp:
 
@@ -970,8 +1026,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/include/time.h:
 
 /usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
-
-/usr/include/c++/9/bits/allocator.h:
 
 /usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 
@@ -1007,8 +1061,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/c++/9/cwchar:
 
-/usr/include/c++/9/ext/atomicity.h:
-
 ../hash_function.hpp:
 
 /usr/local/cuda-11.1/include/cuda_device_runtime_api.h:
@@ -1039,6 +1091,8 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/x86_64-linux-gnu/bits/confname.h:
 
+/usr/include/x86_64-linux-gnu/bits/unistd.h:
+
 /usr/include/wctype.h:
 
 /usr/include/sched.h:
@@ -1046,12 +1100,6 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/local/cuda-11.1/include/texture_types.h:
 
 /usr/include/errno.h:
-
-/usr/include/c++/9/limits:
-
-/usr/include/limits.h:
-
-/usr/include/c++/9/bits/cxxabi_forced.h:
 
 /usr/include/x86_64-linux-gnu/bits/errno.h:
 
@@ -1075,9 +1123,9 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 
 /usr/include/wchar.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
+/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
 
-/usr/include/c++/9/bits/char_traits.h:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:
 
 /usr/include/c++/9/clocale:
 
@@ -1094,13 +1142,3 @@ CMakeFiles/stress.dir/stress.cu.o: ../stress.cu \
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
 /usr/include/c++/9/bits/ios_base.h:
-
-/usr/include/x86_64-linux-gnu/c++/9/bits/gthr-default.h:
-
-/usr/include/pthread.h:
-
-/usr/include/x86_64-linux-gnu/c++/9/bits/atomic_word.h:
-
-/usr/local/cuda-11.1/include/surface_functions.h:
-
-/usr/include/c++/9/bits/ostream_insert.h:

@@ -6,10 +6,10 @@
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
 #define NUM_BLOCKS  4      // fixed number of blocks
 #define NUM_WARPS   2       // fixed number of warps per block
-#define SAMPLES 2048
+#define SAMPLES 1
 #include <stdio.h>
 #include <cstdint>
-
+#include<cuda_profiler_api.h>
 #include <test.hpp>
 #include <stdlib.h>
 #include <stdio.h>
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
   unsigned int *d_skip;   //device space skipped to create non-continuous areas
   unsigned int **d_ptrs;  //list of device spaces passed to kernel
   
-  unsigned int *d_flush;  //cache-size device space for inital cache flush
+  unsigned int *d_flush, *d_flush2, *h_flush;  //cache-size device space for inital cache flush
   unsigned int *d_result;  //device memory array to hold logged values
 
   unsigned int *h_data;   //cache-size host memory to initialize pointer chasing
@@ -147,12 +147,22 @@ int main(int argc, char *argv[])
   // if (ret < 0)
         // fprintf(stderr, "Device init failed\n");
   cudaStreamCreate(&my_stream);
+  // unsigned int *contig_start = (unsigned int*)device_allocate_contigous(bytesize*4, &phy_start);
   // allocate list of device memory spaces 
+   checkCudaErrors(cudaMalloc((void **) &d_flush, bytesize));  
+   checkCudaErrors(cudaMallocHost((void **) &h_flush, bytesize));  
+  //  checkCudaErrors(cudaMalloc((void **) &d_flush2, bytesize));  
+  // d_flush = contig_start;
+  // d_flush2 = contig_start + (bytesize >> 2);
   checkCudaErrors(cudaMalloc((void **) &d_ptrs, sizeof(h_ptrs))); 
   // d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
-  //printf("%016x\n", device_p);
-  checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
-  //printf("%016x\n", d_data);
+  // printf("%016x\n", device_p);
+  // d_data = contig_start + (bytesize >> 2)*4;// + (bytesize >> 3);
+  checkCudaErrors(cudaMalloc((void **) &d_data, bytesize*4));
+  // d_data = &(d_flush[bytesize >> 2]);
+  //d_data = d_data + (bytesize >> 2);
+  // d_data = &()
+  printf("%016x\n%016x\n%016x\n", d_flush,d_flush2, d_data);
   //checkCudaErrors(cudaStreamSynchronize(my_stream));
 
   h_ptrs[0] = d_data; 
@@ -180,8 +190,6 @@ int main(int argc, char *argv[])
 
   checkCudaErrors(cudaMemcpy(d_ptrs, h_ptrs, sizeof(h_ptrs), cudaMemcpyHostToDevice));
   
-  // allocate another 512 KB space for initial cache flush by kernel
-  checkCudaErrors(cudaMalloc((void **) &d_flush, bytesize));  
 
   // space needed to log times for reading each element in each device space
   wrp_log = NUM_SPACES * element_count * sizeof(unsigned long long);
@@ -198,13 +206,13 @@ int main(int argc, char *argv[])
   int wrpcnts = NUM_BLOCKS * NUM_WARPS;
   int stride = array_count / wrpcnts / mult;
   
-  for(i = 0; i < array_count; i++){
-    h_data[i] = 0;
-  }
-  for (i = 0; i < wrpcnts * mult; i++){
-    h_data[i * stride] = i * stride;
+  // for(i = 0; i < array_count; i++){
+  //   h_data[i] = 0;
+  // }
+  // for (i = 0; i < wrpcnts * mult; i++){
+  //   h_data[i * stride] = i * stride;
     // printf("%d\n", i*stride);
-  }
+  // }
 
 
   //  ptr = 0;
@@ -219,58 +227,85 @@ int main(int argc, char *argv[])
   //  return 0;
 
 
-  // ptr = 0;
-  //  for (int i = 0; i < element_count; i++) {
-  //   //  index values separated by number of elements per line (32)
-  //    nextptr = i * line_elements;
-  //    h_data[ptr] = nextptr;
-  //   //  h_data[ptr] = 0;
-  //   //  printf("[%d] = %d\n", ptr, nextptr);
-  //    ptr = nextptr;
-  //  }
-  //  h_data[nextptr] = 0;  //last points to first
+  ptr = 0;
+   for (int i = 0; i < element_count; i++) {
+    //  index values separated by number of elements per line (32)
+     nextptr = i * line_elements;
+     h_flush[ptr] = nextptr;
+     h_data[ptr] = nextptr;
+    //  h_data[ptr] = 0;
+    //  printf("[%d] = %d\n", ptr, nextptr);
+     ptr = nextptr;
+   }
+   h_data[nextptr] = 0;  //last points to first
 // return 0;
   Threads = dim3(32, NUM_WARPS, 1);
   Blocks = dim3(NUM_BLOCKS, 1, 1);
-
+  checkCudaErrors(cudaMemcpyAsync(d_flush,  h_flush, bytesize, cudaMemcpyHostToDevice, my_stream)); 
+  checkCudaErrors(cudaStreamSynchronize(my_stream));
   // copy pointer-chasing array in host memory to device memory spaces
   for (i = 0; i < NUM_SPACES; i++) {
      checkCudaErrors(cudaMemcpyAsync(h_ptrs[i],  h_data, bytesize, cudaMemcpyHostToDevice, my_stream)); 
      checkCudaErrors(cudaStreamSynchronize(my_stream));
   }
+  
   // run_time = run_seconds * 1000000000ULL;  //seconds to nanoseconds
   // shared_space = MAX_WARP_LOG * sizeof(unsigned short) + (1<<10); //32KB per block/SM
 
   //memoryKernel<<<Blocks, Threads, shared_space, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
   // int   num_visits = (bytesize / sizeof(unsigned int)) / (NUM_BLOCKS * NUM_WARPS);
   int   num_visits = (bytesize / 128) / (NUM_BLOCKS * NUM_WARPS);
-  flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush, 0);  
-  checkCudaErrors(cudaStreamSynchronize(my_stream));
+  
+  cudaProfilerStart();
+  // for(i = 0; i < 8; i++){
+  // flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush,0);  
+  // checkCudaErrors(cudaStreamSynchronize(my_stream));
+  // }
+
+  
+  // flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush2, 0);  
+  // checkCudaErrors(cudaStreamSynchronize(my_stream));
+  
+  
   for(int samp = 0; samp < SAMPLES; samp++){
-    appMemoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, 1, 0, d_flush, num_visits);  
+    appMemoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_data, d_result, bytesize, 2, 0, d_flush, num_visits);  
     checkCudaErrors(cudaStreamSynchronize(my_stream));
   }
+   cudaProfilerStop();
+  // testSM<<<Blocks, Threads, 0, my_stream>>>(d_result, 0);
+  // checkCudaErrors(cudaStreamSynchronize(my_stream));
   // return 0;
   // copy any logged data back to host memory
   checkCudaErrors(cudaMemcpyAsync(h_result, d_result, wrp_log, cudaMemcpyDeviceToHost, my_stream));
   checkCudaErrors(cudaStreamSynchronize(my_stream));
+  // // for(i = 0; i < NUM_BLOCKS; i++){
+  // //   printf("%d\n", h_result[i]);
+  // // }
 
-  // copy any side information stored in device space zero back to host memory
+  // // copy any side information stored in device space zero back to host memory
   checkCudaErrors(cudaMemcpyAsync(h_data, h_ptrs[0], bytesize, cudaMemcpyDeviceToHost, my_stream));
   checkCudaErrors(cudaStreamSynchronize(my_stream));
+
   // printf("elapsed time: %d\n", h_result[3]);
   // int min =  10000;
-  // int cnt  = 0;
+  int cnt  = 0;
+  int total = 0;
   // for (i = 0; i < NUM_SPACES; i++) {
   //   for (j = 0; j < 16384; j++) {
   //     int tmp = h_result[j];
-  // //   //   // log_idx = (i * element_count);
+  //     // log_idx = (i * element_count);
   //     printf("%d\n", tmp); 
-  // //   //   //if(min > tmp && tmp >0) min = tmp;
-  // //     if(tmp < 350) cnt++;
+  //     //if(min > tmp && tmp >0) min = tmp;
+      
+  //     if(tmp != 0){
+  //       total++;
+  //       if(tmp < 350) cnt++;
+  //     }
   //   }	  
-  // }
+  // // // }
+  // printf("count is %d, total is %d, %f is the rate\n",cnt,total, cnt / (total + 0.0));
   // printf("%d out of %d\n", cnt, element_count);
-  //printf("min: %d\n", min);
+  // for(i = 0; i < 8; i++)
+  //   printf("%d\n", h_data[i+4]);
    // cudaDeviceReset();
 }
