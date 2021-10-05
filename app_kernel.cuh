@@ -38,8 +38,10 @@ __global__ void
 flushKernel(unsigned int *k_result,int bytesize, unsigned int *c_flush, int myZero) {
    int flush_max = bytesize >> 2;
    unsigned int r_sum; 
-   for (int i = 0; i < flush_max; i+=32)
-        r_sum = r_sum + c_flush[i];
+   for(int j = 0 ; j < 128;j++){
+    for (int i = 0; i < flush_max; i+=32)
+          r_sum = r_sum + c_flush[i];
+   }
    k_result[0] = r_sum * myZero;
 
   //  int gbl_blk,lcl_thd,lcl_wrp;
@@ -83,7 +85,7 @@ flushKernel(unsigned int *k_result,int bytesize, unsigned int *c_flush, int myZe
    
 }
 __global__ void
-appMemoryKernel(unsigned int *k_data, unsigned int *k_result, int bytesize, int samples, int myZero, unsigned int *c_flush, int num_visits)  //c_flush is size of k_data (bytesize) and used to flush cache initially
+appMemoryKernel(unsigned int *k_data, unsigned int *k_result, int bytesize, int samples, int myZero, unsigned int *c_flush, int num_visits, int indicator)  //c_flush is size of k_data (bytesize) and used to flush cache initially
 {
       //WARNING: All data arrays and numbers of blocks/warps powers of 2
 
@@ -144,10 +146,10 @@ appMemoryKernel(unsigned int *k_data, unsigned int *k_result, int bytesize, int 
               // the local warp loops while chasing the pointers in its partition
 	      // uncomment the lines inside the loop to record read access times in shared memory
          //wrp_count = 0;
-// #pragma unroll 1
+#pragma unroll 1
         // for (wrp_count = 0; wrp_count < num_visits; wrp_count++) {
               for (wrp_count = 0; wrp_count < wrp_max; wrp_count++) {
-                    //  cycles_before = clock64();
+                     cycles_before = clock64();
                     //  ptr = __ldcv(&(k_data[ptr]));
                     ptr = k_data[ptr];
                     // ptr = wrp_count;
@@ -155,8 +157,8 @@ appMemoryKernel(unsigned int *k_data, unsigned int *k_result, int bytesize, int 
                     // k_result[wrp_log + wrp_count] = wrp_max;
                   //  k_result[base + wrp_count] = (unsigned int)(k_data + ptr);
                     
-                    //  cycles_after = clock64();
-                    //  blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
+                     cycles_after = clock64();
+                     blk_log[wrp_log + wrp_count] = (unsigned short) (cycles_after - cycles_before);
                     //  if(cycles_after - cycles_before < 350) hitcnt++;
                      
             }
@@ -170,9 +172,10 @@ appMemoryKernel(unsigned int *k_data, unsigned int *k_result, int bytesize, int 
 //#ifdef DO_LOG	       
          //  }
                __syncthreads();
-    
-              // for (j = 0; j < wrp_max; j++)
-                  // k_result[wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
+    if(indicator == 1){
+              for (j = 0; j < wrp_max; j++)
+                  k_result[wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
+    }
                 //   k_result[log_idx + wrp_log + j] = (unsigned short)cycles_add;
 //#endif		  
 	   //end loop for passes through a device space

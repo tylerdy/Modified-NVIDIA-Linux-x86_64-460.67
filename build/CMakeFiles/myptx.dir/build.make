@@ -114,9 +114,24 @@ CMakeFiles/myptx.dir/tester.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/myptx.dir/tester.s"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
 
+CMakeFiles/myptx.dir/iterSingle/iter.ptx: CMakeFiles/myptx.dir/flags.make
+CMakeFiles/myptx.dir/iterSingle/iter.ptx: ../iterSingle/iter.cu
+CMakeFiles/myptx.dir/iterSingle/iter.ptx: CMakeFiles/myptx.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CUDA object CMakeFiles/myptx.dir/iterSingle/iter.ptx"
+	/usr/local/cuda-11.1/bin/nvcc -forward-unknown-to-host-compiler $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -MD -MT CMakeFiles/myptx.dir/iterSingle/iter.ptx -MF CMakeFiles/myptx.dir/iterSingle/iter.ptx.d -x cu -ptx /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/iterSingle/iter.cu -o CMakeFiles/myptx.dir/iterSingle/iter.ptx
+
+CMakeFiles/myptx.dir/iterSingle/iter.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/myptx.dir/iterSingle/iter.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_PREPROCESSED_SOURCE
+
+CMakeFiles/myptx.dir/iterSingle/iter.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/myptx.dir/iterSingle/iter.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
+
 myptx: CMakeFiles/myptx.dir/stress.ptx
 myptx: CMakeFiles/myptx.dir/app.ptx
 myptx: CMakeFiles/myptx.dir/tester.ptx
+myptx: CMakeFiles/myptx.dir/iterSingle/iter.ptx
 myptx: CMakeFiles/myptx.dir/build.make
 .PHONY : myptx
 

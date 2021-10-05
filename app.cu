@@ -4,9 +4,9 @@
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
-#define NUM_BLOCKS  4      // fixed number of blocks
-#define NUM_WARPS   2       // fixed number of warps per block
-#define SAMPLES 1
+#define NUM_BLOCKS  1      // fixed number of blocks
+#define NUM_WARPS   1       // fixed number of warps per block
+#define SAMPLES 2
 #include <stdio.h>
 #include <cstdint>
 #include<cuda_profiler_api.h>
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
   // allocate list of device memory spaces 
    checkCudaErrors(cudaMalloc((void **) &d_flush, bytesize));  
    checkCudaErrors(cudaMallocHost((void **) &h_flush, bytesize));  
-  //  checkCudaErrors(cudaMalloc((void **) &d_flush2, bytesize));  
+   checkCudaErrors(cudaMalloc((void **) &d_flush2, bytesize));  
   // d_flush = contig_start;
   // d_flush2 = contig_start + (bytesize >> 2);
   checkCudaErrors(cudaMalloc((void **) &d_ptrs, sizeof(h_ptrs))); 
@@ -256,7 +256,7 @@ int main(int argc, char *argv[])
   // int   num_visits = (bytesize / sizeof(unsigned int)) / (NUM_BLOCKS * NUM_WARPS);
   int   num_visits = (bytesize / 128) / (NUM_BLOCKS * NUM_WARPS);
   
-  cudaProfilerStart();
+  // cudaProfilerStart();
   // for(i = 0; i < 8; i++){
   // flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush,0);  
   // checkCudaErrors(cudaStreamSynchronize(my_stream));
@@ -264,14 +264,19 @@ int main(int argc, char *argv[])
 
   
   // flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush2, 0);  
-  // checkCudaErrors(cudaStreamSynchronize(my_stream));
+  checkCudaErrors(cudaStreamSynchronize(my_stream));
   
   
-  for(int samp = 0; samp < SAMPLES; samp++){
-    appMemoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_data, d_result, bytesize, 2, 0, d_flush, num_visits);  
-    checkCudaErrors(cudaStreamSynchronize(my_stream));
+  // for(int samp = 0; samp < SAMPLES; samp++){
+  //   flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush2, 0);  
+  //   appMemoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_data, d_result, bytesize, 1, 0, d_flush, num_visits, samp);  
+  //   checkCudaErrors(cudaStreamSynchronize(my_stream));
+  // }
+  for(int i = 0; i < 4;i++){
+    flushKernel<<<Blocks, Threads, 0, my_stream>>>(d_result, bytesize, d_flush2, 0);
   }
-   cudaProfilerStop();
+  checkCudaErrors(cudaStreamSynchronize(my_stream));
+  //  cudaProfilerStop();
   // testSM<<<Blocks, Threads, 0, my_stream>>>(d_result, 0);
   // checkCudaErrors(cudaStreamSynchronize(my_stream));
   // return 0;
@@ -288,9 +293,8 @@ int main(int argc, char *argv[])
 
   // printf("elapsed time: %d\n", h_result[3]);
   // int min =  10000;
-  int cnt  = 0;
-  int total = 0;
-  // for (i = 0; i < NUM_SPACES; i++) {
+  // int cnt  = 0;
+  // int total = 0;
   //   for (j = 0; j < 16384; j++) {
   //     int tmp = h_result[j];
   //     // log_idx = (i * element_count);
@@ -302,7 +306,6 @@ int main(int argc, char *argv[])
   //       if(tmp < 350) cnt++;
   //     }
   //   }	  
-  // // // }
   // printf("count is %d, total is %d, %f is the rate\n",cnt,total, cnt / (total + 0.0));
   // printf("%d out of %d\n", cnt, element_count);
   // for(i = 0; i < 8; i++)

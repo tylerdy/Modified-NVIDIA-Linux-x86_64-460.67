@@ -4,8 +4,8 @@
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
-#define NUM_BLOCKS 40    // fixed number of blocks
-#define NUM_WARPS    32        // fixed number of warps per block
+#define NUM_BLOCKS 4    // fixed number of blocks
+#define NUM_WARPS    2        // fixed number of warps per block
 
 #include <stdio.h>
 #include <cstdint>
@@ -86,10 +86,12 @@ int main(int argc, char *argv[])
   
   unsigned int *d_flush;  //cache-size device space for inital cache flush
   int *d_result;  //device memory array to hold logged values
+  unsigned long long *d_result_time;  //device memory array to hold logged values
 
   unsigned int *h_data;   //cache-size host memory to initialize pointer chasing
   unsigned int *h_ptrs[MAX_SPACES];  //list of allocated device memory spaces
   int *h_result;  //host memory array to hold logged values
+  unsigned long long *h_result_time;  //host memory array to hold logged values
   
     
   // Kernel execution parameters
@@ -141,15 +143,15 @@ int main(int argc, char *argv[])
   initstate_r((unsigned int)my_pid, r_state, sizeof(r_state), &buf);
   
   cudaSetDevice(0); //only one on TX2
-  ret = device_init(true);
-  if (ret < 0)
-        fprintf(stderr, "Device init failed\n");
+  // ret = device_init(true);
+  // if (ret < 0)
+        // fprintf(stderr, "Device init failed\n");
   cudaStreamCreate(&my_stream);
   // allocate list of device memory spaces 
-  checkCudaErrors(cudaMalloc((void **) &d_ptrs, sizeof(h_ptrs))); 
-  d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
+  checkCudaErrors(cudaMalloc((void **) &d_ptrs, sizeof(h_ptrs)));
+  // d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
   //printf("%016x\n", device_p);
-  // checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
+  checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
   //printf("%016x\n", d_data);
   //checkCudaErrors(cudaStreamSynchronize(my_stream));
 
@@ -186,9 +188,11 @@ int main(int argc, char *argv[])
 
   //allocate device memory to hold log copied from shared memory
   checkCudaErrors(cudaMalloc((void **) &d_result, wrp_log));
+  checkCudaErrors(cudaMalloc((void **) &d_result_time, wrp_log));
   
   // allocate host memory to hold logs copied from device memory
   checkCudaErrors(cudaMallocHost(&h_result, wrp_log));
+  checkCudaErrors(cudaMallocHost(&h_result_time, wrp_log));
 
   // allocate host memory to create pointer-chasing list (copied to device memory)
   checkCudaErrors(cudaMallocHost(&h_data, bytesize));
@@ -205,8 +209,8 @@ int main(int argc, char *argv[])
 // return 0;
   Threads = dim3(32, NUM_WARPS, 1);
   Blocks = dim3(NUM_BLOCKS, 1, 1);
-  // Threads = dim3(32, 32, 1);
-  // Blocks = dim3(40, 1, 1);
+  // Threads = dim3(32, 1, 1);
+  // Blocks = dim3(20, 1, 1);
 
   // copy pointer-chasing array in host memory to device memory spaces
   for (i = 0; i < NUM_SPACES; i++) {
@@ -215,43 +219,53 @@ int main(int argc, char *argv[])
   }
   run_time = run_seconds * 1000000000ULL;  //seconds to nanoseconds
   shared_space = MAX_WARP_LOG * sizeof(unsigned short) + (1<<10); //32KB per block/SM
-  printf("eviction begun...\n");  
+  // printf("eviction begun...\n");  
   //memoryKernel<<<Blocks, Threads, shared_space, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
   // for (auto start = std::chrono::steady_clock::now(), now = start; now < start + std::chrono::seconds{run_seconds}; now = std::chrono::steady_clock::now()) 
   // for(int iter = 0; iter < 10; iter++)
   // {
-    // memoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
+    memoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
     // launchSM<<<Blocks, Threads, 0, my_stream>>>(d_result, 0);  
     
-    memoryKernelSingleSM<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
+    // memoryKernelSingleSM<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
+    // testKernel<<<Blocks, Threads, 0, my_stream>>>(d_result_time);
     checkCudaErrors(cudaStreamSynchronize(my_stream));
   // }
   //testKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result);
   
   // return 0;
   // copy any logged data back to host memory
-  checkCudaErrors(cudaMemcpyAsync(h_result, d_result, wrp_log, cudaMemcpyDeviceToHost, my_stream));
-  checkCudaErrors(cudaStreamSynchronize(my_stream));
+  // checkCudaErrors(cudaMemcpyAsync(h_result, d_result, wrp_log, cudaMemcpyDeviceToHost, my_stream));
+  // checkCudaErrors(cudaStreamSynchronize(my_stream));
 
-  // copy any side information stored in device space zero back to host memory
-  checkCudaErrors(cudaMemcpyAsync(h_data, h_ptrs[0], bytesize, cudaMemcpyDeviceToHost, my_stream));
-  checkCudaErrors(cudaStreamSynchronize(my_stream));
+  // checkCudaErrors(cudaMemcpyAsync(h_result_time, d_result_time, wrp_log, cudaMemcpyDeviceToHost, my_stream));
+  // checkCudaErrors(cudaStreamSynchronize(my_stream));
 
+  // // copy any side information stored in device space zero back to host memory
+  // checkCudaErrors(cudaMemcpyAsync(h_data, h_ptrs[0], bytesize, cudaMemcpyDeviceToHost, my_stream));
+  // checkCudaErrors(cudaStreamSynchronize(my_stream));
+  // for(i= 0; i < 20;i++){
+  //   int base = 0;
+  //   if(h_result_time[i] < h_result_time[base])
+  //     printf("%d: %llu\n",h_result_time[20+i], h_result_time[base] - h_result_time[i]);
+  //   else
+  //     printf("%d: %llu\n",h_result_time[20+i], h_result_time[i] - h_result_time[base]);
+  // }
   // for(i = 0; i < 50; i++){
   //   printf("%d\n", h_result[i]);
   // }
   // return 0;
   // int min =  10000;
-  int cnt  = 0;
+  // int cnt  = 0;
 
   // for (i = 0; i < NUM_SPACES; i++) {
-    // for (j = 0; j < element_count; j++) {
-      // unsigned long tmp = h_result[j];
+  //   for (j = 0; j < element_count; j++) {
+  //     unsigned long tmp = h_result[j];
   //     // log_idx = (i * element_count);
-      // printf("%lu\n", tmp); 
+  //     printf("%lu\n", tmp); 
   //     //if(min > tmp && tmp >0) min = tmp;
-      // if(tmp < 400) cnt++;
-    // }	
+  //     if(tmp < 400) cnt++;
+  //   }	
   // }
   // printf("%d out of %d\n", cnt, element_count);
   // printf("%llu\n", h_result[3]);

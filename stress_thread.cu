@@ -384,7 +384,7 @@ stress_strm_mgr(void *targs)
   checkCudaErrors(cudaStreamSynchronize(my_stream));
   printf("apps beginning...\n");
   for(int samp = 0; samp < SAMPLES; samp++){
-    appMemoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_data, d_result, bytesize, 2, 0, d_flush, num_visits);  
+    appMemoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_data, d_result, bytesize, 2, 0, d_flush, num_visits, 1);  
     checkCudaErrors(cudaStreamSynchronize(my_stream));
   }
   printf("apps finished\n");

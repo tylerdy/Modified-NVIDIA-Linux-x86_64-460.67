@@ -107,22 +107,11 @@ launchSM(int *k_result, int myZero){
 }
 
 __global__ void
-testKernel(unsigned int *k_ptr[MAX_SPACES], unsigned short *k_result){
-    int gbl_blk,lcl_thd,lcl_wrp;
-    gbl_blk = (blockIdx.y * gridDim.x) + blockIdx.x;
-    lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
-    lcl_wrp = lcl_thd / 32;
-
-    int wrp_count;
-
-    int wrp_max;
-    wrp_max =(TX2_CACHE_SIZE / TX2_CACHE_LINE) /(NUM_BLOCKS * NUM_WARPS);
-
-    int wrp_log;
-    wrp_log =  ((gbl_blk * NUM_WARPS) + lcl_wrp) * wrp_max;
-    unsigned int *k_data = k_ptr[0];
-    for (int j = 0; j < wrp_max; j++)
-        k_result[wrp_log + j] = k_data[wrp_log + j];
+testKernel(unsigned long long *k_result){
+    k_result[blockIdx.x] = clock64();
+    int smid;
+    asm("mov.u32 %0, %smid;" : "=r"(smid));
+    k_result[20+blockIdx.x] = smid;
 }
 
 __global__ void
@@ -217,7 +206,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsi
     //WARNING: All data arrays and numbers of blocks/warps powers of 2
 
     // uncomment next statement to allocate a shared memory array for logging read times
-    // __shared__ unsigned short blk_log[MAX_WARP_LOG + 1];
+    __shared__ unsigned short blk_log[MAX_WARP_LOG + 1];
     
     unsigned int *k_data;  //pointer to current array
     // int *k_data;  //pointer to current array
@@ -277,7 +266,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsi
     k_data = k_ptrs[0]; 
     // for(int ppp=0; ppp<256;ppp++){
         
-   while ((clock_now - clock_begin) < (run_time+100)) {
+//    while ((clock_now - clock_begin) < (run_time+100)) {
     // while(true){
        // loop over all the device memory spaces
     //    for (k = 0; k < NUM_SPACES; k++) {
@@ -307,7 +296,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsi
             //    __syncthreads();
             //    after = clock64();
                clock_now=gclock64();
-   }
+//    }
 /*
  * For access time logging, comment the ifdef/endif statements to copy times
  * from shared memory to device memory log
@@ -319,7 +308,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsi
             //    int log_idx;
             //    log_idx = 0 * MAX_WARP_LOG;
             //   for (j = 0; j < wrp_max; j++)
-                //   k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
+            //       k_result[log_idx + wrp_log + j] = (unsigned short)(blk_log[wrp_log + j]);
                 //   k_result[log_idx + wrp_log + j] = (unsigned short)cycles_add;
 //#endif		  
 	//   } //end loop for passes through a device space

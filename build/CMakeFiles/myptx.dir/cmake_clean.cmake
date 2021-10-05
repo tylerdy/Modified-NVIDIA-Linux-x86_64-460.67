@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/myptx.dir/app.ptx"
   "CMakeFiles/myptx.dir/app.ptx.d"
+  "CMakeFiles/myptx.dir/iterSingle/iter.ptx"
+  "CMakeFiles/myptx.dir/iterSingle/iter.ptx.d"
   "CMakeFiles/myptx.dir/stress.ptx"
   "CMakeFiles/myptx.dir/stress.ptx.d"
   "CMakeFiles/myptx.dir/tester.ptx"

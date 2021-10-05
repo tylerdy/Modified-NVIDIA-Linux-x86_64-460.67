@@ -250,4 +250,4 @@ __used __section(__versions) = {
 MODULE_INFO(depends, "nvidia");
 
 
-MODULE_INFO(srcversion, "E31ED4A5B625709D9924277");
+MODULE_INFO(srcversion, "AE7E02755BA636E4077C8CC");

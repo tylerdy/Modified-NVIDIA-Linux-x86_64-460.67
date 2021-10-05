@@ -120,69 +120,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named tester
+# Target rules for targets named synth
 
 # Build rule for target.
-tester: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tester
-.PHONY : tester
+synth: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 synth
+.PHONY : synth
 
 # fast build rule for target.
-tester/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tester.dir/build.make CMakeFiles/tester.dir/build
-.PHONY : tester/fast
-
-#=============================================================================
-# Target rules for targets named stress_page
-
-# Build rule for target.
-stress_page: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stress_page
-.PHONY : stress_page
-
-# fast build rule for target.
-stress_page/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/build
-.PHONY : stress_page/fast
-
-#=============================================================================
-# Target rules for targets named stress
-
-# Build rule for target.
-stress: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stress
-.PHONY : stress
-
-# fast build rule for target.
-stress/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/build
-.PHONY : stress/fast
-
-#=============================================================================
-# Target rules for targets named stress_thread
-
-# Build rule for target.
-stress_thread: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stress_thread
-.PHONY : stress_thread
-
-# fast build rule for target.
-stress_thread/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_thread.dir/build.make CMakeFiles/stress_thread.dir/build
-.PHONY : stress_thread/fast
-
-#=============================================================================
-# Target rules for targets named app
-
-# Build rule for target.
-app: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 app
-.PHONY : app
-
-# fast build rule for target.
-app/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/build
-.PHONY : app/fast
+synth/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/build
+.PHONY : synth/fast
 
 #=============================================================================
 # Target rules for targets named fractional_gpu
@@ -239,7 +187,6 @@ app.o: app.cu.o
 
 # target to build an object file
 app.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/app.cu.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/app.cu.o
 .PHONY : app.cu.o
 
@@ -248,7 +195,6 @@ app.i: app.cu.i
 
 # target to preprocess a source file
 app.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/app.cu.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/app.cu.i
 .PHONY : app.cu.i
 
@@ -257,7 +203,6 @@ app.s: app.cu.s
 
 # target to generate assembly for a file
 app.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/app.cu.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/app.cu.s
 .PHONY : app.cu.s
 
@@ -266,11 +211,7 @@ gpu.o: gpu.cu.o
 
 # target to build an object file
 gpu.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tester.dir/build.make CMakeFiles/tester.dir/gpu.cu.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/gpu.cu.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/gpu.cu.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_thread.dir/build.make CMakeFiles/stress_thread.dir/gpu.cu.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/gpu.cu.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/gpu.cu.o
 .PHONY : gpu.cu.o
 
 gpu.i: gpu.cu.i
@@ -278,11 +219,7 @@ gpu.i: gpu.cu.i
 
 # target to preprocess a source file
 gpu.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tester.dir/build.make CMakeFiles/tester.dir/gpu.cu.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/gpu.cu.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/gpu.cu.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_thread.dir/build.make CMakeFiles/stress_thread.dir/gpu.cu.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/gpu.cu.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/gpu.cu.i
 .PHONY : gpu.cu.i
 
 gpu.s: gpu.cu.s
@@ -290,12 +227,35 @@ gpu.s: gpu.cu.s
 
 # target to generate assembly for a file
 gpu.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tester.dir/build.make CMakeFiles/tester.dir/gpu.cu.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/gpu.cu.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/gpu.cu.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_thread.dir/build.make CMakeFiles/stress_thread.dir/gpu.cu.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/gpu.cu.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/gpu.cu.s
 .PHONY : gpu.cu.s
+
+iterSingle/iter.o: iterSingle/iter.cu.o
+.PHONY : iterSingle/iter.o
+
+# target to build an object file
+iterSingle/iter.cu.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/iterSingle/iter.cu.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/iterSingle/iter.cu.o
+.PHONY : iterSingle/iter.cu.o
+
+iterSingle/iter.i: iterSingle/iter.cu.i
+.PHONY : iterSingle/iter.i
+
+# target to preprocess a source file
+iterSingle/iter.cu.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/iterSingle/iter.cu.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/iterSingle/iter.cu.i
+.PHONY : iterSingle/iter.cu.i
+
+iterSingle/iter.s: iterSingle/iter.cu.s
+.PHONY : iterSingle/iter.s
+
+# target to generate assembly for a file
+iterSingle/iter.cu.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/iterSingle/iter.cu.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/iterSingle/iter.cu.s
+.PHONY : iterSingle/iter.cu.s
 
 memory.o: memory.cu.o
 .PHONY : memory.o
@@ -326,7 +286,6 @@ stress.o: stress.cu.o
 
 # target to build an object file
 stress.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/stress.cu.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/stress.cu.o
 .PHONY : stress.cu.o
 
@@ -335,7 +294,6 @@ stress.i: stress.cu.i
 
 # target to preprocess a source file
 stress.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/stress.cu.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/stress.cu.i
 .PHONY : stress.cu.i
 
@@ -344,64 +302,14 @@ stress.s: stress.cu.s
 
 # target to generate assembly for a file
 stress.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/stress.cu.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/stress.cu.s
 .PHONY : stress.cu.s
-
-stress_page.o: stress_page.cu.o
-.PHONY : stress_page.o
-
-# target to build an object file
-stress_page.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/stress_page.cu.o
-.PHONY : stress_page.cu.o
-
-stress_page.i: stress_page.cu.i
-.PHONY : stress_page.i
-
-# target to preprocess a source file
-stress_page.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/stress_page.cu.i
-.PHONY : stress_page.cu.i
-
-stress_page.s: stress_page.cu.s
-.PHONY : stress_page.s
-
-# target to generate assembly for a file
-stress_page.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_page.dir/build.make CMakeFiles/stress_page.dir/stress_page.cu.s
-.PHONY : stress_page.cu.s
-
-stress_thread.o: stress_thread.cu.o
-.PHONY : stress_thread.o
-
-# target to build an object file
-stress_thread.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_thread.dir/build.make CMakeFiles/stress_thread.dir/stress_thread.cu.o
-.PHONY : stress_thread.cu.o
-
-stress_thread.i: stress_thread.cu.i
-.PHONY : stress_thread.i
-
-# target to preprocess a source file
-stress_thread.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_thread.dir/build.make CMakeFiles/stress_thread.dir/stress_thread.cu.i
-.PHONY : stress_thread.cu.i
-
-stress_thread.s: stress_thread.cu.s
-.PHONY : stress_thread.s
-
-# target to generate assembly for a file
-stress_thread.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress_thread.dir/build.make CMakeFiles/stress_thread.dir/stress_thread.cu.s
-.PHONY : stress_thread.cu.s
 
 tester.o: tester.cu.o
 .PHONY : tester.o
 
 # target to build an object file
 tester.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tester.dir/build.make CMakeFiles/tester.dir/tester.cu.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/tester.cu.o
 .PHONY : tester.cu.o
 
@@ -410,7 +318,6 @@ tester.i: tester.cu.i
 
 # target to preprocess a source file
 tester.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tester.dir/build.make CMakeFiles/tester.dir/tester.cu.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/tester.cu.i
 .PHONY : tester.cu.i
 
@@ -419,7 +326,6 @@ tester.s: tester.cu.s
 
 # target to generate assembly for a file
 tester.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tester.dir/build.make CMakeFiles/tester.dir/tester.cu.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/tester.cu.s
 .PHONY : tester.cu.s
 
@@ -431,13 +337,9 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... app"
 	@echo "... fractional_gpu"
 	@echo "... myptx"
-	@echo "... stress"
-	@echo "... stress_page"
-	@echo "... stress_thread"
-	@echo "... tester"
+	@echo "... synth"
 	@echo "... allocator.o"
 	@echo "... allocator.i"
 	@echo "... allocator.s"
@@ -447,18 +349,15 @@ help:
 	@echo "... gpu.o"
 	@echo "... gpu.i"
 	@echo "... gpu.s"
+	@echo "... iterSingle/iter.o"
+	@echo "... iterSingle/iter.i"
+	@echo "... iterSingle/iter.s"
 	@echo "... memory.o"
 	@echo "... memory.i"
 	@echo "... memory.s"
 	@echo "... stress.o"
 	@echo "... stress.i"
 	@echo "... stress.s"
-	@echo "... stress_page.o"
-	@echo "... stress_page.i"
-	@echo "... stress_page.s"
-	@echo "... stress_thread.o"
-	@echo "... stress_thread.i"
-	@echo "... stress_thread.s"
 	@echo "... tester.o"
 	@echo "... tester.i"
 	@echo "... tester.s"
