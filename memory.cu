@@ -27,6 +27,8 @@
 
 #include <uvm_ioctl.h>
 
+#include "test.hpp"
+
 #define NVIDIA_UVM_DEVICE_PATH  "/dev/nvidia-uvm" // tbd fix
 #define NVIDIA_UVM_DEVICE_PATH2 "/sys/devices/system/memory/block_size_bytes"
 /* TODO: This path can be changed via environment variable */
@@ -249,7 +251,7 @@ static int set_process_contig_info(int device, size_t req_length,
   cudaStream_t stream)
 {
 UVM_SET_PROCESS_CONTIG_INFO_PARAMS params;
-size_t actual_length = req_length; // TBD change to param
+size_t actual_length = CONTIG_SIZE; 
 int ret;
 
 /* Con can only be set once */

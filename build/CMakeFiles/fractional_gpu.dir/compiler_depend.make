@@ -408,8 +408,11 @@ CMakeFiles/fractional_gpu.dir/memory.cu.o: ../memory.cu \
   ../NVIDIA-Linux-x86_64-460.67/kernel/common/inc/xapi-sdk.h \
   ../NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvstatus.h \
   ../NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvstatuscodes.h \
-  ../NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvCpuUuid.h
+  ../NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvCpuUuid.h \
+  ../test.hpp
 
+
+../test.hpp:
 
 ../NVIDIA-Linux-x86_64-460.67/kernel/common/inc/nvstatuscodes.h:
 

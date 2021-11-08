@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # bash profile_repeat.sh 5000 bank_part  bank_part_warp  bc_part  bc_part_warp  cache_part_warp  module_part  module_part_warp
+# need last two still (and more cache_part_warp (only have 1600), and more bank_part_warp (have 4000))
 # (first three may have gotten mixed up in results oops)
 
 export CUDA_VISIBLE_DEVICES=GPU-5c7929ac-b24c-c43d-8a4e-06b1146defcb
