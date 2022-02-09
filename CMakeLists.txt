@@ -90,5 +90,9 @@ add_persistent_target(synth .
         gpu.cu
         iterSingle/iter.cu
         )
+add_persistent_target(ws .
+        gpu.cu
+        warp-sched.cu
+        )
 #message("-----------------------------------------------\n
 #        ${CMAKE_CUDA_FLAGS_RELEASE}\n-----------------------------------------------")

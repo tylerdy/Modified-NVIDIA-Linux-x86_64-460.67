@@ -40,4 +40,3 @@ for part in "${apps[@]}";
 
 
 
-

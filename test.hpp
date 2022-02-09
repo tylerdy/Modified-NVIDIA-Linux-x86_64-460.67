@@ -3,7 +3,7 @@
 
 #include <cuda_runtime_api.h>
 
-#define CONTIG_SIZE                  2097152 * 64 // TBD this is also set manually in driver code (uvm_pmm_gpu.h)
+#define CONTIG_SIZE                  2097152 * 8 // TBD this is also set manually in driver code (uvm_pmm_gpu.h)
 
 void *device_allocate_contigous(size_t contiguous_size, void **phy_start_p);
 int device_init(bool init_reverse_engineer);
