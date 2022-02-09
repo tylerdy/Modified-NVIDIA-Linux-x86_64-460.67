@@ -266,7 +266,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsi
     k_data = k_ptrs[0]; 
     // for(int ppp=0; ppp<256;ppp++){
         
-//    while ((clock_now - clock_begin) < (run_time+100)) {
+    while ((clock_now - clock_begin) < (run_time+100)) {
     // while(true){
        // loop over all the device memory spaces
     //    for (k = 0; k < NUM_SPACES; k++) {
@@ -315,7 +315,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsi
     //   } // end loop over all spaces	  
     //    __syncthreads();
        //clock_now = gclock64();
-//    } //end outer loop for run time
+    } //end outer loop for run time
     // }
     __syncthreads();
     ptr = ptr + r_sum;    

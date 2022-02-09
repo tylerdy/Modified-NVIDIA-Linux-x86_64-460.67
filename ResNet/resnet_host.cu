@@ -22,9 +22,6 @@
 // includes, project
 //#include <cutil.h>
 
-#include "../test.hpp"
-#include <helper_cuda.h>  
-
 #define INPUT_SIZE 224*224*3
 //#define CPU
 
@@ -2449,56 +2446,9 @@ void NeuralNetwork()
         
 	dim3 numBlocks_avg(2048,1,1);
 	dim3 numThreads_avg(1,1);
-
-	int def_indices[CONTIG_SIZE/0x1000];
-
-	FILE * fp;
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
-
-    fp = fopen("optimized-order", "r");
-    if (fp == NULL)
-        exit(EXIT_FAILURE);
-
-	int j=0;
-	int firstPageIndex = -1;
-    while ((read = getline(&line, &len, fp)) != -1) {
-		def_indices[j] = atoi(line);
-        j++;
-    }
-
-    fclose(fp);
-    free(line);
-
-  	cudaSetDevice(0);
-   	int ret = device_init(false, def_indices);
-	if (ret < 0) {
-		fprintf(stderr, "Device init failed\n");
-		exit(0);
-	}
-	void *phy_start;
-	float *d_a;  
-	d_a = (float*)device_allocate_contigous(CONTIG_SIZE, &phy_start);
-
-
-
-
-
 	float *Out_GPU;
-	Out_GPU = d_a;
-	//Cuda_allocateMemory(&Out_GPU, sizeof(float)*2048);
+	Cuda_allocateMemory(&Out_GPU, sizeof(float)*2048);
 	poolingAverageCUDA<<<numBlocks_avg,numThreads_avg>>>(Layer5c_Neurons_GPU,Out_GPU,2048,1,1,7,1,7,7,0);
-	checkCudaErrors(cudaStreamSynchronize(0));
-	float*h_a;
-	 checkCudaErrors(cudaMallocHost(&h_a, sizeof(float)*2048*1000));
-	checkCudaErrors(cudaMemcpyAsync(h_a, d_a, sizeof(float)*2048*1000, cudaMemcpyDeviceToHost, 0));
-  checkCudaErrors(cudaStreamSynchronize(0));
-	//printf("Out_GPU\n");
-
-	//for(int i=0;i<10;i++) {
-	//	printf("%f\n",h_a[i]);
-	//}
 
 /************************************5*********************************************/
         float *Layer_FC_Weights = (float *)malloc(sizeof(float)* 1000 * 2048);
@@ -2506,32 +2456,17 @@ void NeuralNetwork()
 	extract_weights("data/fc.txt",Layer_FC_Weights,false);	
         
 	float *Layer_FC_Weights_GPU,*Layer_FC_Out_GPU;
-	Layer_FC_Weights_GPU = d_a+2048;
-	Layer_FC_Out_GPU = Layer_FC_Weights_GPU+2048*1000;
-	//Cuda_allocateMemory(&Layer_FC_Weights_GPU,sizeof(float)*2048*1000);
-	//Cuda_allocateMemory(&Layer_FC_Out_GPU, sizeof(float)*1000);
+	Cuda_allocateMemory(&Layer_FC_Weights_GPU,sizeof(float)*2048*1000);
+	Cuda_allocateMemory(&Layer_FC_Out_GPU, sizeof(float)*1000);
 	/* Memcpy of weights and bias */ 
-	//Cuda_memcpyfromHostToDevice(Layer_FC_Weights_GPU,Layer_FC_Weights, sizeof(float)*1000*2048);
-	checkCudaErrors(cudaMemcpyAsync(Layer_FC_Weights_GPU, Layer_FC_Weights, sizeof(float)*2048*1000, cudaMemcpyHostToDevice, 0));
-	checkCudaErrors(cudaStreamSynchronize(0));
-	checkCudaErrors(cudaMemcpyAsync(h_a, Layer_FC_Weights_GPU, sizeof(float)*2048*1000, cudaMemcpyDeviceToHost, 0));
-
-	checkCudaErrors(cudaStreamSynchronize(0));
-	printf("Layer_FC_Weights_GPU\n");
-
-	for(int i=0;i<10;i++) {
-		printf("%f %f\n",Layer_FC_Weights[i],h_a[i]);
-	}
+	Cuda_memcpyfromHostToDevice(Layer_FC_Weights_GPU,Layer_FC_Weights, sizeof(float)*1000*2048);
      
      	dim3 numBlocks_fc(1000,1,1);
 	dim3 numThreads_fc(1,1);
 	executeFCLayerCUDA<<<numBlocks_fc,numThreads_fc>>>(Out_GPU,Layer_FC_Weights_GPU,Layer_FC_Out_GPU,2048);
 
-	
-
         DEBUGPRINT((" Copy from device to host \n"));
 	Cuda_memcpyfromDeviceToHost(Layer_OutNeurons_CPU,Layer_FC_Out_GPU, sizeof(float)*(1000));
-	checkCudaErrors(cudaStreamSynchronize(0));
 
         cudaFree(mean_GPU);
         cudaFree(var_GPU);
@@ -2545,12 +2480,11 @@ void NeuralNetwork()
         cudaFree(Layer3c_Neurons_GPU);
         cudaFree(Layer4c_Neurons_GPU);
         cudaFree(Layer5c_Neurons_GPU);
-        //cudaFree(Out_GPU);
-        //cudaFree(Layer_FC_Weights_GPU);
-        //cudaFree(Layer_FC_Out_GPU);
+        cudaFree(Out_GPU);
+        cudaFree(Layer_FC_Weights_GPU);
+        cudaFree(Layer_FC_Out_GPU);
 
         freeMemory(Layer_FC_Weights);
-        
         freeMemory(Layer1_Weights_CPU);
 #endif
 /******************************************************** testing predicted class ************/
@@ -2563,11 +2497,10 @@ void NeuralNetwork()
 			max = Layer_OutNeurons_CPU[i];
 			index = i;
 		}
-			//printf("%f\n",Layer_OutNeurons_CPU[i]);
 	} 
+        freeMemory(Layer_OutNeurons_CPU);
         printf("Predicted Class (index) = %d\n",index);
         DEBUGPRINT(("DONE\n"));
-		freeMemory(Layer_OutNeurons_CPU);
 	exit(0);
 }
 

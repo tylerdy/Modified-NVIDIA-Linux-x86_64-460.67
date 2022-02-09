@@ -146,6 +146,19 @@ fractional_gpu/fast:
 .PHONY : fractional_gpu/fast
 
 #=============================================================================
+# Target rules for targets named stress
+
+# Build rule for target.
+stress: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stress
+.PHONY : stress
+
+# fast build rule for target.
+stress/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/build
+.PHONY : stress/fast
+
+#=============================================================================
 # Target rules for targets named synth
 
 # Build rule for target.
@@ -170,6 +183,43 @@ ws: cmake_check_build_system
 ws/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ws.dir/build.make CMakeFiles/ws.dir/build
 .PHONY : ws/fast
+
+#=============================================================================
+# Target rules for targets named RN
+
+# Build rule for target.
+RN: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 RN
+.PHONY : RN
+
+# fast build rule for target.
+RN/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RN.dir/build.make CMakeFiles/RN.dir/build
+.PHONY : RN/fast
+
+ResNet/resnet_host.o: ResNet/resnet_host.cu.o
+.PHONY : ResNet/resnet_host.o
+
+# target to build an object file
+ResNet/resnet_host.cu.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RN.dir/build.make CMakeFiles/RN.dir/ResNet/resnet_host.cu.o
+.PHONY : ResNet/resnet_host.cu.o
+
+ResNet/resnet_host.i: ResNet/resnet_host.cu.i
+.PHONY : ResNet/resnet_host.i
+
+# target to preprocess a source file
+ResNet/resnet_host.cu.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RN.dir/build.make CMakeFiles/RN.dir/ResNet/resnet_host.cu.i
+.PHONY : ResNet/resnet_host.cu.i
+
+ResNet/resnet_host.s: ResNet/resnet_host.cu.s
+.PHONY : ResNet/resnet_host.s
+
+# target to generate assembly for a file
+ResNet/resnet_host.cu.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RN.dir/build.make CMakeFiles/RN.dir/ResNet/resnet_host.cu.s
+.PHONY : ResNet/resnet_host.cu.s
 
 allocator.o: allocator.cpp.o
 .PHONY : allocator.o
@@ -224,8 +274,10 @@ gpu.o: gpu.cu.o
 
 # target to build an object file
 gpu.cu.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/gpu.cu.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/gpu.cu.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ws.dir/build.make CMakeFiles/ws.dir/gpu.cu.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RN.dir/build.make CMakeFiles/RN.dir/gpu.cu.o
 .PHONY : gpu.cu.o
 
 gpu.i: gpu.cu.i
@@ -233,8 +285,10 @@ gpu.i: gpu.cu.i
 
 # target to preprocess a source file
 gpu.cu.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/gpu.cu.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/gpu.cu.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ws.dir/build.make CMakeFiles/ws.dir/gpu.cu.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RN.dir/build.make CMakeFiles/RN.dir/gpu.cu.i
 .PHONY : gpu.cu.i
 
 gpu.s: gpu.cu.s
@@ -242,8 +296,10 @@ gpu.s: gpu.cu.s
 
 # target to generate assembly for a file
 gpu.cu.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/gpu.cu.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/synth.dir/build.make CMakeFiles/synth.dir/gpu.cu.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ws.dir/build.make CMakeFiles/ws.dir/gpu.cu.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RN.dir/build.make CMakeFiles/RN.dir/gpu.cu.s
 .PHONY : gpu.cu.s
 
 iterSingle/iter.o: iterSingle/iter.cu.o
@@ -303,6 +359,7 @@ stress.o: stress.cu.o
 # target to build an object file
 stress.cu.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/stress.cu.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/stress.cu.o
 .PHONY : stress.cu.o
 
 stress.i: stress.cu.i
@@ -311,6 +368,7 @@ stress.i: stress.cu.i
 # target to preprocess a source file
 stress.cu.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/stress.cu.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/stress.cu.i
 .PHONY : stress.cu.i
 
 stress.s: stress.cu.s
@@ -319,6 +377,7 @@ stress.s: stress.cu.s
 # target to generate assembly for a file
 stress.cu.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myptx.dir/build.make CMakeFiles/myptx.dir/stress.cu.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stress.dir/build.make CMakeFiles/stress.dir/stress.cu.s
 .PHONY : stress.cu.s
 
 tester.o: tester.cu.o
@@ -377,10 +436,15 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... RN"
 	@echo "... fractional_gpu"
 	@echo "... myptx"
+	@echo "... stress"
 	@echo "... synth"
 	@echo "... ws"
+	@echo "... ResNet/resnet_host.o"
+	@echo "... ResNet/resnet_host.i"
+	@echo "... ResNet/resnet_host.s"
 	@echo "... allocator.o"
 	@echo "... allocator.i"
 	@echo "... allocator.s"

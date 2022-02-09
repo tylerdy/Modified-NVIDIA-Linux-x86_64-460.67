@@ -53,6 +53,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/myptx.dir/DependInfo.cmake"
   "CMakeFiles/fractional_gpu.dir/DependInfo.cmake"
+  "CMakeFiles/stress.dir/DependInfo.cmake"
   "CMakeFiles/synth.dir/DependInfo.cmake"
   "CMakeFiles/ws.dir/DependInfo.cmake"
+  "CMakeFiles/RN.dir/DependInfo.cmake"
   )

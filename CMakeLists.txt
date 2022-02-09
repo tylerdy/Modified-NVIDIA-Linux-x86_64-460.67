@@ -66,10 +66,10 @@ target_link_libraries(fractional_gpu cuda cudart nvidia-ml)
 #       hash_function.cpp
 #       )
 
-#add_persistent_target(stress .
-#        gpu.cu
-#        stress.cu
-#        )
+add_persistent_target(stress .
+        gpu.cu
+        stress.cu
+        )
 #add_persistent_target(app .
 #        gpu.cu
 #        app.cu
@@ -93,6 +93,10 @@ add_persistent_target(synth .
 add_persistent_target(ws .
         gpu.cu
         warp-sched.cu
+        )
+add_persistent_target(RN .
+        gpu.cu
+        ../ResNet/resnet_host.cu
         )
 #message("-----------------------------------------------\n
 #        ${CMAKE_CUDA_FLAGS_RELEASE}\n-----------------------------------------------")
