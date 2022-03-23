@@ -292,21 +292,21 @@ int main(int argc, char *argv[])
   checkCudaErrors(cudaStreamSynchronize(my_stream));
 
   // printf("elapsed time: %d\n", h_result[3]);
-  // int min =  10000;
-  // int cnt  = 0;
-  // int total = 0;
-  //   for (j = 0; j < 16384; j++) {
-  //     int tmp = h_result[j];
-  //     // log_idx = (i * element_count);
-  //     printf("%d\n", tmp); 
-  //     //if(min > tmp && tmp >0) min = tmp;
+  int min =  10000;
+  int cnt  = 0;
+  int total = 0;
+    for (j = 0; j < 16384; j++) {
+      int tmp = h_result[j];
+      // log_idx = (i * element_count);
+      printf("%d\n", tmp); 
+      //if(min > tmp && tmp >0) min = tmp;
       
-  //     if(tmp != 0){
-  //       total++;
-  //       if(tmp < 350) cnt++;
-  //     }
-  //   }	  
-  // printf("count is %d, total is %d, %f is the rate\n",cnt,total, cnt / (total + 0.0));
+      if(tmp != 0){
+        total++;
+        if(tmp < 350) cnt++;
+      }
+    }	  
+  printf("count is %d, total is %d, %f is the rate\n",cnt,total, cnt / (total + 0.0));
   // printf("%d out of %d\n", cnt, element_count);
   // for(i = 0; i < 8; i++)
   //   printf("%d\n", h_data[i+4]);

@@ -1,0 +1,5 @@
+smithfd@armtx2:~/gpuAPPS/fastHOG$ ./fastHOG -s 2 -t 20
+PID 24881 started > Synch Level is Block
+PID 24881 Iterating CUDA fastHOG for 20 seconds
+PID 24881 completed 103, duration 20 seconds
+

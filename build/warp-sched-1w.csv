@@ -1,0 +1,7 @@
+==486296== NVPROF is profiling process 486296, command: ./ws
+==486296== Profiling application: ./ws
+==486296== Profiling result:
+"Start","Duration","Grid X","Grid Y","Grid Z","Block X","Block Y","Block Z","Registers Per Thread","Static SMem","Dynamic SMem","Size","Throughput","SrcMemType","DstMemType","Device","Context","Stream","Name","Correlation_ID"
+s,us,,,,,,,,B,B,MB,GB/s,,,,,,,
+3.928336,395.073000,,,,,,,,,,2.000000,4.943707,"Pinned","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",113
+3.929032,92.992000,1,1,1,32,1,1,32,0,0,,,,,"GeForce GTX 1080 (0)","1","7","simpleKernel(float*, int, float*)",115

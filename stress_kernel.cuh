@@ -62,13 +62,13 @@ launchSM(int *k_result, int myZero){
     lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
     lcl_wrp = lcl_thd / 32;
     // if(smid != 0) return;
-    int wrp_count, myid;
-    myid = blockIdx.x / 20;
-    // if(myid != 0) return;
+    int wrp_count, bl_id;
+    bl_id = blockIdx.x / 20;
+    // if(bl_id != 0) return;
     int wrp_max;
     wrp_max = (TX2_CACHE_SIZE / TX2_CACHE_LINE) / (64);
     int wrp_log;
-    wrp_log =  ((myid * 32) + lcl_wrp) * wrp_max;
+    wrp_log =  ((bl_id * 32) + lcl_wrp) * wrp_max;
     int local_wrp_log;
     local_wrp_log =  (lcl_wrp) * wrp_max;
 
@@ -77,7 +77,7 @@ launchSM(int *k_result, int myZero){
     unsigned long long cycles_before, cycles_after, before, after;
     int ptr, sum;
     sum = 0;
-    // ptr = ((myid * 32) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
+    // ptr = ((bl_id * 32) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
 // #pragma unroll 1
     for (wrp_count = 0; wrp_count < wrp_max; wrp_count++) {
         cycles_before = clock64();
@@ -115,38 +115,49 @@ testKernel(unsigned long long *k_result){
 }
 
 __global__ void
-memoryKernelSingleSM(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsigned long long run_time, int myZero, unsigned int *c_flush)  //c_flush is size of k_data (bytesize) and used to flush cache initially
+memoryKernelSingleSM(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsigned long long run_time, int myZero, unsigned int *c_flush, bool thread_accesses, bool compute, int num_blocks, int num_sm)  //c_flush is size of k_data (bytesize) and used to flush cache initially
 {
-    int num_sm = 16;
     int smid;
     asm("mov.u32 %0, %smid;" : "=r"(smid));
-    if(smid >= num_sm) return;
+    if(num_blocks>num_sm && smid >= num_sm) {
+        if((threadIdx.y * blockDim.x) + threadIdx.x==0)printf("block returned on smid %d\n",smid);
+        return;
+    }
     // __shared__ unsigned short blk_log[MAX_WARP_LOG];
     unsigned int *k_data;  
     // Use built-in variables to compute block, thread, and warp numbers
-    int gbl_blk,lcl_thd,lcl_wrp;
-    lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x;
+    int gbl_blk,lcl_thd,lcl_wrp,lcl_acc,num_bl_acc;
+    lcl_thd = (threadIdx.y * blockDim.x) + threadIdx.x; //[0,NUM_WARPS_PER_BL)*32+[0,32)
     lcl_wrp = lcl_thd / 32;
+    lcl_acc = thread_accesses ? lcl_thd : lcl_wrp; // id in in block of thread or warp, depending on which is making unique accesses
+    num_bl_acc = thread_accesses ? NUM_WARPS_PER_BL*32 : NUM_WARPS_PER_BL; // number of accessing threads in this block
 
     int i,j, k;
     k = 0;
-    int wrp_count, myid;
+    int access_count, bl_id;
     
-    // myid = blockIdx.x / 20;
-    myid = blockIdx.x;
-    if(myid >= 20) myid -= (20-num_sm);
-    int wrp_max;
-    wrp_max = (bytesize / TX2_CACHE_LINE) / (64*num_sm);
+    // bl_id = blockIdx.x / 20;
+    bl_id = blockIdx.x;
+    if(bl_id >= 20) bl_id -= (20-num_sm);
+    
+    int total_warps = NUM_WARPS_PER_BL*num_blocks;
+
+    int wrp_max, thd_max, access_max;
+    wrp_max = (bytesize / TX2_CACHE_LINE) / (total_warps); // if block size is 32 and 2 warps per SM, wrp_max=num cache lines per warp we're executing
+    thd_max = (bytesize / TX2_CACHE_LINE) / (total_warps*32);
+    access_max = thread_accesses ? thd_max : wrp_max; // number of cache lines per accessing thread we're executing
+
+    if((threadIdx.y * blockDim.x) + threadIdx.x==0)printf("bl_id %d lcl_thd %d lcl_wrp %d wrp_max %d\n",bl_id,lcl_thd,lcl_wrp,wrp_max);
 
     /* Uncomment the following for logging read access times
      * Logging must be coordinated with the launching CUDA program
      */
     unsigned long long cycles_before, cycles_after, before, after;
     unsigned short cycles_add;
-    int wrp_log;
-    wrp_log =  ((myid * 32) + lcl_wrp) * wrp_max;
-    int local_wrp_log;
-    local_wrp_log =  (lcl_wrp) * wrp_max;
+    //int wrp_log;
+    //wrp_log =  ((bl_id * 32) + lcl_wrp) * wrp_max;
+    //int local_wrp_log;
+    //local_wrp_log =  (lcl_wrp) * wrp_max;
     int ptr = 0;  // holds the index of the next array element to be read
     unsigned int r_sum;  //a nonsense variable used to help defeat optimization
     r_sum = 0;
@@ -163,15 +174,26 @@ memoryKernelSingleSM(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesi
     // while(true){
     // for (k = 0; k < NUM_SPACES; k++) {
     //   for (i  = 0; i < NUM_PASSES; i++) {
-        ptr = ((myid * 32) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
-        // int base = ptr;
+        //ptr = ((bl_id * 32) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * access_count);
+        ptr = ((bl_id * num_bl_acc) + lcl_acc) * (access_max * 32) + (ptr * myZero * access_count);
+        if(compute) {
+            for (access_count = 0; access_count <access_max; access_count++) {
+                ptr = access_count; 
+                r_sum += ptr;
+            }
+        } else {
+            for (access_count = 0; access_count <access_max; access_count++) {
+                ptr = k_data[ptr];
+            }
+        }
+
 // #pragma unroll 1
-        for (wrp_count = 0; wrp_count < wrp_max; wrp_count++) {
+        /*for (access_count = 0; access_count <access_max; access_count++) {
                 //  cycles_before = clock64();
                 //  ptr = __ldcv(&(k_data[ptr]));
-                // ptr = k_data[ptr];
-                ptr = wrp_count;   
-                 r_sum += ptr;  
+                 ptr = k_data[ptr]; // mem
+                // ptr = access_count;   // compute (thd/wrp)
+                // r_sum += ptr;  // compute
                 //  cycles_after =   clock64();/
                 
                 // k_result[wrp_log + wrp_count] = ptr;
@@ -179,7 +201,7 @@ memoryKernelSingleSM(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesi
                 // blk_log[local_wrp_log + wrp_count] = wrp_count;
                    
             // }
-        }
+        }*/
             //    __syncthreads();
             //    after = clock64();
                clock_now=gclock64();
@@ -192,7 +214,7 @@ memoryKernelSingleSM(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesi
 
     __syncthreads();
     ptr = ptr + r_sum;       
-    k_result[1] = wrp_count;
+    k_result[1] = access_count;
     k_result[2] = ptr; // Make sure the compiler believes ptr is a result
                      // and does not eliminate references as optimization
     k_result[3] = r_sum;
@@ -226,7 +248,9 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsi
     // the number of array elements in each warp's non-overlapping
     // partition of the array
     int wrp_max;
-    wrp_max = (bytesize / TX2_CACHE_LINE) / (NUM_BLOCKS * NUM_WARPS);
+    return;
+    wrp_max = -1; // to compile since we got rid of NUM_BLOCKS
+    //wrp_max = (bytesize / TX2_CACHE_LINE) / (NUM_BLOCKS * NUM_WARPS_PER_BL);
 
     /* Uncomment the following for logging read access times
      * Logging must be coordinated with the launching CUDA program
@@ -234,11 +258,11 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsi
     unsigned long long cycles_before, cycles_after, before, after;
     unsigned short cycles_add;
     int wrp_log;
-    wrp_log =  ((gbl_blk * NUM_WARPS) + lcl_wrp) * wrp_max;
+    wrp_log =  ((gbl_blk * NUM_WARPS_PER_BL) + lcl_wrp) * wrp_max;
 
     int ptr = 0;  // holds the index of the next array element to be read
     //unsigned int ptr_start;
-    //ptr_start = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + ((ptr) * myZero * wrp_count);
+    //ptr_start = ((gbl_blk * NUM_WARPS_PER_BL) + lcl_wrp) * (wrp_max * 32) + ((ptr) * myZero * wrp_count);
     unsigned int r_sum;  //a nonsense variable used to help defeat optimization
     r_sum = 0;
     extern __shared__ unsigned long long clock_begin;   //clock value kernel marks as its start time
@@ -275,7 +299,7 @@ memoryKernel(unsigned int *k_ptrs[MAX_SPACES], int *k_result, int bytesize, unsi
           // loop over each space for the number of passes specified
         //   for (i  = 0; i < NUM_PASSES; i++) {
 	      // compute the local warp number and the start index in its array partition
-              ptr = ((gbl_blk * NUM_WARPS) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
+              ptr = ((gbl_blk * NUM_WARPS_PER_BL) + lcl_wrp) * (wrp_max * 32) + (ptr * myZero * wrp_count);
               //ptr = ptr_start;
             //   __syncthreads();
             //   before = clock64();

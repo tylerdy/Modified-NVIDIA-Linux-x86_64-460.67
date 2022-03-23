@@ -1,0 +1,500 @@
+==1009880== NVPROF is profiling process 1009880, command: ../build/RN 1
+==1009880== Profiling application: ../build/RN 1
+==1009880== Profiling result:
+"Start","Duration","Grid X","Grid Y","Grid Z","Block X","Block Y","Block Z","Registers Per Thread","Static SMem","Dynamic SMem","Size","Throughput","SrcMemType","DstMemType","Device","Context","Stream","Name","Correlation_ID"
+s,ms,,,,,,,,B,B,MB,GB/s,,,,,,,
+3.999275,0.006112,,,,,,,,,,0.035889,5.734216,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",122
+3.999436,0.120128,,,,,,,,,,0.574219,4.668025,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",123
+3.999569,6.141674,64,1,1,32,32,1,39,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeFirstLayerCUDA(float*, float*, float*, float*, int, int, int, int, int, int, int)",124
+4.005721,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",125
+4.005735,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",126
+4.005751,0.170592,64,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",127
+4.005930,0.002048,,,,,,,,,,0.000244,0.116415,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",128
+4.005943,0.002048,,,,,,,,,,0.000244,0.116415,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",129
+4.005957,0.144640,64,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",130
+4.006107,0.079744,64,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",131
+4.006193,0.116097,64,1,1,32,32,1,30,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executepoolingCuda(float*, float*, int, int, int, int, int, int, int, int, int)",132
+4.010576,0.011744,,,,,,,,,,0.062500,5.197135,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",144
+4.010595,2.475044,256,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",145
+4.013080,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",146
+4.013093,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",147
+4.013108,0.146080,256,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",148
+4.013263,0.002112,,,,,,,,,,0.000977,0.451550,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",149
+4.013276,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",150
+4.013290,0.128544,256,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",151
+4.014310,0.002752,,,,,,,,,,0.015625,5.544618,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",152
+4.014324,0.711649,64,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",153
+4.015045,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",154
+4.015058,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",155
+4.015071,0.045760,64,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",156
+4.015134,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",157
+4.015147,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",158
+4.015161,0.031520,64,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",159
+4.015198,0.021760,64,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",160
+4.023541,0.031904,,,,,,,,,,0.140625,4.304448,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",161
+4.023581,5.696969,64,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",162
+4.029288,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",163
+4.029301,0.002176,,,,,,,,,,0.000244,0.109567,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",164
+4.029317,0.045664,64,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",165
+4.029382,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",166
+4.029395,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",167
+4.029408,0.031936,64,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",168
+4.029446,0.023200,64,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",169
+4.033245,0.011840,,,,,,,,,,0.062500,5.154996,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",170
+4.033261,2.422564,256,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",171
+4.035694,0.002048,,,,,,,,,,0.000977,0.465661,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",172
+4.035707,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",173
+4.035722,0.146272,256,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",174
+4.035877,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",175
+4.035890,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",176
+4.035904,0.128576,256,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",177
+4.036038,0.150272,256,1,1,32,32,1,21,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA_split(float*, float*, float*, int, int)",178
+4.036195,0.087585,256,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",179
+4.039695,0.012032,,,,,,,,,,0.062500,5.072736,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",180
+4.039711,3.293029,64,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",181
+4.043014,0.002112,,,,,,,,,,0.000244,0.112888,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",182
+4.043027,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",183
+4.043042,0.045952,64,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",184
+4.043106,0.002112,,,,,,,,,,0.000244,0.112888,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",185
+4.043120,0.002112,,,,,,,,,,0.000244,0.112888,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",186
+4.043133,0.031744,64,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",187
+4.043170,0.022976,64,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",188
+4.051430,0.032256,,,,,,,,,,0.140625,4.257475,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",189
+4.051471,5.658441,64,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",190
+4.057139,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",191
+4.057153,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",192
+4.057168,0.045728,64,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",193
+4.057233,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",194
+4.057246,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",195
+4.057260,0.031456,64,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",196
+4.057298,0.023616,64,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",197
+4.060945,0.011968,,,,,,,,,,0.062500,5.099863,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",198
+4.060961,2.420419,256,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",199
+4.063392,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",200
+4.063409,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",201
+4.063428,0.146657,256,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",202
+4.063583,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",203
+4.063596,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",204
+4.063610,0.128896,256,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",205
+4.063745,0.152960,256,1,1,32,32,1,21,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA_split(float*, float*, float*, int, int)",206
+4.063904,0.078240,256,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",207
+4.067304,0.011712,,,,,,,,,,0.062500,5.211335,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",208
+4.067320,3.295013,64,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",209
+4.070625,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",210
+4.070638,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",211
+4.070653,0.046273,64,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",212
+4.070722,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",213
+4.070735,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",214
+4.070748,0.031808,64,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",215
+4.070786,0.022592,64,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",216
+4.078974,0.032384,,,,,,,,,,0.140625,4.240647,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",217
+4.079014,5.612105,64,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",218
+4.084637,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",219
+4.084651,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",220
+4.084666,0.045632,64,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",221
+4.084731,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",222
+4.084744,0.002080,,,,,,,,,,0.000244,0.114624,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",223
+4.084761,0.031136,64,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",224
+4.084798,0.021280,64,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",225
+4.088436,0.011968,,,,,,,,,,0.062500,5.099863,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",226
+4.088452,2.419268,256,1,1,32,32,1,40,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda_split(float*, float*, float*, float*, int, int, int, int, int, int, int, int, int)",227
+4.090881,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",228
+4.090894,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",229
+4.090909,0.147936,256,1,1,32,32,1,36,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA_split(float*, float*, float*, int, int, int)",230
+4.091066,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",231
+4.091078,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",232
+4.091092,0.129632,256,1,1,32,32,1,25,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA_split(float*, float*, float*, int, int, int)",233
+4.091227,0.154240,256,1,1,32,32,1,21,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA_split(float*, float*, float*, int, int)",234
+4.091388,0.073472,256,1,1,32,32,1,20,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA_split(float*, int, int)",235
+4.122751,0.105408,,,,,,,,,,0.500000,4.632298,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",260
+4.122863,4.485895,512,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",261
+4.127360,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",262
+4.127374,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",263
+4.127389,0.067968,512,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",264
+4.127651,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",265
+4.127664,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",266
+4.127679,0.049888,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",267
+4.134995,0.029152,,,,,,,,,,0.125000,4.187374,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",268
+4.135034,1.227906,128,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",269
+4.136272,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",270
+4.136285,0.002048,,,,,,,,,,0.000488,0.232831,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",271
+4.136300,0.022784,128,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",272
+4.136393,0.002112,,,,,,,,,,0.000488,0.225775,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",273
+4.136406,0.002048,,,,,,,,,,0.000488,0.232831,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",274
+4.136420,0.015648,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",275
+4.136442,0.010784,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",276
+4.169560,0.117536,,,,,,,,,,0.562500,4.673601,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",277
+4.169689,4.759559,128,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",278
+4.174459,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",279
+4.174472,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",280
+4.174487,0.021408,128,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",281
+4.174580,0.002048,,,,,,,,,,0.000488,0.232831,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",282
+4.174593,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",283
+4.174607,0.014464,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",284
+4.174627,0.010112,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",285
+4.189253,0.104608,,,,,,,,,,0.500000,4.667724,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",286
+4.189365,1.864643,512,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",287
+4.191239,0.002112,,,,,,,,,,0.001953,0.903101,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",288
+4.191252,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",289
+4.191267,0.067744,512,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",290
+4.191529,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",291
+4.191543,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",292
+4.191556,0.049248,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",293
+4.191612,0.060768,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",294
+4.191678,0.034912,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",295
+4.206365,0.053952,,,,,,,,,,0.250000,4.525145,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",296
+4.206426,1.955875,128,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",297
+4.208390,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",298
+4.208403,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",299
+4.208416,0.022880,128,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",300
+4.208506,0.002112,,,,,,,,,,0.000488,0.225775,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",301
+4.208520,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",302
+4.208534,0.015008,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",303
+4.208554,0.010880,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",304
+4.241571,0.117152,,,,,,,,,,0.562500,4.688920,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",305
+4.241700,4.639304,128,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",306
+4.246350,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",307
+4.246363,0.002048,,,,,,,,,,0.000488,0.232831,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",308
+4.246378,0.021600,128,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",309
+4.246471,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",310
+4.246484,0.002048,,,,,,,,,,0.000488,0.232831,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",311
+4.246497,0.015584,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",312
+4.246519,0.010848,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",313
+4.261137,0.104992,,,,,,,,,,0.500000,4.650652,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",314
+4.261253,1.856451,512,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",315
+4.263118,0.002048,,,,,,,,,,0.001953,0.931323,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",316
+4.263132,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",317
+4.263146,0.067264,512,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",318
+4.263408,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",319
+4.263421,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",320
+4.263438,0.049664,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",321
+4.263493,0.059104,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",322
+4.263558,0.032480,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",323
+4.278221,0.054080,,,,,,,,,,0.250000,4.514435,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",324
+4.278282,1.959427,128,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",325
+4.280250,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",326
+4.280263,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",327
+4.280277,0.021856,128,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",328
+4.280366,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",329
+4.280379,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",330
+4.280393,0.014688,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",331
+4.280413,0.011456,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",332
+4.313249,0.117505,,,,,,,,,,0.562500,4.674834,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",333
+4.313376,4.789575,128,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",334
+4.318177,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",335
+4.318190,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",336
+4.318205,0.021696,128,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",337
+4.318299,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",338
+4.318312,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",339
+4.318326,0.014752,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",340
+4.318346,0.011808,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",341
+4.333116,0.104992,,,,,,,,,,0.500000,4.650652,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",342
+4.333232,1.860611,512,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",343
+4.335103,0.002048,,,,,,,,,,0.001953,0.931323,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",344
+4.335117,0.002112,,,,,,,,,,0.001953,0.903101,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",345
+4.335132,0.068288,512,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",346
+4.335397,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",347
+4.335412,0.002081,,,,,,,,,,0.001953,0.916554,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",348
+4.335431,0.049344,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",349
+4.335486,0.058560,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",350
+4.335551,0.033984,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",351
+4.350055,0.054240,,,,,,,,,,0.250000,4.501118,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",352
+4.350116,1.963491,128,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",353
+4.352088,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",354
+4.352101,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",355
+4.352115,0.021408,128,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",356
+4.352206,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",357
+4.352219,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",358
+4.352233,0.014944,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",359
+4.352253,0.011456,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",360
+4.384919,0.118208,,,,,,,,,,0.562500,4.647032,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",361
+4.385046,4.736519,128,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",362
+4.389793,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",363
+4.389806,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",364
+4.389821,0.022016,128,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",365
+4.389915,0.002080,,,,,,,,,,0.000488,0.229249,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",366
+4.389928,0.002112,,,,,,,,,,0.000488,0.225775,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",367
+4.389942,0.015520,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",368
+4.389964,0.010272,128,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",369
+4.404610,0.104672,,,,,,,,,,0.500000,4.664870,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",370
+4.404725,1.858627,512,1,1,28,28,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",371
+4.406595,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",372
+4.406608,0.002112,,,,,,,,,,0.001953,0.903101,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",373
+4.406623,0.067616,512,1,1,28,28,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",374
+4.406888,0.002208,,,,,,,,,,0.001953,0.863835,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",375
+4.406901,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",376
+4.406915,0.050145,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",377
+4.406971,0.059168,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",378
+4.407037,0.026688,512,1,1,28,28,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",379
+4.527558,0.412001,,,,,,,,,,2.000000,4.740583,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",406
+4.527980,2.881508,1024,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",407
+4.530873,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",408
+4.530887,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",409
+4.530903,0.036384,1024,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",410
+4.531395,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",411
+4.531409,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",412
+4.531424,0.020064,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",413
+4.560806,0.105472,,,,,,,,,,0.500000,4.629487,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",414
+4.560923,0.855042,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",415
+4.561788,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",416
+4.561801,0.002048,,,,,,,,,,0.000977,0.465661,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",417
+4.561816,0.012128,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",418
+4.561971,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",419
+4.561984,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",420
+4.561998,0.007488,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",421
+4.562012,0.005280,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",422
+4.694885,0.467265,,,,,,,,,,2.250000,4.702397,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",423
+4.695361,2.445764,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",424
+4.697817,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",425
+4.697831,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",426
+4.697847,0.012224,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",427
+4.697998,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",428
+4.698011,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",429
+4.698025,0.007616,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",430
+4.698039,0.005376,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",431
+4.756813,0.425249,,,,,,,,,,2.000000,4.592897,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",432
+4.757248,1.005442,1024,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",433
+4.758264,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",434
+4.758278,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",435
+4.758293,0.036288,1024,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",436
+4.758776,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",437
+4.758791,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",438
+4.758805,0.020320,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",439
+4.758831,0.021824,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",440
+4.758859,0.014624,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",441
+4.818607,0.205953,,,,,,,,,,1.000000,4.741676,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",442
+4.818820,1.066529,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",443
+4.819895,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",444
+4.819909,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",445
+4.819923,0.011872,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",446
+4.820068,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",447
+4.820081,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",448
+4.820096,0.007520,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",449
+4.820109,0.005536,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",450
+4.952679,0.468416,,,,,,,,,,2.250000,4.690842,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",451
+4.953159,2.564708,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",452
+4.955734,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",453
+4.955748,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",454
+4.955763,0.012160,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",455
+4.955912,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",456
+4.955926,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",457
+4.955940,0.007488,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",458
+4.955953,0.005984,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",459
+5.015244,0.422464,,,,,,,,,,2.000000,4.623175,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",460
+5.015677,0.999554,1024,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",461
+5.016686,0.002112,,,,,,,,,,0.003906,1.806201,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",462
+5.016699,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",463
+5.016714,0.036352,1024,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",464
+5.017181,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",465
+5.017195,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",466
+5.017209,0.020320,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",467
+5.017236,0.021632,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",468
+5.017261,0.013696,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",469
+5.076314,0.205984,,,,,,,,,,1.000000,4.740963,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",470
+5.076527,1.090050,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",471
+5.077627,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",472
+5.077641,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",473
+5.077656,0.012032,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",474
+5.077804,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",475
+5.077818,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",476
+5.077831,0.007296,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",477
+5.077845,0.005984,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",478
+5.208885,0.469313,,,,,,,,,,2.250000,4.681877,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",479
+5.209364,2.493028,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",480
+5.211868,0.002112,,,,,,,,,,0.000977,0.451550,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",481
+5.211881,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",482
+5.211897,0.012224,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",483
+5.212046,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",484
+5.212059,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",485
+5.212074,0.007520,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",486
+5.212087,0.005760,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",487
+5.270934,0.423905,,,,,,,,,,2.000000,4.607459,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",488
+5.271369,1.008097,1024,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",489
+5.272386,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",490
+5.272400,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",491
+5.272415,0.036384,1024,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",492
+5.272882,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",493
+5.272897,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",494
+5.272911,0.020320,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",495
+5.272937,0.021440,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",496
+5.272963,0.014080,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",497
+5.331738,0.207521,,,,,,,,,,1.000000,4.705849,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",498
+5.331952,1.141857,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",499
+5.333102,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",500
+5.333115,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",501
+5.333129,0.011456,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",502
+5.333274,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",503
+5.333287,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",504
+5.333301,0.007392,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",505
+5.333314,0.006112,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",506
+5.464619,0.467072,,,,,,,,,,2.250000,4.704340,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",507
+5.465092,2.511588,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",508
+5.467615,0.002112,,,,,,,,,,0.000977,0.451550,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",509
+5.467629,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",510
+5.467644,0.012096,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",511
+5.467793,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",512
+5.467807,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",513
+5.467821,0.007424,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",514
+5.467834,0.005824,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",515
+5.526533,0.429344,,,,,,,,,,2.000000,4.549091,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",516
+5.526973,1.001569,1024,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",517
+5.527984,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",518
+5.527998,0.002144,,,,,,,,,,0.003906,1.779243,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",519
+5.528013,0.036448,1024,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",520
+5.528486,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",521
+5.528500,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",522
+5.528522,0.020224,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",523
+5.528548,0.021632,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",524
+5.528574,0.014080,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",525
+5.587188,0.206176,,,,,,,,,,1.000000,4.736548,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",526
+5.587403,1.088130,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",527
+5.588501,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",528
+5.588514,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",529
+5.588528,0.012096,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",530
+5.588674,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",531
+5.588687,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",532
+5.588701,0.007392,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",533
+5.588715,0.006304,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",534
+5.719709,0.467873,,,,,,,,,,2.250000,4.696286,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",535
+5.720186,2.508771,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",536
+5.722705,0.002112,,,,,,,,,,0.000977,0.451550,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",537
+5.722718,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",538
+5.722733,0.012129,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",539
+5.722882,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",540
+5.722895,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",541
+5.722909,0.007392,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",542
+5.722922,0.005344,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",543
+5.781574,0.427617,,,,,,,,,,2.000000,4.567463,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",544
+5.782012,0.992545,1024,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",545
+5.783014,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",546
+5.783028,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",547
+5.783042,0.036320,1024,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",548
+5.783522,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",549
+5.783536,0.002112,,,,,,,,,,0.003906,1.806201,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",550
+5.783550,0.020832,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",551
+5.783577,0.021376,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",552
+5.783604,0.013984,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",553
+5.842207,0.206112,,,,,,,,,,1.000000,4.738019,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",554
+5.842422,1.075457,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",555
+5.843507,0.002112,,,,,,,,,,0.000977,0.451550,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",556
+5.843520,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",557
+5.843535,0.012064,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",558
+5.843685,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",559
+5.843699,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",560
+5.843713,0.007489,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",561
+5.843724,0.006176,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",562
+5.974168,0.467937,,,,,,,,,,2.250000,4.695644,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",563
+5.974647,2.554724,256,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",564
+5.977211,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",565
+5.977224,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",566
+5.977239,0.012160,256,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",567
+5.977389,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",568
+5.977402,0.002080,,,,,,,,,,0.000977,0.458497,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",569
+5.977416,0.007424,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",570
+5.977429,0.005184,256,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",571
+6.036135,0.424065,,,,,,,,,,2.000000,4.605721,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",572
+6.036569,0.998818,1024,1,1,14,14,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",573
+6.037579,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",574
+6.037600,0.002048,,,,,,,,,,0.003906,1.862645,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",575
+6.037614,0.036544,1024,1,1,14,14,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",576
+6.038094,0.002112,,,,,,,,,,0.003906,1.806201,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",577
+6.038107,0.002080,,,,,,,,,,0.003906,1.833989,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",578
+6.038122,0.020704,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",579
+6.038148,0.021664,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",580
+6.038174,0.011488,1024,1,1,14,14,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",581
+6.513231,1.787267,,,,,,,,,,8.000000,4.371199,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",607
+6.515030,2.434915,2048,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",608
+6.517488,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",609
+6.517504,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",610
+6.517520,0.022113,2048,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",611
+6.518463,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",612
+6.518479,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",613
+6.518494,0.005888,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",614
+6.635898,0.412673,,,,,,,,,,2.000000,4.732864,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",615
+6.636323,0.595233,512,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",616
+6.636927,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",617
+6.636941,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",618
+6.636956,0.007744,512,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",619
+6.637224,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",620
+6.637238,0.002112,,,,,,,,,,0.001953,0.903101,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",621
+6.637253,0.003616,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",622
+6.637265,0.003424,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",623
+7.165736,2.059875,,,,,,,,,,9.000000,4.266794,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",624
+7.167801,1.629443,512,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",625
+7.169441,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",626
+7.169455,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",627
+7.169541,0.007712,512,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",628
+7.169820,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",629
+7.169834,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",630
+7.169852,0.003648,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",631
+7.169868,0.003424,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",632
+7.408247,0.844129,,,,,,,,,,4.000000,4.627551,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",633
+7.409097,1.207714,2048,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",634
+7.410319,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",635
+7.410335,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",636
+7.410351,0.022304,2048,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",637
+7.411295,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",638
+7.411311,0.002112,,,,,,,,,,0.007812,3.612403,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",639
+7.411326,0.005856,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",640
+7.411343,0.006016,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",641
+7.411357,0.005600,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",642
+7.650678,0.832225,,,,,,,,,,4.000000,4.693743,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",643
+7.651523,1.116898,512,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",644
+7.652651,0.002112,,,,,,,,,,0.001953,0.903101,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",645
+7.652665,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",646
+7.652681,0.007712,512,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",647
+7.652940,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",648
+7.652954,0.002112,,,,,,,,,,0.001953,0.903101,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",649
+7.652968,0.003616,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",650
+7.652980,0.003424,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",651
+8.179162,2.001283,,,,,,,,,,9.000000,4.391714,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",652
+8.181175,1.619203,512,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",653
+8.182804,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",654
+8.182824,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",655
+8.182841,0.007712,512,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",656
+8.183107,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",657
+8.183120,0.002112,,,,,,,,,,0.001953,0.903101,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",658
+8.183135,0.003680,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",659
+8.183147,0.003424,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",660
+8.420307,0.842625,,,,,,,,,,4.000000,4.635811,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",661
+8.421157,1.204770,2048,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",662
+8.422373,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",663
+8.422388,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",664
+8.422411,0.022304,2048,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",665
+8.423346,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",666
+8.423361,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",667
+8.423376,0.005888,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",668
+8.423389,0.005824,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",669
+8.423402,0.005568,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",670
+8.660482,0.832610,,,,,,,,,,4.000000,4.691572,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",671
+8.661325,1.122977,512,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",672
+8.662459,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",673
+8.662475,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",674
+8.662492,0.007712,512,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",675
+8.662826,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",676
+8.662840,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",677
+8.662855,0.003648,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",678
+8.662868,0.003424,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",679
+9.186345,1.992931,,,,,,,,,,9.000000,4.410119,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",680
+9.188345,1.654114,512,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",681
+9.190009,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",682
+9.190023,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",683
+9.190046,0.007808,512,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",684
+9.190312,0.002112,,,,,,,,,,0.001953,0.903101,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",685
+9.190326,0.002080,,,,,,,,,,0.001953,0.916995,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",686
+9.190341,0.003616,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",687
+9.190354,0.003392,512,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",688
+9.429649,0.985729,,,,,,,,,,4.000000,3.962803,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",689
+9.430640,1.202082,2048,1,1,7,7,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","execute3DconvolutionCuda(float*, float*, float*, float*, int, int, int, int, int, int, int, int)",690
+9.431854,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",691
+9.431869,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",692
+9.431888,0.022080,2048,1,1,7,7,1,22,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeBnNormLayerCUDA(float*, float*, float*, int, int)",693
+9.432836,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",694
+9.432852,0.002080,,,,,,,,,,0.007812,3.667978,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",695
+9.432870,0.005888,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeScaleLayerCUDA(float*, float*, float*, int, int)",696
+9.432887,0.005856,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeEltWiseLayerCUDA(float*, float*, float*, int)",697
+9.432904,0.005600,2048,1,1,7,7,1,8,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeReLULayerCUDA(float*, int)",698
+9.465335,0.028544,2048,1,1,1,1,1,28,0,0,,,,,"GeForce GTX 1080 (0)","1","7","poolingAverageCUDA(float*, float*, int, int, int, int, int, int, int, int)",722
+9.940119,1.821634,,,,,,,,,,7.812500,4.188215,"Pageable","Device","GeForce GTX 1080 (0)","1","7","[CUDA memcpy HtoD]",723
+9.941947,0.555489,1000,1,1,1,1,1,31,0,0,,,,,"GeForce GTX 1080 (0)","1","7","executeFCLayerCUDA(float*, float*, float*, int)",724
+9.942505,0.002336,,,,,,,,,,0.003815,1.594730,"Device","Pageable","GeForce GTX 1080 (0)","1","7","[CUDA memcpy DtoH]",725

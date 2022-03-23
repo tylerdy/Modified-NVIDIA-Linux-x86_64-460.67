@@ -4,8 +4,9 @@
 #define MAX_WARP_LOG 16384 
 #define TX2_CACHE_LINE 128     // cache line 128 bytes, 32 words
 #define TX2_CACHE_SIZE  2097152 // bytes of 1080 cache
-#define NUM_BLOCKS 4    // fixed number of blocks
-#define NUM_WARPS    2        // fixed number of warps per block
+//#define NUM_SMS 16//8 // does this have to be multiple of 4?. without any changes, for thd level accesses this must be at most 8
+//#define NUM_BLOCKS NUM_SMS//+20    // fixed number of blocks 
+#define NUM_WARPS_PER_BL    32        // fixed number of warps per block      
 
 #include <stdio.h>
 #include <cstdint>
@@ -41,7 +42,7 @@
 void Usage(const char *s) 
 {
   fprintf (stderr,"\nUsage: %s\n", s);
-  fprintf (stderr,"    [-t run_seconds (run time in seconds)] \n"); 
+  fprintf (stderr,"    [-t run_seconds (run time in seconds) -b num_blocks (blocks to iterate on) -s num_sms (sms to run eviction kernel on) -w warp_accesses (every thread in a warp accesses same array element) -c compute_only] \nnum_blocks must equal num_sms or 2*num_sms. num_blocks must be a power of 2 (for now, TBD) and must be at most 16 unless warp_accesses mode is specified."); 
   fprintf (stderr,"\n");
   exit(-1);
 }
@@ -126,6 +127,11 @@ int main(int argc, char *argv[])
   
   pid_t my_pid = getpid();  
 
+  bool thread_accesses = true; // if true, each thread in warp access diff element, if false, each accesses same element
+  bool compute = false; // if true, kernel will be compute-only, if false, it will make memory acceses
+  int num_blocks = 16; // num blocks to execute and not kill (not necessarily the number to launch)
+  int num_sms = 8; // number of SMs to limit eviction blocks to
+
 // Parse the command line 
 // only parameter is -t for run time in seconds
   i = 1;
@@ -133,25 +139,37 @@ int main(int argc, char *argv[])
     if (strcmp (argv[i], "-t") == 0) {
       if (++i >= argc) Usage (argv[0]);
       run_seconds = atoi(argv[i]);
+    } else if (strcmp (argv[i], "-w") == 0) {
+      thread_accesses = false;
+    } else if (strcmp (argv[i], "-b") == 0) {
+      if (++i >= argc) Usage (argv[0]);
+      num_blocks = atoi(argv[i]);
+    } else if (strcmp (argv[i], "-s") == 0) {
+      if (++i >= argc) Usage (argv[0]);
+      num_sms = atoi(argv[i]);
+    } else if (strcmp (argv[i], "-c") == 0) {
+      compute = true;
     }
     else 
       Usage (argv[0]);
     i++;
   }
+  if(num_sms!=num_blocks && 2*num_sms!=num_blocks) Usage(argv[0]);
+  if((num_blocks & (num_blocks - 1)) != 0 || (thread_accesses && num_blocks>16)) Usage(argv[0]);
 
   // initialize for generating random numbers
   initstate_r((unsigned int)my_pid, r_state, sizeof(r_state), &buf);
   
   cudaSetDevice(0); //only one on TX2
-  // ret = device_init(true);
-  // if (ret < 0)
-        // fprintf(stderr, "Device init failed\n");
+   ret = device_init(true);
+   if (ret < 0)
+         fprintf(stderr, "Device init failed\n");
   cudaStreamCreate(&my_stream);
   // allocate list of device memory spaces 
   checkCudaErrors(cudaMalloc((void **) &d_ptrs, sizeof(h_ptrs)));
-  // d_data = (unsigned int*)device_allocate_contigous(bytesize, &phy_start);
+   d_data = (unsigned int*)device_allocate_contigous(CONTIG_SIZE, &phy_start);
   //printf("%016x\n", device_p);
-  checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
+  // checkCudaErrors(cudaMalloc((void **) &d_data, bytesize));
   //printf("%016x\n", d_data);
   //checkCudaErrors(cudaStreamSynchronize(my_stream));
 
@@ -207,8 +225,8 @@ int main(int argc, char *argv[])
    }
    h_data[ptr] = 0;  //last points to first
 // return 0;
-  Threads = dim3(32, NUM_WARPS, 1);
-  Blocks = dim3(NUM_BLOCKS, 1, 1);
+  Threads = dim3(32, NUM_WARPS_PER_BL, 1);
+  Blocks = dim3(num_blocks==num_sms?num_blocks:num_sms+20, 1, 1);
   // Threads = dim3(32, 1, 1);
   // Blocks = dim3(20, 1, 1);
 
@@ -224,10 +242,10 @@ int main(int argc, char *argv[])
   // for (auto start = std::chrono::steady_clock::now(), now = start; now < start + std::chrono::seconds{run_seconds}; now = std::chrono::steady_clock::now()) 
   // for(int iter = 0; iter < 10; iter++)
   // {
-    memoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
+    // memoryKernel<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
     // launchSM<<<Blocks, Threads, 0, my_stream>>>(d_result, 0);  
     
-    // memoryKernelSingleSM<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush);  
+    memoryKernelSingleSM<<<Blocks, Threads, 0, my_stream>>>(d_ptrs, d_result, bytesize, run_time, 0, d_flush, thread_accesses, compute, num_blocks, num_sms);  
     // testKernel<<<Blocks, Threads, 0, my_stream>>>(d_result_time);
     checkCudaErrors(cudaStreamSynchronize(my_stream));
   // }
