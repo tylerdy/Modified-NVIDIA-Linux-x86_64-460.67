@@ -58,7 +58,7 @@ extern int period;
 extern int time_length;
 
 
-cudaStream_t my_stream;
+//cudaStream_t my_stream;
 
 void InitHOG(int width, int height, int _avSizeX, int _avSizeY,
 	     int _marginX, int _marginY, int cellSizeX, int cellSizeY,
@@ -89,7 +89,7 @@ void InitHOG(int width, int height, int _avSizeX, int _avSizeY,
         cudaSetDevice(0);
   
         // create a user-defined stream
-        cudaStreamCreate(&my_stream);
+        //cudaStreamCreate(&my_stream);
 
 	int i;
 	int toaddxx = 0, toaddxy = 0, toaddyx = 0, toaddyy = 0;
@@ -163,7 +163,7 @@ void InitHOG(int width, int height, int _avSizeX, int _avSizeY,
 
 void CloseHOG()
 {
-	cutilSafeCall(cudaFree(paddedRegisteredImage));
+	/*cutilSafeCall(cudaFree(paddedRegisteredImage));
 
 	if (hUseGrayscale)
 		cutilSafeCall(cudaFree(resizedPaddedImageF1));
@@ -174,7 +174,7 @@ void CloseHOG()
 	cutilSafeCall(cudaFree(blockHistograms));
 	cutilSafeCall(cudaFree(cellHistograms));
 
-	cutilSafeCall(cudaFree(svmScores));
+	cutilSafeCall(cudaFree(svmScores));*/
 
 	CloseConvolution();
 	CloseHistogram();
@@ -232,8 +232,7 @@ void BeginHOGProcessing(unsigned char* hostImage, int minx, int miny, int maxx, 
 float* EndHOGProcessing()
 {
 	cudaThreadSynchronize();
-	cutilSafeCall(cudaMemcpyAsync(hResult, svmScores, sizeof(float) * scaleCount * hNumberOfWindowsX * hNumberOfWindowsY, cudaMemcpyDeviceToHost, my_stream));
-        cudaStreamSynchronize(my_stream);
+	cutilSafeCall(cudaMemcpyAsync(hResult, svmScores, sizeof(float) * scaleCount * hNumberOfWindowsX * hNumberOfWindowsY, cudaMemcpyDeviceToHost));
 	return hResult;
 }
 
@@ -301,16 +300,13 @@ void DownscaleImage2(float scale, float4* paddedRegisteredImage,
 
 	hBlockSize = dim3(iDivUp(rPaddedWidth, hThreadSize.x), iDivUp(rPaddedHeight, hThreadSize.y));
 
-	cutilSafeCall(cudaMemcpyToArrayAsync(imageArray2, 0, 0, paddedRegisteredImage, sizeof(float4) * width * height, cudaMemcpyDeviceToDevice, my_stream));
-        cudaStreamSynchronize(my_stream);
+	cutilSafeCall(cudaMemcpyToArrayAsync(imageArray2, 0, 0, paddedRegisteredImage, sizeof(float4) * width * height, cudaMemcpyDeviceToDevice));
 
 	cutilSafeCall(cudaBindTextureToArray(tex2, imageArray2, channelDescDownscale2));
 
-	cutilSafeCall(cudaMemsetAsync(resizedPaddedImageF4, 0, width * height * sizeof(float4), my_stream));
-        cudaStreamSynchronize(my_stream);
+	cutilSafeCall(cudaMemsetAsync(resizedPaddedImageF4, 0, width * height * sizeof(float4)));
 
-	resizeFastBicubic3<<<hBlockSize, hThreadSize, 0, my_stream>>>((float4*)resizedPaddedImageF4, (float4*)paddedRegisteredImage, rPaddedWidth, rPaddedHeight, scale);
-        cudaStreamSynchronize(my_stream);
+	resizeFastBicubic3<<<hBlockSize, hThreadSize>>>((float4*)resizedPaddedImageF4, (float4*)paddedRegisteredImage, rPaddedWidth, rPaddedHeight, scale);
 
 	cutilSafeCall(cudaUnbindTexture(tex2));
 }

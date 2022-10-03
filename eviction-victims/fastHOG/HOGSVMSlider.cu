@@ -14,7 +14,7 @@ extern int rNumberOfWindowsX, rNumberOfWindowsY;
 
 extern __shared__ float1 allSharedF1[];
 
-extern cudaStream_t my_stream;
+//extern cudaStream_t my_stream;
 
 float svmBias;
 
@@ -22,15 +22,14 @@ void InitSVM(float _svmBias, float* svmWeights, int svmWeightsCount)
 {
 	channelDescSVM = cudaCreateChannelDesc<float>();
 	cutilSafeCall(cudaMallocArray(&svmArray, &channelDescSVM, svmWeightsCount, 1));
-	cutilSafeCall(cudaMemcpyToArrayAsync(svmArray, 0, 0, svmWeights, svmWeightsCount * sizeof(float), cudaMemcpyHostToDevice, my_stream));
-        cudaStreamSynchronize(my_stream);
+	cutilSafeCall(cudaMemcpyToArrayAsync(svmArray, 0, 0, svmWeights, svmWeightsCount * sizeof(float), cudaMemcpyHostToDevice));
 
 	svmBias = _svmBias;
 }
 
 void CloseSVM()
 {
-	cutilSafeCall(cudaFreeArray(svmArray));
+	//cutilSafeCall(cudaFreeArray(svmArray));
 }
 
 __global__ void linearSVMEvaluation(float1* svmScores, float svmBias,
@@ -108,8 +107,7 @@ __global__ void linearSVMEvaluation(float1* svmScores, float svmBias,
 
 void ResetSVMScores(float1* svmScores)
 {
-	cutilSafeCall(cudaMemsetAsync(svmScores, 0, sizeof(float) * scaleCount * hNumberOfWindowsX * hNumberOfWindowsY, my_stream));
-        cudaStreamSynchronize(my_stream);
+	cutilSafeCall(cudaMemsetAsync(svmScores, 0, sizeof(float) * scaleCount * hNumberOfWindowsX * hNumberOfWindowsY));
 }
 
 void LinearSVMEvaluation(float1* svmScores, float1* blockHistograms, int noHistogramBins,
@@ -128,13 +126,12 @@ void LinearSVMEvaluation(float1* svmScores, float1* blockHistograms, int noHisto
 
 	cutilSafeCall(cudaBindTextureToArray(texSVM, svmArray, channelDescSVM));
 
-	linearSVMEvaluation<<<blockCount, threadCount, noHistogramBins * blockSizeX * hNumberOfBlockPerWindowX * sizeof(float1), my_stream>>>
+	linearSVMEvaluation<<<blockCount, threadCount, noHistogramBins * blockSizeX * hNumberOfBlockPerWindowX * sizeof(float1), 0>>>
 		(svmScores, svmBias, blockHistograms, noHistogramBins,
 		windowSizeX, windowSizeY, hogBlockCountX, hogBlockCountY, cellSizeX, cellSizeY,
 		hNumberOfBlockPerWindowX, hNumberOfBlockPerWindowY,
 		blockSizeX, blockSizeY, alignedBlockDimX, scaleId, scaleCount,
 		hNumberOfWindowsX, hNumberOfWindowsY, width, height);
-        cudaStreamSynchronize(my_stream);
 
 	cutilSafeCall(cudaUnbindTexture(texSVM));
 }

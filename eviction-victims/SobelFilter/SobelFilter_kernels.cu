@@ -250,7 +250,7 @@ extern "C" void setupTexture(int iw, int ih, Pixel *data, int Bpp)
 
 extern "C" void deleteTexture(void)
 {
-    checkCudaErrors(cudaFreeArray(array));
+    //checkCudaErrors(cudaFreeArray(array));
     checkCudaErrors(cudaDestroyTextureObject(texObject));
 }
 

@@ -108,11 +108,12 @@ int main(int argc, char **argv)
        fprintf(stderr, "Failed to lock code pages.\n");
        exit(EXIT_FAILURE);
     }
-
+    
     BeginProcess(image, -1, -1, -1, -1, -1.0f, -1.0f);
     //EndProcess();
         
     //FinalizeHOG();
-
+    cudaStreamSynchronize(0);
+    printf("Finished\n");
     return 0;
 }

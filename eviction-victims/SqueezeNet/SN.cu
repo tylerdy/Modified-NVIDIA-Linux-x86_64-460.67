@@ -2864,6 +2864,7 @@ void NeuralNetwork()
 	cudaThreadSynchronize();
 	int predicted_class;
 	predicted_class = predict_class(output_CPU);
+	cudaStreamSynchronize(0);
 	printf("Prediction: %d\n", predicted_class);
 
         //Free functions

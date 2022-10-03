@@ -795,8 +795,9 @@ void NeuralNetwork()
 	dim3 n_threads(100,1,1);
 	dim3 n_blocks(1,1,1);
 	ExecuteLSTM<<<n_blocks,n_threads>>>(w_i_device, u_i_device, b_i_device, w_f_device, u_f_device, b_f_device, w_c_device, u_c_device, b_c_device, w_o_device, u_o_device, b_o_device, weights_device, bias_device, LSTM_results);
-	cudaThreadSynchronize();
+	//cudaThreadSynchronize();
 	
+	cudaStreamSynchronize(0);
 	err = cudaMemcpy(result, LSTM_results, sizeof(double)*2*NUM, cudaMemcpyDeviceToHost);
 	if (err != cudaSuccess)
         {

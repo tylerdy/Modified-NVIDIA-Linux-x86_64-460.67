@@ -10,289 +10,290 @@
 .target sm_52
 .address_size 64
 
-	// .globl	_Z13scalarProdGPUPfS_S_iiiPjS0_
-// _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult has been demoted
-.global .align 4 .u32 _ZZN67_INTERNAL_45_tmpxft_00027350_00000000_7_scalarProd_cpp1_ii_45306d2118cooperative_groups4__v17details17_binary_partitionINS1_15coalesced_groupEEES4_RKT_bE8fullMask = -1;
+	// .globl	_Z13scalarProdGPUPfS_S_ii
+// _ZZ13scalarProdGPUPfS_S_iiE11accumResult has been demoted
+.global .align 4 .u32 _ZZN67_INTERNAL_45_tmpxft_0020b856_00000000_7_scalarProd_cpp1_ii_4881745618cooperative_groups4__v17details17_binary_partitionINS1_15coalesced_groupEEES4_RKT_bE8fullMask = -1;
 
-.visible .entry _Z13scalarProdGPUPfS_S_iiiPjS0_(
-	.param .u64 _Z13scalarProdGPUPfS_S_iiiPjS0__param_0,
-	.param .u64 _Z13scalarProdGPUPfS_S_iiiPjS0__param_1,
-	.param .u64 _Z13scalarProdGPUPfS_S_iiiPjS0__param_2,
-	.param .u32 _Z13scalarProdGPUPfS_S_iiiPjS0__param_3,
-	.param .u32 _Z13scalarProdGPUPfS_S_iiiPjS0__param_4,
-	.param .u32 _Z13scalarProdGPUPfS_S_iiiPjS0__param_5,
-	.param .u64 _Z13scalarProdGPUPfS_S_iiiPjS0__param_6,
-	.param .u64 _Z13scalarProdGPUPfS_S_iiiPjS0__param_7
+.visible .entry _Z13scalarProdGPUPfS_S_ii(
+	.param .u64 _Z13scalarProdGPUPfS_S_ii_param_0,
+	.param .u64 _Z13scalarProdGPUPfS_S_ii_param_1,
+	.param .u64 _Z13scalarProdGPUPfS_S_ii_param_2,
+	.param .u32 _Z13scalarProdGPUPfS_S_ii_param_3,
+	.param .u32 _Z13scalarProdGPUPfS_S_ii_param_4
 )
 {
 	.reg .pred 	%p<28>;
-	.reg .f32 	%f<42>;
-	.reg .b32 	%r<84>;
-	.reg .b64 	%rd<12>;
+	.reg .f32 	%f<41>;
+	.reg .b32 	%r<88>;
+	.reg .b64 	%rd<18>;
 	// demoted variable
-	.shared .align 4 .b8 _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult[4096];
+	.shared .align 4 .b8 _ZZ13scalarProdGPUPfS_S_iiE11accumResult[4096];
 
-	ld.param.u64 	%rd4, [_Z13scalarProdGPUPfS_S_iiiPjS0__param_0];
-	ld.param.u64 	%rd5, [_Z13scalarProdGPUPfS_S_iiiPjS0__param_1];
-	ld.param.u64 	%rd6, [_Z13scalarProdGPUPfS_S_iiiPjS0__param_2];
-	ld.param.u32 	%r33, [_Z13scalarProdGPUPfS_S_iiiPjS0__param_3];
-	ld.param.u32 	%r34, [_Z13scalarProdGPUPfS_S_iiiPjS0__param_4];
-	mov.u32 	%r71, %ctaid.x;
-	setp.ge.s32	%p12, %r71, %r33;
+	ld.param.u64 	%rd8, [_Z13scalarProdGPUPfS_S_ii_param_0];
+	ld.param.u64 	%rd9, [_Z13scalarProdGPUPfS_S_ii_param_1];
+	ld.param.u64 	%rd10, [_Z13scalarProdGPUPfS_S_ii_param_2];
+	ld.param.u32 	%r34, [_Z13scalarProdGPUPfS_S_ii_param_3];
+	ld.param.u32 	%r35, [_Z13scalarProdGPUPfS_S_ii_param_4];
+	mov.u32 	%r75, %ctaid.x;
+	setp.ge.s32	%p12, %r75, %r34;
 	@%p12 bra 	BB0_31;
 
-	cvta.to.global.u64 	%rd7, %rd4;
-	bfe.s32 	%r35, %r34, 0, 24;
-	bfe.s32 	%r36, %r71, 0, 24;
-	mul.lo.s32 	%r37, %r36, %r35;
-	add.s32 	%r2, %r37, %r34;
-	mov.u32 	%r3, %tid.x;
-	add.s32 	%r4, %r3, %r37;
-	mov.u32 	%r5, %ntid.x;
-	cvta.to.global.u64 	%rd8, %rd5;
-	mul.wide.s32 	%rd9, %r4, 4;
-	add.s64 	%rd1, %rd8, %rd9;
-	cvta.to.global.u64 	%rd10, %rd6;
-	add.s64 	%rd2, %rd10, %rd9;
-	mul.wide.s32 	%rd11, %r71, 4;
-	add.s64 	%rd3, %rd7, %rd11;
-	mov.u32 	%r6, %nctaid.x;
+	cvta.to.global.u64 	%rd1, %rd9;
+	mov.u32 	%r2, %tid.x;
+	mov.u32 	%r3, %ntid.x;
+	cvta.to.global.u64 	%rd11, %rd10;
+	cvta.to.global.u64 	%rd13, %rd8;
 
 BB0_2:
-	setp.gt.s32	%p13, %r3, 1023;
-	mov.u32 	%r72, %r3;
+	bfe.s32 	%r36, %r75, 0, 24;
+	bfe.s32 	%r37, %r35, 0, 24;
+	mul.lo.s32 	%r5, %r36, %r37;
+	add.s32 	%r6, %r5, %r35;
+	setp.gt.s32	%p13, %r2, 1023;
 	@%p13 bra 	BB0_8;
 
-BB0_3:
-	mov.f32 	%f41, 0f00000000;
-	setp.ge.s32	%p14, %r4, %r2;
-	@%p14 bra 	BB0_6;
+	bfe.s32 	%r38, %r75, 0, 24;
+	bfe.s32 	%r39, %r35, 0, 24;
+	mul.lo.s32 	%r7, %r39, %r38;
+	mov.u32 	%r76, %r2;
 
-	ld.global.f32 	%f7, [%rd1];
-	ld.global.f32 	%f8, [%rd2];
-	mul.f32 	%f1, %f7, %f8;
-	mov.f32 	%f41, 0f00000000;
-	mov.u32 	%r73, %r4;
+BB0_4:
+	add.s32 	%r77, %r76, %r5;
+	mov.f32 	%f40, 0f00000000;
+	setp.ge.s32	%p14, %r77, %r6;
+	@%p14 bra 	BB0_7;
 
-BB0_5:
-	add.f32 	%f41, %f41, %f1;
-	add.s32 	%r73, %r73, 1024;
-	setp.lt.s32	%p15, %r73, %r2;
-	@%p15 bra 	BB0_5;
+	add.s32 	%r40, %r7, %r76;
+	mul.wide.s32 	%rd12, %r40, 4;
+	add.s64 	%rd17, %rd11, %rd12;
+	add.s64 	%rd16, %rd1, %rd12;
+	mov.f32 	%f40, 0f00000000;
 
 BB0_6:
-	add.s32 	%r72, %r5, %r72;
-	setp.lt.s32	%p16, %r72, 1024;
-	@%p16 bra 	BB0_3;
+	ld.global.f32 	%f6, [%rd17];
+	ld.global.f32 	%f7, [%rd16];
+	fma.rn.f32 	%f40, %f7, %f6, %f40;
+	add.s64 	%rd17, %rd17, 4096;
+	add.s64 	%rd16, %rd16, 4096;
+	add.s32 	%r77, %r77, 1024;
+	setp.lt.s32	%p15, %r77, %r6;
+	@%p15 bra 	BB0_6;
 
-	shl.b32 	%r38, %r3, 2;
-	mov.u32 	%r39, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r40, %r39, %r38;
-	st.shared.f32 	[%r40], %f41;
+BB0_7:
+	shl.b32 	%r41, %r76, 2;
+	mov.u32 	%r42, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r43, %r42, %r41;
+	st.shared.f32 	[%r43], %f40;
+	add.s32 	%r76, %r3, %r76;
+	setp.lt.s32	%p16, %r76, 1024;
+	@%p16 bra 	BB0_4;
 
 BB0_8:
-	setp.lt.s32	%p1, %r3, 512;
+	setp.lt.s32	%p1, %r2, 512;
 	barrier.sync 	0;
-	mov.u32 	%r74, %r3;
+	mov.u32 	%r78, %r2;
 	@!%p1 bra 	BB0_10;
 	bra.uni 	BB0_9;
 
 BB0_9:
-	shl.b32 	%r41, %r74, 2;
-	mov.u32 	%r42, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r43, %r42, %r41;
-	ld.shared.f32 	%f9, [%r43];
-	ld.shared.f32 	%f10, [%r43+2048];
-	add.f32 	%f11, %f10, %f9;
-	st.shared.f32 	[%r43], %f11;
-	add.s32 	%r74, %r5, %r74;
-	setp.lt.s32	%p17, %r74, 512;
+	shl.b32 	%r44, %r78, 2;
+	mov.u32 	%r45, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r46, %r45, %r44;
+	ld.shared.f32 	%f8, [%r46];
+	ld.shared.f32 	%f9, [%r46+2048];
+	add.f32 	%f10, %f9, %f8;
+	st.shared.f32 	[%r46], %f10;
+	add.s32 	%r78, %r3, %r78;
+	setp.lt.s32	%p17, %r78, 512;
 	@%p17 bra 	BB0_9;
 
 BB0_10:
-	setp.lt.s32	%p2, %r3, 256;
+	setp.lt.s32	%p2, %r2, 256;
 	barrier.sync 	0;
-	mov.u32 	%r75, %r3;
+	mov.u32 	%r79, %r2;
 	@!%p2 bra 	BB0_12;
 	bra.uni 	BB0_11;
 
 BB0_11:
-	shl.b32 	%r44, %r75, 2;
-	mov.u32 	%r45, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r46, %r45, %r44;
-	ld.shared.f32 	%f12, [%r46];
-	ld.shared.f32 	%f13, [%r46+1024];
-	add.f32 	%f14, %f13, %f12;
-	st.shared.f32 	[%r46], %f14;
-	add.s32 	%r75, %r5, %r75;
-	setp.lt.s32	%p18, %r75, 256;
+	shl.b32 	%r47, %r79, 2;
+	mov.u32 	%r48, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r49, %r48, %r47;
+	ld.shared.f32 	%f11, [%r49];
+	ld.shared.f32 	%f12, [%r49+1024];
+	add.f32 	%f13, %f12, %f11;
+	st.shared.f32 	[%r49], %f13;
+	add.s32 	%r79, %r3, %r79;
+	setp.lt.s32	%p18, %r79, 256;
 	@%p18 bra 	BB0_11;
 
 BB0_12:
-	setp.lt.s32	%p3, %r3, 128;
+	setp.lt.s32	%p3, %r2, 128;
 	barrier.sync 	0;
-	mov.u32 	%r76, %r3;
+	mov.u32 	%r80, %r2;
 	@!%p3 bra 	BB0_14;
 	bra.uni 	BB0_13;
 
 BB0_13:
-	shl.b32 	%r47, %r76, 2;
-	mov.u32 	%r48, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r49, %r48, %r47;
-	ld.shared.f32 	%f15, [%r49];
-	ld.shared.f32 	%f16, [%r49+512];
-	add.f32 	%f17, %f16, %f15;
-	st.shared.f32 	[%r49], %f17;
-	add.s32 	%r76, %r5, %r76;
-	setp.lt.s32	%p19, %r76, 128;
+	shl.b32 	%r50, %r80, 2;
+	mov.u32 	%r51, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r52, %r51, %r50;
+	ld.shared.f32 	%f14, [%r52];
+	ld.shared.f32 	%f15, [%r52+512];
+	add.f32 	%f16, %f15, %f14;
+	st.shared.f32 	[%r52], %f16;
+	add.s32 	%r80, %r3, %r80;
+	setp.lt.s32	%p19, %r80, 128;
 	@%p19 bra 	BB0_13;
 
 BB0_14:
-	setp.lt.s32	%p4, %r3, 64;
+	setp.lt.s32	%p4, %r2, 64;
 	barrier.sync 	0;
-	mov.u32 	%r77, %r3;
+	mov.u32 	%r81, %r2;
 	@!%p4 bra 	BB0_16;
 	bra.uni 	BB0_15;
 
 BB0_15:
-	shl.b32 	%r50, %r77, 2;
-	mov.u32 	%r51, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r52, %r51, %r50;
-	ld.shared.f32 	%f18, [%r52];
-	ld.shared.f32 	%f19, [%r52+256];
-	add.f32 	%f20, %f19, %f18;
-	st.shared.f32 	[%r52], %f20;
-	add.s32 	%r77, %r5, %r77;
-	setp.lt.s32	%p20, %r77, 64;
+	shl.b32 	%r53, %r81, 2;
+	mov.u32 	%r54, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r55, %r54, %r53;
+	ld.shared.f32 	%f17, [%r55];
+	ld.shared.f32 	%f18, [%r55+256];
+	add.f32 	%f19, %f18, %f17;
+	st.shared.f32 	[%r55], %f19;
+	add.s32 	%r81, %r3, %r81;
+	setp.lt.s32	%p20, %r81, 64;
 	@%p20 bra 	BB0_15;
 
 BB0_16:
-	setp.lt.s32	%p5, %r3, 32;
+	setp.lt.s32	%p5, %r2, 32;
 	barrier.sync 	0;
-	mov.u32 	%r78, %r3;
+	mov.u32 	%r82, %r2;
 	@!%p5 bra 	BB0_18;
 	bra.uni 	BB0_17;
 
 BB0_17:
-	shl.b32 	%r53, %r78, 2;
-	mov.u32 	%r54, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r55, %r54, %r53;
-	ld.shared.f32 	%f21, [%r55];
-	ld.shared.f32 	%f22, [%r55+128];
-	add.f32 	%f23, %f22, %f21;
-	st.shared.f32 	[%r55], %f23;
-	add.s32 	%r78, %r5, %r78;
-	setp.lt.s32	%p21, %r78, 32;
+	shl.b32 	%r56, %r82, 2;
+	mov.u32 	%r57, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r58, %r57, %r56;
+	ld.shared.f32 	%f20, [%r58];
+	ld.shared.f32 	%f21, [%r58+128];
+	add.f32 	%f22, %f21, %f20;
+	st.shared.f32 	[%r58], %f22;
+	add.s32 	%r82, %r3, %r82;
+	setp.lt.s32	%p21, %r82, 32;
 	@%p21 bra 	BB0_17;
 
 BB0_18:
-	setp.lt.s32	%p6, %r3, 16;
+	setp.lt.s32	%p6, %r2, 16;
 	barrier.sync 	0;
-	mov.u32 	%r79, %r3;
+	mov.u32 	%r83, %r2;
 	@!%p6 bra 	BB0_20;
 	bra.uni 	BB0_19;
 
 BB0_19:
-	shl.b32 	%r56, %r79, 2;
-	mov.u32 	%r57, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r58, %r57, %r56;
-	ld.shared.f32 	%f24, [%r58];
-	ld.shared.f32 	%f25, [%r58+64];
-	add.f32 	%f26, %f25, %f24;
-	st.shared.f32 	[%r58], %f26;
-	add.s32 	%r79, %r5, %r79;
-	setp.lt.s32	%p22, %r79, 16;
+	shl.b32 	%r59, %r83, 2;
+	mov.u32 	%r60, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r61, %r60, %r59;
+	ld.shared.f32 	%f23, [%r61];
+	ld.shared.f32 	%f24, [%r61+64];
+	add.f32 	%f25, %f24, %f23;
+	st.shared.f32 	[%r61], %f25;
+	add.s32 	%r83, %r3, %r83;
+	setp.lt.s32	%p22, %r83, 16;
 	@%p22 bra 	BB0_19;
 
 BB0_20:
-	setp.lt.s32	%p7, %r3, 8;
+	setp.lt.s32	%p7, %r2, 8;
 	barrier.sync 	0;
-	mov.u32 	%r80, %r3;
+	mov.u32 	%r84, %r2;
 	@!%p7 bra 	BB0_22;
 	bra.uni 	BB0_21;
 
 BB0_21:
-	shl.b32 	%r59, %r80, 2;
-	mov.u32 	%r60, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r61, %r60, %r59;
-	ld.shared.f32 	%f27, [%r61];
-	ld.shared.f32 	%f28, [%r61+32];
-	add.f32 	%f29, %f28, %f27;
-	st.shared.f32 	[%r61], %f29;
-	add.s32 	%r80, %r5, %r80;
-	setp.lt.s32	%p23, %r80, 8;
+	shl.b32 	%r62, %r84, 2;
+	mov.u32 	%r63, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r64, %r63, %r62;
+	ld.shared.f32 	%f26, [%r64];
+	ld.shared.f32 	%f27, [%r64+32];
+	add.f32 	%f28, %f27, %f26;
+	st.shared.f32 	[%r64], %f28;
+	add.s32 	%r84, %r3, %r84;
+	setp.lt.s32	%p23, %r84, 8;
 	@%p23 bra 	BB0_21;
 
 BB0_22:
-	setp.lt.s32	%p8, %r3, 4;
+	setp.lt.s32	%p8, %r2, 4;
 	barrier.sync 	0;
-	mov.u32 	%r81, %r3;
+	mov.u32 	%r85, %r2;
 	@!%p8 bra 	BB0_24;
 	bra.uni 	BB0_23;
 
 BB0_23:
-	shl.b32 	%r62, %r81, 2;
-	mov.u32 	%r63, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r64, %r63, %r62;
-	ld.shared.f32 	%f30, [%r64];
-	ld.shared.f32 	%f31, [%r64+16];
-	add.f32 	%f32, %f31, %f30;
-	st.shared.f32 	[%r64], %f32;
-	add.s32 	%r81, %r5, %r81;
-	setp.lt.s32	%p24, %r81, 4;
+	shl.b32 	%r65, %r85, 2;
+	mov.u32 	%r66, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r67, %r66, %r65;
+	ld.shared.f32 	%f29, [%r67];
+	ld.shared.f32 	%f30, [%r67+16];
+	add.f32 	%f31, %f30, %f29;
+	st.shared.f32 	[%r67], %f31;
+	add.s32 	%r85, %r3, %r85;
+	setp.lt.s32	%p24, %r85, 4;
 	@%p24 bra 	BB0_23;
 
 BB0_24:
-	setp.lt.s32	%p9, %r3, 2;
+	setp.lt.s32	%p9, %r2, 2;
 	barrier.sync 	0;
-	mov.u32 	%r82, %r3;
+	mov.u32 	%r86, %r2;
 	@!%p9 bra 	BB0_26;
 	bra.uni 	BB0_25;
 
 BB0_25:
-	shl.b32 	%r65, %r82, 2;
-	mov.u32 	%r66, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r67, %r66, %r65;
-	ld.shared.f32 	%f33, [%r67];
-	ld.shared.f32 	%f34, [%r67+8];
-	add.f32 	%f35, %f34, %f33;
-	st.shared.f32 	[%r67], %f35;
-	add.s32 	%r82, %r5, %r82;
-	setp.lt.s32	%p25, %r82, 2;
+	shl.b32 	%r68, %r86, 2;
+	mov.u32 	%r69, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r70, %r69, %r68;
+	ld.shared.f32 	%f32, [%r70];
+	ld.shared.f32 	%f33, [%r70+8];
+	add.f32 	%f34, %f33, %f32;
+	st.shared.f32 	[%r70], %f34;
+	add.s32 	%r86, %r3, %r86;
+	setp.lt.s32	%p25, %r86, 2;
 	@%p25 bra 	BB0_25;
 
 BB0_26:
-	setp.lt.s32	%p10, %r3, 1;
+	setp.lt.s32	%p10, %r2, 1;
 	barrier.sync 	0;
-	mov.u32 	%r83, %r3;
+	mov.u32 	%r87, %r2;
 	@!%p10 bra 	BB0_28;
 	bra.uni 	BB0_27;
 
 BB0_27:
-	shl.b32 	%r68, %r83, 2;
-	mov.u32 	%r69, _ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult;
-	add.s32 	%r70, %r69, %r68;
-	ld.shared.f32 	%f36, [%r70];
-	ld.shared.f32 	%f37, [%r70+4];
-	add.f32 	%f38, %f37, %f36;
-	st.shared.f32 	[%r70], %f38;
-	add.s32 	%r83, %r5, %r83;
-	setp.lt.s32	%p26, %r83, 1;
+	shl.b32 	%r71, %r87, 2;
+	mov.u32 	%r72, _ZZ13scalarProdGPUPfS_S_iiE11accumResult;
+	add.s32 	%r73, %r72, %r71;
+	ld.shared.f32 	%f35, [%r73];
+	ld.shared.f32 	%f36, [%r73+4];
+	add.f32 	%f37, %f36, %f35;
+	st.shared.f32 	[%r73], %f37;
+	add.s32 	%r87, %r3, %r87;
+	setp.lt.s32	%p26, %r87, 1;
 	@%p26 bra 	BB0_27;
 
 BB0_28:
-	setp.eq.s32	%p11, %r3, 0;
+	setp.eq.s32	%p11, %r2, 0;
 	barrier.sync 	0;
 	@!%p11 bra 	BB0_30;
 	bra.uni 	BB0_29;
 
 BB0_29:
-	ld.shared.f32 	%f39, [_ZZ13scalarProdGPUPfS_S_iiiPjS0_E11accumResult];
-	st.global.f32 	[%rd3], %f39;
+	ld.shared.f32 	%f38, [_ZZ13scalarProdGPUPfS_S_iiE11accumResult];
+	mul.wide.s32 	%rd14, %r75, 4;
+	add.s64 	%rd15, %rd13, %rd14;
+	st.global.f32 	[%rd15], %f38;
 
 BB0_30:
-	add.s32 	%r71, %r6, %r71;
-	setp.lt.s32	%p27, %r71, %r33;
+	mov.u32 	%r74, %nctaid.x;
+	add.s32 	%r75, %r74, %r75;
+	setp.lt.s32	%p27, %r75, %r34;
 	@%p27 bra 	BB0_2;
 
 BB0_31:

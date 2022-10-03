@@ -197,7 +197,7 @@ int main(int argc, char **argv)
         printf("Test failed!\n");
         exit(EXIT_FAILURE);
     }
-
+    cudaStreamSynchronize(0);
     printf("Test passed\n");
     exit(EXIT_SUCCESS);
 }

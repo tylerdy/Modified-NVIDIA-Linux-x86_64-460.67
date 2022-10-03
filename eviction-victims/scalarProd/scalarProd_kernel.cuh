@@ -47,28 +47,15 @@ __global__ void scalarProdGPU(
     float *d_C,
     float *d_A,
     float *d_B,
-    // int *d_C,
-    // int *d_A,
-    // int *d_B,
     int vectorN,
-    int elementN,
-    int myZero,
-    unsigned int *result,
-    unsigned int* trash
+    int elementN
 )
 {
     // Handle to thread block group
     cg::thread_block cta = cg::this_thread_block();
     //Accumulators cache
     __shared__ float accumResult[ACCUM_N];
-    // __shared__ int accumResult[ACCUM_N];
-    unsigned int cnt, rsum;
-    float ra, rb;
-    // int ra, rb;
-    unsigned long long cycles_before, cycles_after,diff;
 
-    cnt = 0;
-    rsum = 0;
     ////////////////////////////////////////////////////////////////////////////
     // Cycle through every pair of vectors,
     // taking into account that vector counts can be different
@@ -76,7 +63,6 @@ __global__ void scalarProdGPU(
     ////////////////////////////////////////////////////////////////////////////
     for (int vec = blockIdx.x; vec < vectorN; vec += gridDim.x)
     {
-        int vec = blockIdx.x;
         int vectorBase = IMUL(elementN, vec);
         int vectorEnd  = vectorBase + elementN;
 
@@ -89,37 +75,12 @@ __global__ void scalarProdGPU(
         for (int iAccum = threadIdx.x; iAccum < ACCUM_N; iAccum += blockDim.x)
         {
             float sum = 0;
-            int iAccum = threadIdx.x;
-// #pragma unroll 1
-            for (int pos = vectorBase + iAccum; pos < vectorEnd; pos += ACCUM_N){
-                int pos = vectorBase+threadIdx.x;
-                // cycles_before = clock64();
-                ra = d_A[pos];
-                // rsum += ra * myZero;
-                // cycles_after = clock64();
-                // diff = cycles_after-cycles_before;
-                // rsum += diff;
-                // if(diff > 350) cnt++;
-                // if(diff > 0) cnt=diff;
-                // cnt++;
-                
-                // cycles_before = clock64();
-                rb = d_B[pos];
-                // rsum += rb * myZero+ra;
-                // cycles_after = clock64();
-                // diff = cycles_after-cycles_before;
-                // rsum += diff;
-                // if(diff > 350) cnt++;
-                // if(diff >0) cnt=diff;
-                // cnt++;
-                sum += ra * rb;
-                // sum += d_A[pos] * d_B[pos];
 
-            }
-                // sum +=  __ldcv(&(d_A[pos])) *  __ldcv(&(d_B[pos]));
+            for (int pos = vectorBase + iAccum; pos < vectorEnd; pos += ACCUM_N)
+                sum += d_A[pos] * d_B[pos];
 
             accumResult[iAccum] = sum;
-        }    
+        }
 
         ////////////////////////////////////////////////////////////////////////
         // Perform tree-like reduction of accumulators' results.
@@ -136,9 +97,5 @@ __global__ void scalarProdGPU(
         cg::sync(cta);
 
         if (threadIdx.x == 0) d_C[vec] = accumResult[0];
-        // if (threadIdx.x == 0)  __stwt(&(d_C[vec]), accumResult[0]);
-    
     }
-    // result[blockIdx.x * blockDim.x + threadIdx.x] = cnt;
-    // trash[0] = rsum * myZero;
 }

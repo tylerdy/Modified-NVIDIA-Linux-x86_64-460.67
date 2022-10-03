@@ -142,8 +142,8 @@ int main(int argc, char *argv[])
     // gpuTime = sdkGetTimerValue(&hTimer);
     // printf("GPU time: %f ms; GOP/s: %f\n", gpuTime, NOPS / (gpuTime * 0.001 * 1E+9));
 
-    // printf("Reading back GPU results...\n");
-    // checkCudaErrors(cudaMemcpy(h_ResultGPU, d_Data, DATA_SIZE, cudaMemcpyDeviceToHost));
+    printf("Reading back GPU results...\n");
+    checkCudaErrors(cudaMemcpy(h_ResultGPU, d_Data, DATA_SIZE, cudaMemcpyDeviceToHost));
 
     // printf("Running straightforward CPU dyadic convolution...\n");
     // dyadicConvolutionCPU(h_ResultCPU, h_Data, h_Kernel, log2Data, log2Kernel);
@@ -173,4 +173,6 @@ int main(int argc, char *argv[])
 
     // printf("L2 norm: %E\n", L2norm);
     // printf(L2norm < 1e-6 ? "Test passed\n" : "Test failed!\n");
+    cudaStreamSynchronize(0);
+    printf("Finished.\n");
 }

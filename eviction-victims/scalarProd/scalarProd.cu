@@ -148,7 +148,7 @@ int main(int argc, char **argv)
     for(int j = 0; j <1; j++){
         // printf("%d ", j);
         
-    scalarProdGPU<<<128, 256>>>(d_C, d_A, d_B, VECTOR_N, ELEMENT_N, 0, d_result, d_trash);
+    scalarProdGPU<<<128, 256>>>(d_C, d_A, d_B, VECTOR_N, ELEMENT_N);
     // getLastCudaError("scalarProdGPU() execution failed\n");
     //checkCudaErrors(cudaStreamSynchronize(stream));
     }
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 
 
     // printf("Checking GPU results...\n");
-    // printf("..running CPU scalar product calculation\n");
+    // printf("..running CPU scalar product calculation\n"); 
     // scalarProdCPU(h_C_CPU, h_A, h_B, VECTOR_N, ELEMENT_N);
 
     // printf("...comparing the results\n");
@@ -202,6 +202,6 @@ int main(int argc, char **argv)
     // printf("L1 error: %E\n", L1norm);
     // printf((L1norm < 1e-6) ? "Test passed\n" : "Test failed!\n");
     // exit(L1norm < 1e-6 ? EXIT_SUCCESS : EXIT_FAILURE);
-
+    cudaStreamSynchronize(0);
     printf("finished (skipped test)\n");
 }

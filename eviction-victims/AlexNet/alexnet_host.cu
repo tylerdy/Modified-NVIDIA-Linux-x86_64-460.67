@@ -501,6 +501,7 @@ void NeuralNetwork()
 			index = i;
 		}
 	}
+	cudaStreamSynchronize(0);
 	printf("INDEX = %d\n",index);
     // cudaFree(Layer1_Neurons_GPU);
     // cudaFree(Layer1_Weights_GPU);

@@ -210,6 +210,7 @@ int main()
 	{
         prodsum += (CPU_states[out_loop] * dense_kernel[out_loop]);
 	}
+	cudaStreamSynchronize(0);
     printf("PROCUDT (2) %f\n",prodsum + dense_bias[0]);
 
     /* Free Memory */

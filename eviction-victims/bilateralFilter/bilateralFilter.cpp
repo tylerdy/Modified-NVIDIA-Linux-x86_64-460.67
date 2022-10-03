@@ -494,7 +494,7 @@ int runSingleTest(char *ref_file, char *exec_path)
         bilateralFilterRGBA(dResult, width, height, euclidean_delta, filter_radius, iterations, kernel_timer);
         // check if kernel execution generated an error
         getLastCudaError("Error: bilateralFilterRGBA Kernel execution FAILED");
-        checkCudaErrors(cudaDeviceSynchronize());
+        //checkCudaErrors(cudaDeviceSynchronize());
 
         // readback the results to system memory
         // cudaMemcpy2D(hResult, sizeof(unsigned int)*width, dResult, pitch,
@@ -516,7 +516,8 @@ int runSingleTest(char *ref_file, char *exec_path)
 
         // printf(" <%s>\n", ref_file);
     }
-    printf("\n");
+    cudaStreamSynchronize(0);
+    printf("Done.\n");
 
     free(hResult);
     checkCudaErrors(cudaFree(dResult));

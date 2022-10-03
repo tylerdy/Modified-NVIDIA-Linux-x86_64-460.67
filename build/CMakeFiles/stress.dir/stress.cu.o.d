@@ -38,8 +38,6 @@ CMakeFiles/stress.dir/stress.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Lin
     /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
     /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
     /usr/include/strings.h \
-    /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
-    /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
     /usr/include/time.h \
     /usr/include/x86_64-linux-gnu/bits/time.h \
     /usr/include/x86_64-linux-gnu/bits/types.h \
@@ -83,8 +81,6 @@ CMakeFiles/stress.dir/stress.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Lin
     /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h \
     /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
     /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
-    /usr/include/x86_64-linux-gnu/bits/stdio.h \
-    /usr/include/x86_64-linux-gnu/bits/stdio2.h \
     /usr/include/c++/9/stdlib.h \
     /usr/include/c++/9/cstdlib \
     /usr/include/stdlib.h \
@@ -101,16 +97,13 @@ CMakeFiles/stress.dir/stress.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Lin
     /usr/include/x86_64-linux-gnu/bits/select.h \
     /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
     /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h \
-    /usr/include/x86_64-linux-gnu/bits/select2.h \
     /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
     /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
     /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
     /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
     /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
     /usr/include/alloca.h \
-    /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
     /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
-    /usr/include/x86_64-linux-gnu/bits/stdlib.h \
     /usr/include/c++/9/bits/std_abs.h \
     /usr/include/assert.h \
     /usr/local/cuda-11.1/include/crt/math_functions.h \
@@ -128,7 +121,6 @@ CMakeFiles/stress.dir/stress.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Lin
     /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
     /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
     /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
-    /usr/include/x86_64-linux-gnu/bits/mathinline.h \
     /usr/local/cuda-11.1/include/crt/math_functions.hpp \
     /usr/local/cuda-11.1/include/cuda_surface_types.h \
     /usr/local/cuda-11.1/include/cuda_texture_types.h \
@@ -185,7 +177,6 @@ CMakeFiles/stress.dir/stress.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Lin
     /usr/include/x86_64-linux-gnu/bits/confname.h \
     /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
     /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
-    /usr/include/x86_64-linux-gnu/bits/unistd.h \
     /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
     /usr/include/sched.h \
     /usr/include/x86_64-linux-gnu/bits/sched.h \
@@ -203,6 +194,12 @@ CMakeFiles/stress.dir/stress.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Lin
     /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
     /usr/include/x86_64-linux-gnu/bits/syscall.h \
     /playpen/leochanj/fgpure/Modified-NVIDIA-Linux-x86_64-460.67/test.hpp \
+    /usr/local/cuda-11.1/include/cuda_fp16.h \
+    /usr/local/cuda-11.1/include/cuda_fp16.hpp \
+    /usr/include/c++/9/utility \
+    /usr/include/c++/9/bits/stl_relops.h \
+    /usr/include/c++/9/bits/stl_pair.h \
+    /usr/include/c++/9/initializer_list \
     /usr/local/cuda-11.1/samples/common/inc/helper_functions.h \
     /usr/local/cuda-11.1/samples/common/inc/exception.h \
     /usr/include/c++/9/iostream \
@@ -216,12 +213,10 @@ CMakeFiles/stress.dir/stress.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Lin
     /usr/include/wchar.h \
     /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
     /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
-    /usr/include/x86_64-linux-gnu/bits/wchar2.h \
     /usr/include/c++/9/bits/char_traits.h \
     /usr/include/c++/9/bits/stl_algobase.h \
     /usr/include/c++/9/bits/functexcept.h \
     /usr/include/c++/9/ext/numeric_traits.h \
-    /usr/include/c++/9/bits/stl_pair.h \
     /usr/include/c++/9/bits/stl_iterator_base_types.h \
     /usr/include/c++/9/bits/stl_iterator_base_funcs.h \
     /usr/include/c++/9/debug/assertions.h \
@@ -253,7 +248,6 @@ CMakeFiles/stress.dir/stress.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Lin
     /usr/include/c++/9/bits/stl_function.h \
     /usr/include/c++/9/backward/binders.h \
     /usr/include/c++/9/bits/range_access.h \
-    /usr/include/c++/9/initializer_list \
     /usr/include/c++/9/bits/basic_string.h \
     /usr/include/c++/9/ext/alloc_traits.h \
     /usr/include/c++/9/bits/alloc_traits.h \
@@ -284,8 +278,6 @@ CMakeFiles/stress.dir/stress.cu.o : /playpen/leochanj/fgpure/Modified-NVIDIA-Lin
     /usr/include/c++/9/sstream \
     /usr/include/c++/9/bits/sstream.tcc \
     /usr/include/c++/9/algorithm \
-    /usr/include/c++/9/utility \
-    /usr/include/c++/9/bits/stl_relops.h \
     /usr/include/c++/9/bits/stl_algo.h \
     /usr/include/c++/9/bits/algorithmfwd.h \
     /usr/include/c++/9/bits/stl_heap.h \

@@ -497,7 +497,8 @@ int runSingleTest(char *ref_file, char *exec_path)
 
         printf(" <%s>\n", ref_file);
     }
-    printf("\n");
+    cudaStreamSynchronize(0);
+    printf("Done\n");
 
     free(h_result);
     checkCudaErrors(cudaFree(d_result));

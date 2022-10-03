@@ -7,7 +7,7 @@ extern int rPaddedWidth;
 extern int hPaddedHeight;
 extern int hPaddedWidth;
 
-extern cudaStream_t my_stream;
+//extern cudaStream_t my_stream;
 
 cudaArray *imageArray = 0;
 texture<float4, 2, cudaReadModeElementType> tex;
@@ -60,8 +60,7 @@ void DownscaleImage(int startScaleId, int endScaleId, int scaleId, float scale,
 		// if (isAlocated)
 		// 	cutilSafeCall(cudaFreeArray(imageArray));
 		cutilSafeCall(cudaMallocArray(&imageArray, &channelDescDownscale, hPaddedWidth, hPaddedHeight) );
-		cutilSafeCall(cudaMemcpyToArrayAsync(imageArray, 0, 0, paddedRegisteredImage, sizeof(float4) * hPaddedWidth * hPaddedHeight, cudaMemcpyDeviceToDevice, my_stream));
-                cudaStreamSynchronize(my_stream);
+		cutilSafeCall(cudaMemcpyToArrayAsync(imageArray, 0, 0, paddedRegisteredImage, sizeof(float4) * hPaddedWidth * hPaddedHeight, cudaMemcpyDeviceToDevice));
 
 		isAlocated = true;
 	}
@@ -70,25 +69,22 @@ void DownscaleImage(int startScaleId, int endScaleId, int scaleId, float scale,
 
 	if (useGrayscale)
 	{
-		cutilSafeCall(cudaMemsetAsync(resizedPaddedImageF1, 0, hPaddedWidth * hPaddedHeight * sizeof(float1), my_stream));
-                cudaStreamSynchronize(my_stream);
+		cutilSafeCall(cudaMemsetAsync(resizedPaddedImageF1, 0, hPaddedWidth * hPaddedHeight * sizeof(float1)));
 
-		resizeFastBicubic1<<<hBlockSize, hThreadSize, 0, my_stream>>>(resizedPaddedImageF1, paddedRegisteredImage, rPaddedWidth, rPaddedHeight, scale);
+		resizeFastBicubic1<<<hBlockSize, hThreadSize>>>(resizedPaddedImageF1, paddedRegisteredImage, rPaddedWidth, rPaddedHeight, scale);
 	}
 	else
 	{
-		cutilSafeCall(cudaMemsetAsync(resizedPaddedImageF4, 0, hPaddedWidth * hPaddedHeight * sizeof(float4), my_stream));
-                cudaStreamSynchronize(my_stream);
+		cutilSafeCall(cudaMemsetAsync(resizedPaddedImageF4, 0, hPaddedWidth * hPaddedHeight * sizeof(float4)));
 
-		resizeFastBicubic4<<<hBlockSize, hThreadSize, 0, my_stream>>>(resizedPaddedImageF4, paddedRegisteredImage, rPaddedWidth, rPaddedHeight, scale);
+		resizeFastBicubic4<<<hBlockSize, hThreadSize>>>(resizedPaddedImageF4, paddedRegisteredImage, rPaddedWidth, rPaddedHeight, scale);
 	}
-        cudaStreamSynchronize(my_stream);
 
 	cutilSafeCall(cudaUnbindTexture(tex));
 
 	if (scaleId == endScaleId)
 	{
-		cutilSafeCall(cudaFreeArray(imageArray));
+		//cutilSafeCall(cudaFreeArray(imageArray));
 		isAlocated = false;
 	}
 }

@@ -2488,6 +2488,7 @@ void NeuralNetwork()
         freeMemory(Layer1_Weights_CPU);
 #endif
 /******************************************************** testing predicted class ************/
+cudaStreamSynchronize(0);
         float max = 0.0;int index = 0;
         DEBUGPRINT(("Predicted Class \n")); 
 	for(int i=0;i < 1000;i++)
@@ -2498,9 +2499,9 @@ void NeuralNetwork()
 			index = i;
 		}
 	} 
-        freeMemory(Layer_OutNeurons_CPU);
         printf("Predicted Class (index) = %d\n",index);
         DEBUGPRINT(("DONE\n"));
+        freeMemory(Layer_OutNeurons_CPU);
 	exit(0);
 }
 

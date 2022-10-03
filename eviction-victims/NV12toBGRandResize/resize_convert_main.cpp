@@ -424,6 +424,8 @@ int main(int argc, char *argv[]) {
   /* first convert nv12 to bgr, then resize bgr */
   //printf("\nTEST#2:\n");
   nv12ToBGRandBGRresize(d_inputNV12);
+
+  cudaStreamSynchronize(0);
   printf("kernels done\n");
 
   checkCudaErrors(cudaFree(d_inputNV12));

@@ -13,7 +13,7 @@ extern __shared__ float allShared[];
 
 extern int rNoHistogramBins, rNoOfCellsX, rNoOfCellsY, rNoOfBlocksX, rNoOfBlocksY, rNumberOfWindowsX, rNumberOfWindowsY;
 
-extern cudaStream_t my_stream;
+//extern cudaStream_t my_stream;
 
 // wt scale == scale for weighting function span
 void InitHistograms(int cellSizeX, int cellSizeY, int blockSizeX, int blockSizeY, int noHistogramBins, float wtscale)
@@ -46,8 +46,7 @@ void InitHistograms(int cellSizeX, int cellSizeY, int blockSizeX, int blockSizeY
 
 	cutilSafeCall(cudaMallocArray(&gaussArray, &channelDescGauss, cellSizeX * blockSizeX * cellSizeY * blockSizeY, 1) );
 	cutilSafeCall(cudaMemcpyToArrayAsync(gaussArray, 0, 0, weights, 
-                      sizeof(float) * cellSizeX * blockSizeX * cellSizeY * blockSizeY, cudaMemcpyHostToDevice, my_stream));
-        cudaStreamSynchronize(my_stream);
+                      sizeof(float) * cellSizeX * blockSizeX * cellSizeY * blockSizeY, cudaMemcpyHostToDevice));
 
 	int h_tvbin[3];
 	float h_cenBound[3], h_halfBin[3], h_bandWidth[3];
@@ -65,11 +64,10 @@ void InitHistograms(int cellSizeX, int cellSizeY, int blockSizeX, int blockSizeY
 
 	h_tvbin[0] = blockSizeX; h_tvbin[1] = blockSizeY; h_tvbin[2] = noHistogramBins;
 
-	cutilSafeCall(cudaMemcpyToSymbolAsync(cenBound, h_cenBound, 3 * sizeof(float), 0, cudaMemcpyHostToDevice, my_stream));
-	cutilSafeCall(cudaMemcpyToSymbolAsync(halfBin, h_halfBin, 3 * sizeof(float), 0, cudaMemcpyHostToDevice, my_stream));
-	cutilSafeCall(cudaMemcpyToSymbolAsync(bandWidth, h_bandWidth, 3 * sizeof(float), 0, cudaMemcpyHostToDevice, my_stream));
-	cutilSafeCall(cudaMemcpyToSymbolAsync(tvbin, h_tvbin, 3 * sizeof(int), 0, cudaMemcpyHostToDevice, my_stream));
-        cudaStreamSynchronize(my_stream);
+	cutilSafeCall(cudaMemcpyToSymbolAsync(cenBound, h_cenBound, 3 * sizeof(float), 0, cudaMemcpyHostToDevice));
+	cutilSafeCall(cudaMemcpyToSymbolAsync(halfBin, h_halfBin, 3 * sizeof(float), 0, cudaMemcpyHostToDevice));
+	cutilSafeCall(cudaMemcpyToSymbolAsync(bandWidth, h_bandWidth, 3 * sizeof(float), 0, cudaMemcpyHostToDevice));
+	cutilSafeCall(cudaMemcpyToSymbolAsync(tvbin, h_tvbin, 3 * sizeof(int), 0, cudaMemcpyHostToDevice));
 }
 
 void CloseHistogram()
@@ -409,9 +407,8 @@ void ComputeBlockHistogramsWithGauss(float2* inputImage, float1* blockHistograms
 
 	cutilSafeCall(cudaBindTextureToArray(texGauss, gaussArray, channelDescGauss));
 
-	computeBlockHistogramsWithGauss<<<hBlockSize, hThreadSize, noHistogramBins * blockSizeX * blockSizeY * cellSizeX * blockSizeY * blockSizeX * sizeof(float), my_stream >>>
+	computeBlockHistogramsWithGauss<<<hBlockSize, hThreadSize, noHistogramBins * blockSizeX * blockSizeY * cellSizeX * blockSizeY * blockSizeX * sizeof(float), 0 >>>
 		(inputImage, blockHistograms, noHistogramBins, cellSizeX, cellSizeY, blockSizeX, blockSizeY, leftoverX, leftoverY, width, height);
-        cudaStreamSynchronize(my_stream);
 
 	cutilSafeCall(cudaUnbindTexture(texGauss));
 }
@@ -435,12 +432,11 @@ void NormalizeBlockHistograms(float1* blockHistograms, int noHistogramBins,
 	int alignedBlockDimY = iClosestPowerOfTwo(blockSizeX);
 	int alignedBlockDimZ = iClosestPowerOfTwo(blockSizeY);
 
-	normalizeBlockHistograms<<<hBlockSize, hThreadSize, noHistogramBins * blockSizeX * blockSizeY * sizeof(float), my_stream>>>
+	normalizeBlockHistograms<<<hBlockSize, hThreadSize, noHistogramBins * blockSizeX * blockSizeY * sizeof(float), 0>>>
 		(blockHistograms, noHistogramBins,
 		rNoOfBlocksX, rNoOfBlocksY, blockSizeX, blockSizeY,
 		alignedBlockDimX, alignedBlockDimY, alignedBlockDimZ,
 		noHistogramBins * rNoOfCellsX, rNoOfCellsY);
-        cudaStreamSynchronize(my_stream);
 
 }
 

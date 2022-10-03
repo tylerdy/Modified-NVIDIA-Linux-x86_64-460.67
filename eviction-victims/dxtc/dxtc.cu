@@ -794,6 +794,7 @@ int main(int argc, char **argv)
     free(reference);
     sdkDeleteTimer(&timer);
 
+    cudaStreamSynchronize(0);
     printf("RMS(reference, result) = %f\n\n", rms);
     printf(rms <= ERROR_THRESHOLD ? "Test passed\n" : "Test failed!\n");
     /* Return zero if test passed, one otherwise */

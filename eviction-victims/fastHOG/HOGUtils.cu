@@ -1,6 +1,6 @@
 #include "HOGUtils.h"
 
-extern cudaStream_t my_stream;
+//extern cudaStream_t my_stream;
 
 //Round a / b to nearest higher integer value
 int iDivUp(int a, int b) { return (a % b != 0) ? (a / b + 1) : (a / b); }
@@ -23,43 +23,37 @@ void Uchar4ToFloat4(uchar4 *inputImage, float4 *outputImage, int width, int heig
 {
 	dim3 threads_in_block(16,16);
 	dim3 blocks(iDivUp(width,16), iDivUp(height,16));
-	uchar4tofloat4<<<blocks, threads_in_block, 0, my_stream>>>(inputImage, outputImage, width, height);
-        cudaStreamSynchronize(my_stream);
+	uchar4tofloat4<<<blocks, threads_in_block>>>(inputImage, outputImage, width, height);
 } 
 void Float4ToUchar4(float4 *inputImage, uchar4 *outputImage, int width, int height)
 {
 	dim3 threads_in_block(16,16);
 	dim3 blocks(iDivUp(width,16), iDivUp(height,16));
-	float4toUchar4<<<blocks, threads_in_block, 0, my_stream>>>(inputImage, outputImage, width, height);
-        cudaStreamSynchronize(my_stream);
+	float4toUchar4<<<blocks, threads_in_block>>>(inputImage, outputImage, width, height);
 }
 void Float2ToUchar4(float2 *inputImage, uchar4 *outputImage, int width, int height, int index)
 {
 	dim3 threads_in_block(16,16);
 	dim3 blocks(iDivUp(width,16), iDivUp(height,16));
-	float2toUchar4<<<blocks, threads_in_block, 0, my_stream>>>(inputImage, outputImage, width, height, index);
-        cudaStreamSynchronize(my_stream);
+	float2toUchar4<<<blocks, threads_in_block>>>(inputImage, outputImage, width, height, index);
 }
 void Float2ToUchar1(float2 *inputImage, uchar1 *outputImage, int width, int height, int index)
 {
 	dim3 threads_in_block(16,16);
 	dim3 blocks(iDivUp(width,16), iDivUp(height,16));
-	float2toUchar1<<<blocks, threads_in_block, 0, my_stream>>>(inputImage, outputImage, width, height, index);
-        cudaStreamSynchronize(my_stream);
+	float2toUchar1<<<blocks, threads_in_block>>>(inputImage, outputImage, width, height, index);
 }
 void Float1ToUchar4(float1 *inputImage, uchar4 *outputImage, int width, int height)
 {
 	dim3 threads_in_block(16,16);
 	dim3 blocks(iDivUp(width,16), iDivUp(height,16));
-	float1toUchar4<<<blocks, threads_in_block, 0, my_stream>>>(inputImage, outputImage, width, height);
-        cudaStreamSynchronize(my_stream);
+	float1toUchar4<<<blocks, threads_in_block>>>(inputImage, outputImage, width, height);
 }
 void Float1ToUchar1(float1 *inputImage, uchar1 *outputImage, int width, int height)
 {
 	dim3 threads_in_block(16,16);
 	dim3 blocks(iDivUp(width,16), iDivUp(height,16));
-	float1toUchar1<<<blocks, threads_in_block, 0, my_stream>>>(inputImage, outputImage, width, height);
-        cudaStreamSynchronize(my_stream);
+	float1toUchar1<<<blocks, threads_in_block>>>(inputImage, outputImage, width, height);
 }
 __global__ void float4toUchar4(float4 *inputImage, uchar4 *outputImage, int width, int height)
 {

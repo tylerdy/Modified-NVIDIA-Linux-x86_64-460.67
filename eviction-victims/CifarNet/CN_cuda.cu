@@ -802,12 +802,13 @@ void NeuralNetwork()
 	cudaEventSynchronize(stop);
 	float milliseconds = 0;
 	cudaEventElapsedTime(&milliseconds, start, stop);
+	cudaStreamSynchronize(0);
 	printf("Final values of 9 outout neurons without softmax:\n");
 	for(int i=0; i<9; i++)
 		printf("%.8f\n",Layer5_output_CPU[i]);
 	printf("Device Execution time: %fms\n",milliseconds);
 	//Tested on Acer Predator with Nvidia GTX 1060, this program ran for 28.133ms
-    cudaFree(Data_Layer_GPU_R);
+    /*cudaFree(Data_Layer_GPU_R);
     cudaFree(Data_Layer_GPU_G);
     cudaFree(Data_Layer_GPU_B);
 
@@ -823,7 +824,7 @@ void NeuralNetwork()
     cudaFree(Layer4_Features);
     cudaFree(Layer4_Weights_GPU);
     cudaFree(Layer5_Features);
-    cudaFree(Layer5_Weights_GPU);
+    cudaFree(Layer5_Weights_GPU);*/
 
     free(Layer1_Weights_CPU);
     free(Layer2_Weights_CPU);

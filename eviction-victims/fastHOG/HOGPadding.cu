@@ -9,7 +9,7 @@ extern int hPaddingSizeX, hPaddingSizeY;
 
 extern int avSizeX, avSizeY, marginX, marginY;
 
-extern cudaStream_t my_stream;
+//extern cudaStream_t my_stream;
 
 uchar4* paddedRegisteredImageU4;
 
@@ -20,7 +20,7 @@ void InitPadding(int hPaddedWidth, int hPaddedHeight)
 
 void ClosePadding()
 {
-	cutilSafeCall(cudaFree(paddedRegisteredImageU4));
+	//cutilSafeCall(cudaFree(paddedRegisteredImageU4));
 }
 
 void PadHostImage(uchar4* registeredImage, float4 *paddedRegisteredImage,
@@ -39,14 +39,12 @@ void PadHostImage(uchar4* registeredImage, float4 *paddedRegisteredImage,
 	hPaddedWidth = hWidthROI + hPaddingSizeX*2;
 	hPaddedHeight = hHeightROI + hPaddingSizeY*2;
 
-	cutilSafeCall(cudaMemsetAsync(paddedRegisteredImageU4, 0, sizeof(uchar4) * hPaddedWidth * hPaddedHeight, my_stream));
-        cudaStreamSynchronize(my_stream);
+	cutilSafeCall(cudaMemsetAsync(paddedRegisteredImageU4, 0, sizeof(uchar4) * hPaddedWidth * hPaddedHeight));
 
 	cutilSafeCall(cudaMemcpy2DAsync(paddedRegisteredImageU4 + hPaddingSizeX + hPaddingSizeY * hPaddedWidth,
 			hPaddedWidth * sizeof(uchar4), registeredImage + minx + miny * hWidth,
 			hWidth * sizeof(uchar4), hWidthROI * sizeof(uchar4),
-			hHeightROI, cudaMemcpyHostToDevice, my_stream));
-        cudaStreamSynchronize(my_stream);
+			hHeightROI, cudaMemcpyHostToDevice));
 
 	Uchar4ToFloat4(paddedRegisteredImageU4, paddedRegisteredImage, hPaddedWidth, hPaddedHeight);
 }

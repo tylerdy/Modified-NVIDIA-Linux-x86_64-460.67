@@ -75,17 +75,17 @@ template <int BLOCK_SIZE> __global__ void MatrixMulCUDA(float *C, float *A,
             a += aStep, b += bStep) {
         // Declaration of the shared memory array As used to
         // store the sub-matrix of A
-        // __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
+        __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
 
         // Declaration of the shared memory array Bs used to
         // store the sub-matrix of B
-        // __shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
+        __shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
 
         // Load the matrices from device memory
         // to shared memory; each thread loads
         // one element of each matrix
-        // As[ty][tx] = A[a + wA * ty + tx];
-        // Bs[ty][tx] = B[b + wB * ty + tx];
+        As[ty][tx] = A[a + wA * ty + tx];
+        Bs[ty][tx] = B[b + wB * ty + tx];
 
         // Synchronize to make sure the matrices are loaded
         __syncthreads();
@@ -96,8 +96,7 @@ template <int BLOCK_SIZE> __global__ void MatrixMulCUDA(float *C, float *A,
 #pragma unroll
 
         for (int k = 0; k < BLOCK_SIZE; ++k) {
-            // Csub += As[ty][k] * Bs[k][tx];
-            Csub += A[a + wA * ty + k] * B[b + wB * k + tx];
+            Csub += As[ty][k] * Bs[k][tx];
         }
 
         // Synchronize to make sure that the preceding
@@ -262,7 +261,8 @@ int MatrixMultiply(int argc, char **argv,
     // }
 
     // printf("%s\n", correct ? "Result = PASS" : "Result = FAIL");
-
+    checkCudaErrors(cudaStreamSynchronize(0));
+    printf("Finished (still freeing page-locked memory).\n");
     // Clean up memory
    checkCudaErrors(cudaFreeHost(h_A));
     checkCudaErrors(cudaFreeHost(h_B));
@@ -340,7 +340,7 @@ int main(int argc, char **argv) {
 
     int matrix_result = MatrixMultiply(argc, argv, block_size, dimsA, dimsB);
 
-    printf("Finished. %d\n",matrix_result);
+    
     exit(matrix_result);
 }
 

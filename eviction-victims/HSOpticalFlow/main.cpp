@@ -219,6 +219,7 @@ int main(int argc, char **argv)
     //bool
     //status = CompareWithGold(width, height, stride, h_uGold, h_vGold, h_u, h_v);
 
+    cudaStreamSynchronize(0);
     printf("finished (skipped test)\n");
 
     WriteFloFile("FlowGPU.flo", width, height, stride, h_u, h_v);

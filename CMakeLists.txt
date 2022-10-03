@@ -22,8 +22,8 @@ include_directories(./)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/nvidia-uvm/)
 include_directories(NVIDIA-Linux-x86_64-460.67/kernel/common/inc/)
 include_directories(/usr/local/cuda-11.1/samples/common/inc)
-# string(APPEND CUDA_NVCC_FLAGS "-Xptxas -dlcm=cg")
-string(APPEND CMAKE_CUDA_FLAGS "-m 64 -arch=${TARGET} -Xptxas -dlcm=cg")
+string(APPEND CUDA_NVCC_FLAGS "-ptx -cubin -Xptxas -O0")
+string(APPEND CMAKE_CUDA_FLAGS "-m 64 -arch=${TARGET} -Xptxas")
 # string(REPLACE "O3" "O0" CMAKE_CUDA_FLAGS_RELEASE "${CMAKE_CUDA_FLAGS_RELEASE}")
 #string(APPEND CUDA_NVCC_FLAGS "-O0")
 # Add programs to be built using persistent threads model
@@ -86,17 +86,18 @@ add_persistent_target(stress .
 #        gpu.cu
 #        stress_thread.cu
 #        )
-add_persistent_target(synth .
-        gpu.cu
-        iterSingle/iter.cu
-        )
-add_persistent_target(ws .
-        gpu.cu
-        warp-sched.cu
-        )
-add_persistent_target(RN .
-        gpu.cu
-        ../ResNet/resnet_host.cu
-        )
+#add_persistent_target(synth .
+#        gpu.cu
+#        iterSingle/iter.cu
+#        )
+#add_persistent_target(ws .
+#        gpu.cu
+#        warp-sched.cu
+#        )
+#add_persistent_target(RN .
+#        gpu.cu
+#        ../ResNet/resnet_host.cu
+#        )
+
 #message("-----------------------------------------------\n
 #        ${CMAKE_CUDA_FLAGS_RELEASE}\n-----------------------------------------------")

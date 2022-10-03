@@ -367,6 +367,7 @@ runTest(int argc, char **argv)
     free(s_fname);
     free(r_gold_fname);
 
+    cudaStreamSynchronize(0);
     printf(bResult ? "Test success!\n" : "Test failure!\n");
 }
 

@@ -113,6 +113,7 @@ int main(int argc, char **argv)
         printf(" ...reading back GPU results\n");
         checkCudaErrors(cudaMemcpy(h_HistogramGPU, d_Histogram, HISTOGRAM64_BIN_COUNT * sizeof(uint), cudaMemcpyDeviceToHost));
         
+        cudaStreamSynchronize(0);
         printf("Test passed (skipped)\n");
         /*
 
